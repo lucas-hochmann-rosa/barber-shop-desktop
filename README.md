@@ -201,15 +201,49 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 
 ---
 
-## 🔎 Aderência ao PDF (Estado Atual)
+## 🔎 Adesão aos Requisitos (Estado Atual)
 
-Implementado:
-- RF01 a RF10.
-- RNF01 a RNF07.
+### Requisitos Funcionais
 
-Parcial / pendente:
-- RF11 (classificação visual por cores na agenda) ainda não está aplicada na UI atual.
-- O menu lateral existe, mas está fixo (não recolhível nesta versão).
+- **RF01**: Permitir cadastro inicial da barbearia com dados básicos, serviços, barbeiros e usuário de acesso.  
+  **Status**: Implementado.
+- **RF02**: Permitir autenticação por meio de login e senha.  
+  **Status**: Implementado.
+- **RF03**: Permitir cadastrar, editar e excluir serviços.  
+  **Status**: Implementado.
+- **RF04**: Permitir cadastrar, editar e excluir barbeiros.  
+  **Status**: Implementado.
+- **RF05**: Permitir criar novo agendamento informando cliente, contato, data/hora, serviço, barbeiro responsável e origem do contato.  
+  **Status**: Implementado.
+- **RF06**: Permitir editar e excluir agendamentos.  
+  **Status**: Implementado.
+- **RF07**: Permitir alterar o status do agendamento (iniciar e concluir atendimento).  
+  **Status**: Implementado.
+- **RF08**: Exibir na Home apenas agendamentos não concluídos.  
+  **Status**: Implementado.
+- **RF09**: Exibir histórico completo de agendamentos, incluindo concluídos.  
+  **Status**: Implementado.
+- **RF10**: Validar conflito de horário apenas quando houver coincidência de data/hora para o mesmo barbeiro.  
+  **Status**: Implementado com ajuste de regra: o sistema aplica uma validação mais restritiva, bloqueando conflitos em janela de 30 minutos para o mesmo barbeiro.
+- **RF11**: Classificar visualmente os agendamentos conforme sua proximidade ou status.  
+  **Status**: Pendente (a classificação por cores ainda não foi aplicada na interface atual).
+
+### Requisitos Não Funcionais
+
+- **RNF01**: O sistema deverá ser desenvolvido na linguagem Java.  
+  **Status**: Implementado.
+- **RNF02**: O banco de dados utilizado deverá ser MySQL.  
+  **Status**: Implementado.
+- **RNF03**: O sistema será executado como aplicação desktop.  
+  **Status**: Implementado.
+- **RNF04**: O código deverá seguir princípios de orientação a objetos.  
+  **Status**: Implementado.
+- **RNF05**: As informações deverão ser persistidas em banco de dados relacional.  
+  **Status**: Implementado.
+- **RNF06**: O sistema deverá validar campos obrigatórios antes de salvar registros.  
+  **Status**: Implementado.
+- **RNF07**: O acesso ao sistema deverá ser protegido por autenticação básica (login e senha).  
+  **Status**: Implementado.
 
 ---
 
