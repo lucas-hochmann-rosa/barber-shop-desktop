@@ -3,6 +3,9 @@ package br.com.barberdesk.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+// Hash sem salt por escopo do projeto atual (uso local/rede interna, sem exposição
+// pública). Para um cenário exposto à internet, trocar por BCrypt/PBKDF2 com salt
+// por usuário antes de reaproveitar este código.
 public class HashUtil {
     public static String hashSHA256(String input) {
         try {

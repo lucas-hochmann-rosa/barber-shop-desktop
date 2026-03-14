@@ -77,7 +77,10 @@ public class DatabaseInitService {
      * Migrações para corrigir problemas práticos do sistema.
      *
      * V2: permitir excluir barbeiros/serviços mesmo que já tenham sido usados em agendamentos,
-     *     mantendo um "snapshot" de nomes dentro de agendamentos.
+     *     mantendo um "snapshot" de nomes dentro de agendamentos. Sem isso, excluir um serviço ou
+     *     barbeiro quebraria o histórico (FK) ou faria agendamentos antigos "perderem" o nome
+     *     exibido — por isso o nome é copiado para a linha do agendamento no momento da criação,
+     *     em vez de depender só do JOIN com a tabela viva.
      */
     private void aplicarMigracoes(Connection conn) throws SQLException {
         // Se a tabela de agendamentos não existir ainda, não há o que migrar.

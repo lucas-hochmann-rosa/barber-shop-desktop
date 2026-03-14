@@ -124,6 +124,9 @@ public class AgendamentoDAO {
         return listarPorBarbearia(barbeariaId);
     }
 
+    // Janela de 30 minutos: evita que o mesmo barbeiro fique com dois agendamentos
+    // colados um no outro sem tempo de troca de cliente. Barbeiros diferentes podem
+    // atender no mesmo horário normalmente (não há conflito de recurso entre eles).
     public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int excluirId) throws SQLException {
         if (barbeiroId <= 0 || dataHora == null) return false;
         String sql = "SELECT COUNT(*) FROM agendamentos " +

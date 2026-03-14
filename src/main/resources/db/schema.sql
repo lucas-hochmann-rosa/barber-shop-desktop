@@ -52,5 +52,9 @@ CREATE TABLE IF NOT EXISTS agendamentos (
   INDEX idx_agend_barbeiro (barbeiro_id)
 );
 
+-- Trava, em nível de banco, o caso exato de dois agendamentos no mesmíssimo instante
+-- para o mesmo barbeiro. É uma segunda camada de defesa, não a regra de negócio
+-- completa: a janela de 30 minutos usada para detectar conflito fica em
+-- AgendamentoDAO.verificarConflito, pois um índice único não expressa "janela de tempo".
 DROP INDEX IF EXISTS ux_barbeiro_horario ON agendamentos;
 CREATE UNIQUE INDEX ux_barbeiro_horario ON agendamentos (barbeiro_id, data_hora);

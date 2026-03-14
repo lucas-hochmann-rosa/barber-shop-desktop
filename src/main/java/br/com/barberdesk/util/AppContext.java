@@ -5,6 +5,10 @@ import br.com.barberdesk.model.Usuario;
 
 /**
  * Singleton para gerenciar o contexto da aplicação (sessão).
+ *
+ * Sem sincronização proposital: é uma aplicação desktop de usuário único, toda a
+ * interação acontece na Event Dispatch Thread do Swing, então não há concorrência
+ * real de acesso a este estado.
  */
 public class AppContext {
     private static AppContext instance;
