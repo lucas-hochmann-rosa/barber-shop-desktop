@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,9 +38,11 @@ public class DatabaseInitService {
     }
 
     private boolean tabelaExiste(Connection conn, String table) throws SQLException {
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SHOW TABLES LIKE '" + table + "'");) {
-            return rs.next();
+        try (PreparedStatement pstmt = conn.prepareStatement("SHOW TABLES LIKE ?")) {
+            pstmt.setString(1, table);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 
@@ -123,18 +126,21 @@ public class DatabaseInitService {
 
     private void dropForeignKeysByColumn(Connection conn, String table, String column) {
         String q = "SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE " +
-                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '" + table + "' " +
-                "AND COLUMN_NAME = '" + column + "' AND REFERENCED_TABLE_NAME IS NOT NULL";
+                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? " +
+                "AND COLUMN_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL";
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(q)) {
-            while (rs.next()) {
-                String fk = rs.getString(1);
-                if (fk == null || fk.trim().isEmpty()) continue;
-                try (Statement st2 = conn.createStatement()) {
-                    st2.execute("ALTER TABLE " + table + " DROP FOREIGN KEY " + fk);
-                } catch (SQLException ignored) {
-                    // ignora (já removida ou nome diferente)
+        try (PreparedStatement pstmt = conn.prepareStatement(q)) {
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String fk = rs.getString(1);
+                    if (fk == null || fk.trim().isEmpty()) continue;
+                    try (Statement st2 = conn.createStatement()) {
+                        st2.execute("ALTER TABLE " + table + " DROP FOREIGN KEY " + fk);
+                    } catch (SQLException ignored) {
+                        // ignora (já removida ou nome diferente)
+                    }
                 }
             }
         } catch (SQLException ignored) {
