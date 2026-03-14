@@ -120,71 +120,22 @@ public class Agendamento {
     }
 
     public String getServicoNome() {
-    return servicoNome;
-}
-
-public void setServicoNome(String servicoNome) {
-    this.servicoNome = servicoNome;
-}
-
-public String getBarbeiroNome() {
-    return barbeiroNome;
-}
-
-public void setBarbeiroNome(String barbeiroNome) {
-    this.barbeiroNome = barbeiroNome;
-}
-
-// Métodos auxiliares (compatibilidade com telas antigas)
-public String getNomeCliente() {
-    return getClienteNome();
-}
-
-public void setNomeCliente(String nome) {
-    setClienteNome(nome);
-}
-
-public String getContatoCliente() {
-    return getContato();
-}
-
-public void setContatoCliente(String contato) {
-    setContato(contato);
-}
-
-public String getOrigem() {
-    return origemContato != null ? origemContato.name() : "";
-}
-
-public void setOrigem(String origem) {
-    if (origem == null || origem.trim().isEmpty()) {
-        this.origemContato = OrigemContato.OUTRO;
-        return;
+        return servicoNome;
     }
-    try {
-        this.origemContato = OrigemContato.valueOf(origem.trim().toUpperCase());
-    } catch (IllegalArgumentException ex) {
-        this.origemContato = OrigemContato.OUTRO;
-    }
-}
 
-public void setStatus(String status) {
-    if (status == null || status.trim().isEmpty()) {
-        this.status = StatusAgendamento.AGENDADO;
-        return;
+    public void setServicoNome(String servicoNome) {
+        this.servicoNome = servicoNome;
     }
-    try {
-        this.status = StatusAgendamento.valueOf(status.trim().toUpperCase());
-    } catch (IllegalArgumentException ex) {
-        this.status = StatusAgendamento.AGENDADO;
+
+    public String getBarbeiroNome() {
+        return barbeiroNome;
     }
-}
 
-public String getStatusString() {
-    return status != null ? status.name() : "";
-}
+    public void setBarbeiroNome(String barbeiroNome) {
+        this.barbeiroNome = barbeiroNome;
+    }
 
-@Override
+    @Override
     public String toString() {
         return "Agendamento{" +
                 "id=" + id +
