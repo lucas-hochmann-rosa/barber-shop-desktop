@@ -3,15 +3,18 @@ package br.com.barberdesk.ui;
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.util.AppContext;
+import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class TelaHome extends javax.swing.JFrame {
 
@@ -19,7 +22,7 @@ public class TelaHome extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     // Listas de apoio para seleção nas tabelas de gerenciamento
     private List<Servico> servicosGerenciarLista;
@@ -44,6 +47,11 @@ public class TelaHome extends javax.swing.JFrame {
                 }
             }
         });
+
+        tblAgendamentos.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblAgendamentos.getModel()));
+        tblHistorico.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblHistorico.getModel()));
+        tblGerenciarServicos.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarServicos.getModel()));
+        tblGerenciarBarbeiros.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarBarbeiros.getModel()));
     }
 
     private void mostrarMenuContexto(Component comp, int x, int y) {
@@ -154,7 +162,7 @@ public class TelaHome extends javax.swing.JFrame {
             for (Agendamento a : lista) {
                 model.addRow(new Object[]{
                     a.getId(),
-                    a.getDataHora().format(dtf),
+                    DateTimeUtil.formatDateTime(a.getDataHora()),
                     a.getClienteNome(),
                     a.getContato(),
                     a.getServicoNome() != null ? a.getServicoNome() : ("Serviço #" + a.getServicoId()),
@@ -190,7 +198,7 @@ public class TelaHome extends javax.swing.JFrame {
                 lblNome.setAlignmentX(Component.CENTER_ALIGNMENT);
                 lblNome.setFont(new Font("Segoe UI", Font.BOLD, 12));
                 
-                JLabel lblPreco = new JLabel("R$ " + s.getPreco());
+                JLabel lblPreco = new JLabel(moedaFormat.format(s.getPreco()));
                 lblPreco.setAlignmentX(Component.CENTER_ALIGNMENT);
                 
                 JButton btn = new JButton("Agendar");
@@ -241,7 +249,7 @@ public class TelaHome extends javax.swing.JFrame {
             model.setRowCount(0);
             for (Agendamento a : lista) {
                 model.addRow(new Object[]{
-                    a.getDataHora().format(dtf),
+                    DateTimeUtil.formatDateTime(a.getDataHora()),
                     a.getClienteNome(),
                     a.getContato(),
                     a.getServicoNome() != null ? a.getServicoNome() : ("Serviço #" + a.getServicoId()),

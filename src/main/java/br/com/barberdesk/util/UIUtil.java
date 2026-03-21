@@ -2,9 +2,27 @@ package br.com.barberdesk.util;
 
 import java.awt.Image;
 import java.io.File;
+import java.text.ParseException;
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 
 public class UIUtil {
+
+    /**
+     * Campo de texto com máscara fixa (ex.: "##/##/####" para data). Restringe o
+     * que o usuário consegue digitar, evitando erro de formato só detectado ao
+     * salvar. getText()/setText() continuam funcionando normalmente.
+     */
+    public static JFormattedTextField criarCampoMascarado(String mascara) {
+        try {
+            MaskFormatter formatter = new MaskFormatter(mascara);
+            formatter.setPlaceholderCharacter('_');
+            return new JFormattedTextField(formatter);
+        } catch (ParseException e) {
+            // Máscara inválida é erro de programação (string estática), não de usuário.
+            throw new IllegalArgumentException("Máscara inválida: " + mascara, e);
+        }
+    }
     public static void showInfo(String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }

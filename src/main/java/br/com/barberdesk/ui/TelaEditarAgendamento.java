@@ -9,13 +9,13 @@ import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.Servico;
 import br.com.barberdesk.model.StatusAgendamento;
 import br.com.barberdesk.util.AppContext;
+import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TelaEditarAgendamento extends JFrame {
@@ -26,11 +26,9 @@ public class TelaEditarAgendamento extends JFrame {
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
 
-    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
     private JTextField txtCliente;
     private JTextField txtContato;
-    private JTextField txtDataHora;
+    private JFormattedTextField txtDataHora;
     private JComboBox<Servico> cbServico;
     private JComboBox<Barbeiro> cbBarbeiro;
     private JComboBox<OrigemContato> cbOrigem;
@@ -79,7 +77,7 @@ public class TelaEditarAgendamento extends JFrame {
         txtContato = new JTextField();
         addRow(form, gc, row++, "Contato:", txtContato);
 
-        txtDataHora = new JTextField();
+        txtDataHora = UIUtil.criarCampoMascarado("##/##/#### ##:##");
         addRow(form, gc, row++, "Data/Hora (dd/MM/yyyy HH:mm):", txtDataHora);
 
         cbServico = new JComboBox<>();
@@ -152,7 +150,7 @@ public class TelaEditarAgendamento extends JFrame {
 
             txtCliente.setText(atual.getClienteNome());
             txtContato.setText(atual.getContato());
-            txtDataHora.setText(atual.getDataHora() != null ? atual.getDataHora().format(dtf) : "");
+            txtDataHora.setText(DateTimeUtil.formatDateTime(atual.getDataHora()));
             cbOrigem.setSelectedItem(atual.getOrigemContato());
 
             selecionarComboPorId(cbServico, atual.getServicoId());
@@ -220,7 +218,7 @@ public class TelaEditarAgendamento extends JFrame {
                 return;
             }
 
-            LocalDateTime dataHora = LocalDateTime.parse(dh, dtf);
+            LocalDateTime dataHora = DateTimeUtil.parseDateTime(dh);
             Servico servico = (Servico) cbServico.getSelectedItem();
             Barbeiro barbeiro = (Barbeiro) cbBarbeiro.getSelectedItem();
             OrigemContato origem = (OrigemContato) cbOrigem.getSelectedItem();

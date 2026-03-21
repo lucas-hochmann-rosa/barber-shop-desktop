@@ -85,9 +85,9 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cbBarbeiro = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        txtData = new javax.swing.JTextField();
+        txtData = UIUtil.criarCampoMascarado("##/##/####");
         jLabel6 = new javax.swing.JLabel();
-        txtHora = new javax.swing.JTextField();
+        txtHora = UIUtil.criarCampoMascarado("##:##");
         jLabel7 = new javax.swing.JLabel();
         cbOrigem = new javax.swing.JComboBox<>();
         btnSalvar = new javax.swing.JButton();
@@ -228,7 +228,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private javax.swing.JLabel lblFotoBarbeiro;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtContato;
-    private javax.swing.JTextField txtData;
-    private javax.swing.JTextField txtHora;
+    private javax.swing.JFormattedTextField txtData;
+    private javax.swing.JFormattedTextField txtHora;
     // End of variables declaration//GEN-END:variables
 }
