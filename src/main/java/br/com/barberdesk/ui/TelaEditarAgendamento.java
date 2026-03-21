@@ -156,7 +156,7 @@ public class TelaEditarAgendamento extends JFrame {
             cbOrigem.setSelectedItem(atual.getOrigemContato());
 
             selecionarComboPorId(cbServico, atual.getServicoId());
-            selecionarComboPorId(cbBarbeiro, atual.getBarbeiroId());
+            selecionarBarbeiroPorId(cbBarbeiro, atual.getBarbeiroId());
 
             atualizarFotoBarbeiro();
             atualizarUIStatus();
@@ -174,17 +174,23 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
-    private <T> void selecionarComboPorId(JComboBox<T> combo, int id) {
-        ComboBoxModel<T> model = combo.getModel();
+    private void selecionarComboPorId(JComboBox<Servico> combo, int id) {
+        ComboBoxModel<Servico> model = combo.getModel();
         for (int i = 0; i < model.getSize(); i++) {
-            T item = model.getElementAt(i);
-            try {
-                int itemId = (int) item.getClass().getMethod("getId").invoke(item);
-                if (itemId == id) {
-                    combo.setSelectedIndex(i);
-                    return;
-                }
-            } catch (Exception ignored) { }
+            if (model.getElementAt(i).getId() == id) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
+    private void selecionarBarbeiroPorId(JComboBox<Barbeiro> combo, int id) {
+        ComboBoxModel<Barbeiro> model = combo.getModel();
+        for (int i = 0; i < model.getSize(); i++) {
+            if (model.getElementAt(i).getId() == id) {
+                combo.setSelectedIndex(i);
+                return;
+            }
         }
     }
 

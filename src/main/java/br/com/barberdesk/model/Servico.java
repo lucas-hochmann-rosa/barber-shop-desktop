@@ -80,4 +80,18 @@ public class Servico {
     public String toString() {
         return nome;
     }
+
+    // Igualdade por id: permite JComboBox.setSelectedItem(servico) encontrar o
+    // item certo mesmo quando é uma instância diferente da carregada no combo.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Servico)) return false;
+        return id == ((Servico) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

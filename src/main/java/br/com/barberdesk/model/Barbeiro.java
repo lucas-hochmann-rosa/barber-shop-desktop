@@ -67,4 +67,18 @@ public class Barbeiro {
     public String toString() {
         return nome;
     }
+
+    // Igualdade por id: permite JComboBox.setSelectedItem(barbeiro) encontrar o
+    // item certo mesmo quando é uma instância diferente da carregada no combo.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Barbeiro)) return false;
+        return id == ((Barbeiro) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }
