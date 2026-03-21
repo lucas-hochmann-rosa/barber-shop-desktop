@@ -3,10 +3,10 @@ package br.com.barberdesk.ui;
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.util.AppContext;
+import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -16,7 +16,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
     private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private List<Servico> servicosLista;
     private List<Barbeiro> barbeirosLista;
     private Runnable onAgendamentoSalvo;
 
@@ -38,7 +38,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     public TelaNovoAgendamento(Servico s) {
         this();
-        cbServico.setSelectedItem(s.getNome());
+        cbServico.setSelectedItem(s);
     }
 
     public TelaNovoAgendamento(Servico s, Runnable onAgendamentoSalvo) {
@@ -49,26 +49,25 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private void carregarCombos() {
         try {
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
-            
-            List<Servico> servicos = servicoDAO.listarPorBarbearia(bId);
-            DefaultComboBoxModel<String> modelS = new DefaultComboBoxModel<>();
-            for (Servico s : servicos) modelS.addElement(s.getNome());
+
+            servicosLista = servicoDAO.listarPorBarbearia(bId);
+            DefaultComboBoxModel<Servico> modelS = new DefaultComboBoxModel<>();
+            for (Servico s : servicosLista) modelS.addElement(s);
             cbServico.setModel(modelS);
-            
+
             barbeirosLista = barbeiroDAO.listarPorBarbearia(bId);
-            DefaultComboBoxModel<String> modelB = new DefaultComboBoxModel<>();
-            for (Barbeiro b : barbeirosLista) modelB.addElement(b.getNome());
+            DefaultComboBoxModel<Barbeiro> modelB = new DefaultComboBoxModel<>();
+            for (Barbeiro b : barbeirosLista) modelB.addElement(b);
             cbBarbeiro.setModel(modelB);
-            
+
             atualizarFotoBarbeiro();
-            
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     private void atualizarFotoBarbeiro() {
-        int idx = cbBarbeiro.getSelectedIndex();
-        if (idx >= 0 && barbeirosLista != null) {
-            Barbeiro b = barbeirosLista.get(idx);
+        Barbeiro b = (Barbeiro) cbBarbeiro.getSelectedItem();
+        if (b != null) {
             UIUtil.exibirMiniatura(lblFotoBarbeiro, b.getFotoCaminho());
         }
     }
@@ -162,19 +161,22 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         try {
             String cliente = txtCliente.getText();
             String contato = txtContato.getText();
-            String dataStr = txtData.getText() + " " + txtHora.getText();
-            
+
             if (cliente.isEmpty() || contato.isEmpty() || txtData.getText().isEmpty() || txtHora.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
                 return;
             }
-            
-            LocalDateTime dataHora = LocalDateTime.parse(dataStr, dtf);
+
+            Barbeiro barb = (Barbeiro) cbBarbeiro.getSelectedItem();
+            Servico serv = (Servico) cbServico.getSelectedItem();
+            if (barb == null || serv == null) {
+                JOptionPane.showMessageDialog(this, "Selecione o serviço e o barbeiro.");
+                return;
+            }
+
+            LocalDateTime dataHora = DateTimeUtil.parseDateTime(txtData.getText(), txtHora.getText());
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
-            
-            Barbeiro barb = barbeirosLista.get(cbBarbeiro.getSelectedIndex());
-            Servico serv = servicoDAO.listarPorBarbearia(bId).get(cbServico.getSelectedIndex());
-            
+
             if (agendamentoDAO.verificarConflito(barb.getId(), dataHora)) {
                 JOptionPane.showMessageDialog(this, "Erro: Este barbeiro já possui um agendamento em um intervalo de 30 minutos deste horário!", "Conflito", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -212,9 +214,9 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cbBarbeiro;
+    private javax.swing.JComboBox<Barbeiro> cbBarbeiro;
     private javax.swing.JComboBox<String> cbOrigem;
-    private javax.swing.JComboBox<String> cbServico;
+    private javax.swing.JComboBox<Servico> cbServico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

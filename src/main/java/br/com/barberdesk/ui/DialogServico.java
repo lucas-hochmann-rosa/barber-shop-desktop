@@ -1,7 +1,9 @@
 package br.com.barberdesk.ui;
 
 import br.com.barberdesk.model.Servico;
+import br.com.barberdesk.util.ImageStorageUtil;
 import br.com.barberdesk.util.UIUtil;
+import java.io.IOException;
 import java.math.BigDecimal;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -149,8 +151,12 @@ public class DialogServico extends javax.swing.JDialog {
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            this.imagemPath = chooser.getSelectedFile().getAbsolutePath();
-            UIUtil.exibirMiniatura(lblPreview, imagemPath);
+            try {
+                this.imagemPath = ImageStorageUtil.armazenar(chooser.getSelectedFile());
+                UIUtil.exibirMiniatura(lblPreview, imagemPath);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar a imagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
