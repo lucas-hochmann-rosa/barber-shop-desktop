@@ -8,6 +8,7 @@ public class Servico {
     private String nome;
     private BigDecimal preco;
     private String imagemPath;
+    private int duracaoMinutos = 30;
 
     public Servico() {
     }
@@ -25,6 +26,11 @@ public class Servico {
         this.nome = nome;
         this.preco = preco;
         this.imagemPath = imagemPath;
+    }
+
+    public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemPath, int duracaoMinutos) {
+        this(id, barbeariaId, nome, preco, imagemPath);
+        this.duracaoMinutos = duracaoMinutos;
     }
 
     public int getId() {
@@ -65,6 +71,14 @@ public class Servico {
 
     public void setImagemPath(String imagemPath) {
         this.imagemPath = imagemPath;
+    }
+
+    public int getDuracaoMinutos() {
+        return duracaoMinutos;
+    }
+
+    public void setDuracaoMinutos(int duracaoMinutos) {
+        this.duracaoMinutos = duracaoMinutos;
     }
 
     // Alias para compatibilidade com as telas

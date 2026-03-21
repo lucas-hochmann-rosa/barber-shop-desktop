@@ -12,14 +12,14 @@ import java.util.List;
 public class AgendamentoDAO {
 
     public int inserir(Agendamento a) throws SQLException {
-        if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), 0)) {
-            throw new SQLException("Conflito: Este barbeiro já possui um agendamento em um intervalo de 30 minutos deste horário.");
+        if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), a.getDuracaoMinutos(), 0)) {
+            throw new SQLException("Conflito: este barbeiro já possui um agendamento nesse horário.");
         }
 
         String sql = "INSERT INTO agendamentos " +
-                "(barbearia_id, servico_id, barbeiro_id, servico_nome_snapshot, barbeiro_nome_snapshot, " +
+                "(barbearia_id, servico_id, barbeiro_id, servico_nome_snapshot, barbeiro_nome_snapshot, duracao_minutos_snapshot, " +
                 " cliente_nome, contato, data_hora, origem_contato, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -29,12 +29,13 @@ public class AgendamentoDAO {
             if (a.getBarbeiroId() > 0) stmt.setInt(3, a.getBarbeiroId()); else stmt.setNull(3, Types.INTEGER);
             stmt.setString(4, a.getServicoNome());
             stmt.setString(5, a.getBarbeiroNome());
+            stmt.setInt(6, a.getDuracaoMinutos());
 
-            stmt.setString(6, a.getClienteNome());
-            stmt.setString(7, a.getContato());
-            stmt.setTimestamp(8, Timestamp.valueOf(a.getDataHora()));
-            stmt.setString(9, a.getOrigemContato() != null ? a.getOrigemContato().name() : OrigemContato.OUTRO.name());
-            stmt.setString(10, a.getStatus() != null ? a.getStatus().name() : StatusAgendamento.AGENDADO.name());
+            stmt.setString(7, a.getClienteNome());
+            stmt.setString(8, a.getContato());
+            stmt.setTimestamp(9, Timestamp.valueOf(a.getDataHora()));
+            stmt.setString(10, a.getOrigemContato() != null ? a.getOrigemContato().name() : OrigemContato.OUTRO.name());
+            stmt.setString(11, a.getStatus() != null ? a.getStatus().name() : StatusAgendamento.AGENDADO.name());
 
             stmt.executeUpdate();
 
@@ -46,12 +47,12 @@ public class AgendamentoDAO {
     }
 
     public void atualizar(Agendamento a) throws SQLException {
-        if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), a.getId())) {
-            throw new SQLException("Conflito: Este barbeiro já possui um agendamento em um intervalo de 30 minutos deste horário.");
+        if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), a.getDuracaoMinutos(), a.getId())) {
+            throw new SQLException("Conflito: este barbeiro já possui um agendamento nesse horário.");
         }
 
         String sql = "UPDATE agendamentos SET " +
-                "servico_id=?, barbeiro_id=?, servico_nome_snapshot=?, barbeiro_nome_snapshot=?, " +
+                "servico_id=?, barbeiro_id=?, servico_nome_snapshot=?, barbeiro_nome_snapshot=?, duracao_minutos_snapshot=?, " +
                 "cliente_nome=?, contato=?, data_hora=?, origem_contato=?, status=? " +
                 "WHERE id=?";
 
@@ -62,12 +63,13 @@ public class AgendamentoDAO {
             if (a.getBarbeiroId() > 0) stmt.setInt(2, a.getBarbeiroId()); else stmt.setNull(2, Types.INTEGER);
             stmt.setString(3, a.getServicoNome());
             stmt.setString(4, a.getBarbeiroNome());
-            stmt.setString(5, a.getClienteNome());
-            stmt.setString(6, a.getContato());
-            stmt.setTimestamp(7, Timestamp.valueOf(a.getDataHora()));
-            stmt.setString(8, a.getOrigemContato() != null ? a.getOrigemContato().name() : OrigemContato.OUTRO.name());
-            stmt.setString(9, a.getStatus() != null ? a.getStatus().name() : StatusAgendamento.AGENDADO.name());
-            stmt.setInt(10, a.getId());
+            stmt.setInt(5, a.getDuracaoMinutos());
+            stmt.setString(6, a.getClienteNome());
+            stmt.setString(7, a.getContato());
+            stmt.setTimestamp(8, Timestamp.valueOf(a.getDataHora()));
+            stmt.setString(9, a.getOrigemContato() != null ? a.getOrigemContato().name() : OrigemContato.OUTRO.name());
+            stmt.setString(10, a.getStatus() != null ? a.getStatus().name() : StatusAgendamento.AGENDADO.name());
+            stmt.setInt(11, a.getId());
 
             stmt.executeUpdate();
         }
@@ -124,12 +126,25 @@ public class AgendamentoDAO {
         return listarPorBarbearia(barbeariaId);
     }
 
-    // Janela de 30 minutos: evita que o mesmo barbeiro fique com dois agendamentos
-    // colados um no outro sem tempo de troca de cliente. Barbeiros diferentes podem
-    // atender no mesmo horário normalmente (não há conflito de recurso entre eles).
-    public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int excluirId) throws SQLException {
+    // Duração máxima aceita para um serviço (ver DialogServico) — usada só para
+    // dimensionar a janela de busca abaixo, largura o bastante para conter
+    // qualquer agendamento existente que possa se sobrepor ao novo.
+    private static final int DURACAO_MAXIMA_MINUTOS = 480;
+
+    /**
+     * Conflito = sobreposição real de intervalo (início/fim, considerando a duração de
+     * cada serviço), não mais uma janela fixa de 30 minutos. Barbeiros diferentes podem
+     * atender no mesmo horário normalmente (não há conflito de recurso entre eles).
+     * Agendamentos "encostados" (um termina exatamente quando o outro começa) não contam
+     * como conflito.
+     */
+    public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int duracaoMinutos, int excluirId) throws SQLException {
         if (barbeiroId <= 0 || dataHora == null) return false;
-        String sql = "SELECT COUNT(*) FROM agendamentos " +
+        int duracaoNova = duracaoMinutos > 0 ? duracaoMinutos : 30;
+        LocalDateTime inicioNovo = dataHora;
+        LocalDateTime fimNovo = dataHora.plusMinutes(duracaoNova);
+
+        String sql = "SELECT data_hora, duracao_minutos_snapshot FROM agendamentos " +
                 "WHERE barbeiro_id=? " +
                 "AND data_hora > ? AND data_hora < ? " +
                 "AND status IN ('" + StatusAgendamento.AGENDADO.name() + "','" + StatusAgendamento.EM_ATENDIMENTO.name() + "')" +
@@ -139,23 +154,33 @@ public class AgendamentoDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, barbeiroId);
-            stmt.setTimestamp(2, Timestamp.valueOf(dataHora.minusMinutes(30)));
-            stmt.setTimestamp(3, Timestamp.valueOf(dataHora.plusMinutes(30)));
+            stmt.setTimestamp(2, Timestamp.valueOf(dataHora.minusMinutes(DURACAO_MAXIMA_MINUTOS)));
+            stmt.setTimestamp(3, Timestamp.valueOf(dataHora.plusMinutes(DURACAO_MAXIMA_MINUTOS)));
             if (excluirId > 0) stmt.setInt(4, excluirId);
 
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) return rs.getInt(1) > 0;
+                while (rs.next()) {
+                    LocalDateTime inicioExistente = rs.getTimestamp("data_hora").toLocalDateTime();
+                    int duracaoExistente = rs.getInt("duracao_minutos_snapshot");
+                    if (rs.wasNull() || duracaoExistente <= 0) duracaoExistente = 30;
+                    LocalDateTime fimExistente = inicioExistente.plusMinutes(duracaoExistente);
+
+                    if (inicioExistente.isBefore(fimNovo) && fimExistente.isAfter(inicioNovo)) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
     /**
-     * Overload para compatibilidade com chamadas antigas que não informam o ID
-     * do agendamento a ser ignorado.
+     * Overload de conveniência para checagem antes de existir um Agendamento
+     * montado (ex.: pré-validação na tela de novo agendamento) — não há id
+     * ainda para excluir da busca.
      */
-    public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora) throws SQLException {
-        return verificarConflito(barbeiroId, dataHora, 0);
+    public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int duracaoMinutos) throws SQLException {
+        return verificarConflito(barbeiroId, dataHora, duracaoMinutos, 0);
     }
 
     private List<Agendamento> listar(int barbeariaId, String extraSql) throws SQLException {
@@ -203,6 +228,10 @@ public class AgendamentoDAO {
 
         a.setServicoNome(rs.getString("servico_nome"));
         a.setBarbeiroNome(rs.getString("barbeiro_nome"));
+
+        int duracao = rs.getInt("duracao_minutos_snapshot");
+        a.setDuracaoMinutos(rs.wasNull() || duracao <= 0 ? 30 : duracao);
+
         return a;
     }
 }

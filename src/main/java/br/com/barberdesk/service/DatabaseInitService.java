@@ -84,6 +84,10 @@ public class DatabaseInitService {
      *     barbeiro quebraria o histórico (FK) ou faria agendamentos antigos "perderem" o nome
      *     exibido — por isso o nome é copiado para a linha do agendamento no momento da criação,
      *     em vez de depender só do JOIN com a tabela viva.
+     *
+     * V3: duração por serviço, para que o conflito de horário considere o tempo
+     *     real de cada serviço em vez de uma janela fixa (ver AgendamentoDAO.verificarConflito).
+     *     Segue o mesmo padrão de snapshot da V2, agora para a duração.
      */
     private void aplicarMigracoes(Connection conn) throws SQLException {
         // Se a tabela de agendamentos não existir ainda, não há o que migrar.
@@ -119,6 +123,19 @@ public class DatabaseInitService {
                     "LEFT JOIN barbeiros b ON a.barbeiro_id = b.id " +
                     "SET a.barbeiro_nome_snapshot = COALESCE(a.barbeiro_nome_snapshot, b.nome) " +
                     "WHERE a.barbeiro_nome_snapshot IS NULL"
+                );
+            } catch (SQLException ignored) {}
+
+            // 5) V3: duração por serviço + snapshot da duração em agendamentos existentes
+            try { st.execute("ALTER TABLE servicos ADD COLUMN duracao_minutos INT NOT NULL DEFAULT 30"); } catch (SQLException ignored) {}
+            try { st.execute("ALTER TABLE agendamentos ADD COLUMN duracao_minutos_snapshot INT NULL"); } catch (SQLException ignored) {}
+
+            try {
+                st.execute(
+                    "UPDATE agendamentos a " +
+                    "LEFT JOIN servicos s ON a.servico_id = s.id " +
+                    "SET a.duracao_minutos_snapshot = COALESCE(a.duracao_minutos_snapshot, s.duracao_minutos, 30) " +
+                    "WHERE a.duracao_minutos_snapshot IS NULL"
                 );
             } catch (SQLException ignored) {}
         }

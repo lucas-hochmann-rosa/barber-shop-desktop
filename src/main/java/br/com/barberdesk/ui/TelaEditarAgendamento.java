@@ -238,6 +238,7 @@ public class TelaEditarAgendamento extends JFrame {
             // Mantém snapshot atualizado
             atual.setServicoNome(servico.getNome());
             atual.setBarbeiroNome(barbeiro.getNome());
+            atual.setDuracaoMinutos(servico.getDuracaoMinutos());
             atual.setOrigemContato(origem);
 
             agendamentoDAO.atualizar(atual);

@@ -177,11 +177,11 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             LocalDateTime dataHora = DateTimeUtil.parseDateTime(txtData.getText(), txtHora.getText());
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
 
-            if (agendamentoDAO.verificarConflito(barb.getId(), dataHora)) {
-                JOptionPane.showMessageDialog(this, "Erro: Este barbeiro já possui um agendamento em um intervalo de 30 minutos deste horário!", "Conflito", JOptionPane.ERROR_MESSAGE);
+            if (agendamentoDAO.verificarConflito(barb.getId(), dataHora, serv.getDuracaoMinutos())) {
+                JOptionPane.showMessageDialog(this, "Erro: este barbeiro já possui um agendamento nesse horário!", "Conflito", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             Agendamento a = new Agendamento();
             a.setBarbeariaId(bId);
             a.setServicoId(serv.getId());
@@ -189,6 +189,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             // Snapshot para histórico: permite excluir serviço/barbeiro sem quebrar agendamentos antigos.
             a.setServicoNome(serv.getNome());
             a.setBarbeiroNome(barb.getNome());
+            a.setDuracaoMinutos(serv.getDuracaoMinutos());
             a.setClienteNome(cliente);
             a.setContato(contato);
             a.setDataHora(dataHora);

@@ -37,13 +37,14 @@ public class ServicoDAO {
     }
 
     public int inserir(Servico servico) throws SQLException {
-        String sql = "INSERT INTO servicos (barbearia_id, nome, preco, imagem_path) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO servicos (barbearia_id, nome, preco, imagem_path, duracao_minutos) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, servico.getBarbeariaId());
             pstmt.setString(2, servico.getNome());
             pstmt.setBigDecimal(3, servico.getPreco());
             pstmt.setString(4, servico.getImagemPath());
+            pstmt.setInt(5, servico.getDuracaoMinutos());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -55,13 +56,14 @@ public class ServicoDAO {
     }
 
     public void atualizar(Servico servico) throws SQLException {
-        String sql = "UPDATE servicos SET nome = ?, preco = ?, imagem_path = ? WHERE id = ?";
+        String sql = "UPDATE servicos SET nome = ?, preco = ?, imagem_path = ?, duracao_minutos = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, servico.getNome());
             pstmt.setBigDecimal(2, servico.getPreco());
             pstmt.setString(3, servico.getImagemPath());
-            pstmt.setInt(4, servico.getId());
+            pstmt.setInt(4, servico.getDuracaoMinutos());
+            pstmt.setInt(5, servico.getId());
             pstmt.executeUpdate();
         }
     }
@@ -88,6 +90,8 @@ public class ServicoDAO {
         String nome = rs.getString("nome");
         BigDecimal preco = rs.getBigDecimal("preco");
         String imagemPath = rs.getString("imagem_path");
-        return new Servico(id, barbeariaId, nome, preco, imagemPath);
+        int duracaoMinutos = rs.getInt("duracao_minutos");
+        if (rs.wasNull()) duracaoMinutos = 30;
+        return new Servico(id, barbeariaId, nome, preco, imagemPath, duracaoMinutos);
     }
 }

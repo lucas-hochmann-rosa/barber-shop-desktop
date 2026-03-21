@@ -17,6 +17,11 @@ public class Agendamento {
     private String servicoNome;
     private String barbeiroNome;
 
+    // Snapshot da duração do serviço no momento do agendamento (minutos) — usada
+    // para checar conflito por sobreposição real de horário mesmo que a duração
+    // do serviço mude depois. Ver AgendamentoDAO.verificarConflito.
+    private int duracaoMinutos = 30;
+
     public Agendamento() {
     }
 
@@ -133,6 +138,14 @@ public class Agendamento {
 
     public void setBarbeiroNome(String barbeiroNome) {
         this.barbeiroNome = barbeiroNome;
+    }
+
+    public int getDuracaoMinutos() {
+        return duracaoMinutos;
+    }
+
+    public void setDuracaoMinutos(int duracaoMinutos) {
+        this.duracaoMinutos = duracaoMinutos;
     }
 
     @Override

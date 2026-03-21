@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS servicos (
   nome VARCHAR(120) NOT NULL,
   preco DECIMAL(10,2) NOT NULL,
   imagem_path VARCHAR(255),
+  duracao_minutos INT NOT NULL DEFAULT 30,
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)
 );
 
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS agendamentos (
   barbeiro_id INT NULL,
   servico_nome_snapshot VARCHAR(120) NULL,
   barbeiro_nome_snapshot VARCHAR(120) NULL,
+  duracao_minutos_snapshot INT NULL,
   cliente_nome VARCHAR(120) NOT NULL,
   contato VARCHAR(120) NOT NULL,
   data_hora DATETIME NOT NULL,
@@ -54,7 +56,8 @@ CREATE TABLE IF NOT EXISTS agendamentos (
 
 -- Trava, em nível de banco, o caso exato de dois agendamentos no mesmíssimo instante
 -- para o mesmo barbeiro. É uma segunda camada de defesa, não a regra de negócio
--- completa: a janela de 30 minutos usada para detectar conflito fica em
--- AgendamentoDAO.verificarConflito, pois um índice único não expressa "janela de tempo".
+-- completa: a checagem de sobreposição real (considerando a duração de cada
+-- serviço) fica em AgendamentoDAO.verificarConflito, pois um índice único não
+-- expressa "intervalo de tempo".
 DROP INDEX IF EXISTS ux_barbeiro_horario ON agendamentos;
 CREATE UNIQUE INDEX ux_barbeiro_horario ON agendamentos (barbeiro_id, data_hora);

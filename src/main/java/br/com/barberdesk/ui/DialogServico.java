@@ -32,6 +32,7 @@ public class DialogServico extends javax.swing.JDialog {
         if (servico != null) {
             txtNome.setText(servico.getNome());
             txtPreco.setText(servico.getPreco() != null ? servico.getPreco().toString() : "");
+            spnDuracao.setValue(servico.getDuracaoMinutos() > 0 ? servico.getDuracaoMinutos() : 30);
             this.imagemPath = servico.getImagemPath() != null ? servico.getImagemPath() : "";
             UIUtil.exibirMiniatura(lblPreview, imagemPath);
         }
@@ -53,6 +54,8 @@ public class DialogServico extends javax.swing.JDialog {
         txtNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtPreco = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        spnDuracao = new javax.swing.JSpinner();
         lblPreview = new javax.swing.JLabel();
         btnEscolherImagem = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
@@ -66,6 +69,9 @@ public class DialogServico extends javax.swing.JDialog {
         jLabel1.setText("Nome do Serviço:");
 
         jLabel2.setText("Preço (R$):");
+
+        jLabel3.setText("Duração (min):");
+        spnDuracao.setModel(new javax.swing.SpinnerNumberModel(30, 5, 480, 5));
 
         lblPreview.setBackground(new java.awt.Color(204, 204, 204));
         lblPreview.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -106,7 +112,9 @@ public class DialogServico extends javax.swing.JDialog {
                             .addComponent(jLabel1)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
-                            .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(spnDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,7 +137,11 @@ public class DialogServico extends javax.swing.JDialog {
                         .addGap(15, 15, 15)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -174,6 +186,7 @@ public class DialogServico extends javax.swing.JDialog {
             servico.setNome(nome);
             servico.setPreco(preco);
             servico.setImagemPath(imagemPath);
+            servico.setDuracaoMinutos((Integer) spnDuracao.getValue());
             this.salvo = true;
             this.dispose();
         } catch (NumberFormatException e) {
@@ -191,7 +204,9 @@ public class DialogServico extends javax.swing.JDialog {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblPreview;
+    private javax.swing.JSpinner spnDuracao;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPreco;
     // End of variables declaration//GEN-END:variables
