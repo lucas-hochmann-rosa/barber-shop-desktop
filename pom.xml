@@ -33,6 +33,14 @@
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE190</version>
         </dependency>
+
+        <!-- Look & Feel moderno para o Swing. 2.6 é a última versão compatível
+             com Java 8 (a partir da 3.0 o FlatLaf exige Java 11+). -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -5,14 +5,16 @@ import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.*;
 import br.com.barberdesk.ui.TelaLogin;
 import br.com.barberdesk.ui.TelaCadastroInicial;
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
+                FlatLightLaf.setup();
+
                 // Testar conexão + garantir schema
                 ConexaoMySQL.getConexao().close();
                 new DatabaseInitService().ensureSchema();
