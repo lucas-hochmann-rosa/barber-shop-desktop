@@ -341,6 +341,8 @@ Screenshots of the main screens, for a quick visual reference:
 
 ## 🚀 Roadmap
 
+Quick summary below — the full, prioritized list lives in [`ROADMAP.md`](ROADMAP.md) (Portuguese, project-internal planning doc).
+
 Known items, tracked deliberately as next steps rather than oversights:
 
 - **Salted password hashing**: currently plain SHA-256 (`HashUtil`), fine for the current scope (local/internal-network use). Migrate to BCrypt/PBKDF2 with a per-user salt before any external exposure.

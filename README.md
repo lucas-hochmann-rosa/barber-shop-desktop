@@ -341,6 +341,8 @@ Prints das telas principais, para referência visual rápida do sistema:
 
 ## 🚀 Melhorias Futuras
 
+Resumo rápido abaixo — a lista completa e priorizada vive em [`ROADMAP.md`](ROADMAP.md).
+
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 
 - **Hash de senha com salt**: hoje é SHA-256 sem salt (`HashUtil`), adequado ao escopo atual (uso local/rede interna). Migrar para BCrypt/PBKDF2 com salt por usuário antes de qualquer exposição externa.
