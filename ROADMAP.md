@@ -8,10 +8,10 @@ Convenção: cada item referencia o(s) arquivo(s) afetado(s) para facilitar reto
 
 ## 🐞 Tier 1 — Correções (bugs reais, não só estilo)
 
-- [ ] **Caminho de imagem absoluto não é portável.** `DialogBarbeiro`/`DialogServico` salvam `chooser.getSelectedFile().getAbsolutePath()` direto no banco. Se o app mudar de máquina ou a pasta original for movida, as fotos somem. Corrigir copiando a imagem escolhida para uma pasta gerenciada pelo próprio app (ex.: diretório de dados do usuário) e salvando um caminho relativo/gerenciado.
-- [ ] **`TelaNovoAgendamento` casa serviço/barbeiro por índice de combo contra uma nova query.** `servicoDAO.listarPorBarbearia(bId).get(cbServico.getSelectedIndex())` (linha ~176) reconsulta o banco no momento de salvar; se a lista mudar entre abrir a tela e salvar, o índice pode não corresponder mais ao item exibido. `TelaEditarAgendamento` já resolve isso certo com `JComboBox<Servico>` tipado — replicar o mesmo padrão.
-- [ ] **Conflito de horário usa 30 minutos fixos**, mas `Servico` não tem duração — um corte simples e um combo (corte + barba) ocupam tempos diferentes na prática. Adicionar `duracao_minutos` em `servicos` e usar a duração real do serviço agendado em `AgendamentoDAO.verificarConflito`.
-- [ ] **Reflection para achar item selecionado em combo.** `TelaEditarAgendamento.selecionarComboPorId` usa `item.getClass().getMethod("getId").invoke(item)` para contornar a ausência de `equals()/hashCode()` nos models. Implementar `equals()/hashCode()` por `id` em `Servico`, `Barbeiro` (e outros models de entidade) resolve isso sem reflection.
+- [x] **Caminho de imagem absoluto não é portável.** Resolvido com `util/ImageStorageUtil.java`: copia a imagem escolhida no `JFileChooser` para `<user.home>/.barberdesk/images/` com nome único, usado em `DialogBarbeiro`/`DialogServico`. Imagens cadastradas antes desta mudança continuam usando o caminho antigo.
+- [x] **`TelaNovoAgendamento` casava serviço/barbeiro por índice de combo contra uma nova query.** Combos agora são tipados (`JComboBox<Servico>`, `JComboBox<Barbeiro>`), mesmo padrão de `TelaEditarAgendamento`.
+- [x] **Conflito de horário usava 30 minutos fixos.** `servicos.duracao_minutos` + `agendamentos.duracao_minutos_snapshot` (migração V3 em `DatabaseInitService`); `AgendamentoDAO.verificarConflito` agora calcula sobreposição real de intervalo. Campo de duração adicionado em `DialogServico`.
+- [x] **Reflection para achar item selecionado em combo.** `Servico`/`Barbeiro` ganharam `equals()`/`hashCode()` por `id`; `TelaEditarAgendamento.selecionarComboPorId` não usa mais reflection.
 
 ## 🔐 Tier 2 — Segurança e confiabilidade
 
@@ -39,11 +39,11 @@ Convenção: cada item referencia o(s) arquivo(s) afetado(s) para facilitar reto
 
 ## 🎨 Tier 5 — Visual (alto impacto, baixo risco)
 
-- [ ] **FlatLaf** (Look & Feel MIT) no lugar do Look & Feel padrão do Swing — troca pequena no `Main`, visual moderno imediato.
-- [ ] Máscaras de input (data/hora com `JFormattedTextField`, telefone com máscara) no lugar de texto livre validado só na hora de salvar.
-- [ ] Ordenação/filtro nas tabelas (`TableRowSorter`) em `TelaHome`.
-- [ ] Reusar `DateTimeUtil` (já existe em `util/`) em vez de cada tela declarar seu próprio `DateTimeFormatter` — hoje `TelaNovoAgendamento` e `TelaEditarAgendamento` duplicam isso.
-- [ ] Formatação de moeda `R$ 0,00` (`NumberFormat.getCurrencyInstance`) no lugar de `BigDecimal.toString()` cru.
+- [x] **FlatLaf** (Look & Feel MIT, versão 2.6 — última compatível com Java 8) ativado em `Main.java`.
+- [x] Máscaras de input de data/hora (`JFormattedTextField` + `MaskFormatter`, `UIUtil.criarCampoMascarado`) em `TelaNovoAgendamento`/`TelaEditarAgendamento`. Máscara de telefone ficou de fora de propósito: `contato` aceita WhatsApp/Instagram/telefone (ver `OrigemContato`), uma máscara fixa quebraria os casos que não são número.
+- [x] Ordenação (`TableRowSorter`) nas 4 tabelas de `TelaHome` (agendamentos, histórico, gerenciar serviços, gerenciar barbeiros). Filtro/busca continua pendente — ver Tier 4.
+- [x] `TelaHome`, `TelaNovoAgendamento` e `TelaEditarAgendamento` passaram a usar `DateTimeUtil` em vez de declarar seu próprio `DateTimeFormatter`.
+- [x] Preço formatado como moeda BR (`NumberFormat.getCurrencyInstance`) no grid de serviços de `TelaHome`.
 
 ## 🛠️ Tier 6 — DevOps/portfólio
 
@@ -56,7 +56,7 @@ Convenção: cada item referencia o(s) arquivo(s) afetado(s) para facilitar reto
 
 ## Status de execução
 
-- **Em andamento**: Tier 1 (correções) + Tier 5 (visual).
+- **Concluído**: Tier 1 (correções) + Tier 5 (visual) — implementado e compilando (`javac`), mas **ainda não testado contra um MySQL/GUI real**. Antes de considerar 100% pronto: rodar o app de verdade, confirmar visualmente o layout novo de `DialogServico` (campo de duração), o Look & Feel do FlatLaf, as máscaras de data/hora, e testar dois agendamentos com serviços de duração diferente pro mesmo barbeiro pra validar o conflito por sobreposição real.
 - **Planejado, não iniciado**: Tiers 2, 3, 4, 6.
 
 Cada item, ao ser implementado, deve ser validado por compilação (`javac`/`mvn compile`) e, sempre que envolver banco ou UI, testado manualmente contra um MySQL real antes de ser considerado concluído.

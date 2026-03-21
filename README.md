@@ -77,9 +77,10 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 - Histórico de agendamentos com todos os status.
 - Cadastro e edição de agendamento com campos:
   - cliente, contato, data/hora, serviço, barbeiro, origem e status.
-- Regra de conflito:
-  - bloqueia agendamento do mesmo barbeiro em janela de 30 minutos;
-  - permite o mesmo horário para barbeiros diferentes.
+- Duração configurável por serviço, usada na regra de conflito:
+  - bloqueia agendamento do mesmo barbeiro quando os intervalos se sobrepõem de verdade (considerando a duração de cada serviço), não uma janela fixa;
+  - permite o mesmo horário para barbeiros diferentes;
+  - permite agendamentos "encostados" (um termina exatamente quando o outro começa).
 
 ---
 
@@ -143,7 +144,7 @@ barber-shop-desktop/
 
 **Linguagem:** Java (compilação alvo Java 8; execução compatível com JREs mais novas)
 
-**Interface:** Java Swing, telas geradas pelo NetBeans GUI Builder (`AbsoluteLayout`)
+**Interface:** Java Swing (Look & Feel [FlatLaf](https://www.formdev.com/flatlaf/)), telas geradas pelo NetBeans GUI Builder (`AbsoluteLayout`)
 
 **Build:** Maven
 
@@ -248,7 +249,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - Agendamento exige dados essenciais (cliente, contato, data/hora, serviço, barbeiro e origem).
 - Home exibe apenas agendamentos não concluídos.
 - Histórico exibe todos os status.
-- Conflito por barbeiro em janela de 30 minutos.
+- Conflito por barbeiro considera a duração real do serviço (sobreposição de intervalo, não janela fixa).
 - Status suportados:
   - `AGENDADO`
   - `EM_ATENDIMENTO`
@@ -280,7 +281,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - **RF09**: Exibir histórico completo de agendamentos, incluindo concluídos.
   **Status**: Implementado.
 - **RF10**: Validar conflito de horário apenas quando houver coincidência de data/hora para o mesmo barbeiro.
-  **Status**: Implementado com ajuste de regra: o sistema aplica uma validação mais restritiva, bloqueando conflitos em janela de 30 minutos para o mesmo barbeiro.
+  **Status**: Implementado com ajuste de regra: o conflito considera a sobreposição real de intervalo (início/fim de cada agendamento, pela duração do serviço) para o mesmo barbeiro, não só a coincidência exata de data/hora.
 - **RF11**: Classificar visualmente os agendamentos conforme sua proximidade ou status.
   **Status**: Pendente — ver [Melhorias Futuras](#-melhorias-futuras).
 
@@ -311,7 +312,7 @@ Fluxo manual sugerido:
 2. Criar barbearia + usuário + serviços + barbeiros.
 3. Encerrar e validar login.
 4. Criar agendamento e validar presença na Home.
-5. Tentar conflito (mesmo barbeiro em janela de 30 min) e validar bloqueio.
+5. Tentar conflito (mesmo barbeiro, horário sobreposto considerando a duração do serviço) e validar bloqueio.
 6. Alterar status para `EM_ATENDIMENTO` e `CONCLUIDO`; confirmar saída da Home e presença no histórico.
 7. Excluir serviço/barbeiro usado e validar histórico preservado (snapshot de nomes).
 
@@ -350,7 +351,6 @@ Itens conhecidos e documentados conscientemente como próximos passos, não como
 - **Separação de camadas na UI**: `TelaHome.java` e `TelaCadastroInicial.java` concentram bastante lógica de negócio junto com o código gerado pelo GUI Builder; extrair para services/controllers reduziria o acoplamento.
 - **Testes automatizados**: hoje não há suíte de testes. Prioridade: testes unitários para regras de negócio puras e testes de integração dos DAOs contra um MySQL real (ex.: Testcontainers).
 - **RF11 (classificação visual de agendamentos)**: ainda não implementado — ver seção de requisitos acima.
-- **Índice único do banco vs. regra de conflito**: `ux_barbeiro_horario` trava apenas o mesmo instante exato; a regra de negócio real (janela de 30 minutos) vive em `AgendamentoDAO.verificarConflito`. Avaliar se vale reforçar isso em nível de banco.
 
 ---
 
