@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   barbearia_id INT NOT NULL,
   login VARCHAR(60) NOT NULL UNIQUE,
   senha_hash VARCHAR(255) NOT NULL,
+  salt VARCHAR(64) NULL,
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)
 );
 

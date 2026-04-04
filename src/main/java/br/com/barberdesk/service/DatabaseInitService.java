@@ -34,6 +34,7 @@ public class DatabaseInitService {
         // Migrações (executadas sempre, são idempotentes e não destrutivas)
         try (Connection conn = ConexaoMySQL.getConexao()) {
             aplicarMigracoes(conn);
+            aplicarMigracaoUsuarios(conn);
         }
     }
 
@@ -138,6 +139,18 @@ public class DatabaseInitService {
                     "WHERE a.duracao_minutos_snapshot IS NULL"
                 );
             } catch (SQLException ignored) {}
+        }
+    }
+
+    /**
+     * V4: salt por usuário, pra suportar hash de senha com PBKDF2 (ver
+     * HashUtil/AuthService). Contas antigas (salt nulo) continuam autenticando
+     * pelo SHA-256 legado até o próximo login, quando são migradas automaticamente.
+     */
+    private void aplicarMigracaoUsuarios(Connection conn) throws SQLException {
+        if (!tabelaExiste(conn, "usuarios")) return;
+        try (Statement st = conn.createStatement()) {
+            try { st.execute("ALTER TABLE usuarios ADD COLUMN salt VARCHAR(64) NULL"); } catch (SQLException ignored) {}
         }
     }
 

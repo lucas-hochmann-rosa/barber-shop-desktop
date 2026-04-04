@@ -2,8 +2,8 @@ package br.com.barberdesk.ui;
 
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
+import br.com.barberdesk.service.SetupService;
 import br.com.barberdesk.util.AppContext;
-import br.com.barberdesk.util.HashUtil;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -455,30 +455,11 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
 
         try {
             LocalDate dataFundacao = LocalDate.parse(dataStr, dtf);
-            
+
             Barbearia b = new Barbearia(nome, cep, dataFundacao, cultura);
-            BarbeariaDAO bDAO = new BarbeariaDAO();
-            int bId = bDAO.inserir(b);
-            b.setId(bId);
+            new SetupService().criarCadastroInicial(b, login, senha, servicosTemporarios, barbeirosTemporarios);
 
-            Usuario u = new Usuario();
-            u.setBarbeariaId(bId);
-            u.setLogin(login);
-            u.setSenhaHash(HashUtil.hashSHA256(senha));
-            new UsuarioDAO().inserir(u);
-
-            ServicoDAO sDAO = new ServicoDAO();
-            for (Servico s : servicosTemporarios) {
-                s.setBarbeariaId(bId);
-                sDAO.inserir(s);
-            }
-
-            BarbeiroDAO bbDAO = new BarbeiroDAO();
-            for (Barbeiro bb : barbeirosTemporarios) {
-                bb.setBarbeariaId(bId);
-                bbDAO.inserir(bb);
-            }
-
+            Usuario u = new UsuarioDAO().buscarPorLogin(login);
             AppContext.getInstance().setBarbeariaAtual(b);
             AppContext.getInstance().setUsuarioLogado(u);
 

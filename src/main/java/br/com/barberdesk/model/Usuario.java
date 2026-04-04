@@ -5,6 +5,8 @@ public class Usuario {
     private int barbeariaId;
     private String login;
     private String senhaHash;
+    // Nulo = conta criada antes da migração para hash com salt (ver AuthService.autenticar).
+    private String salt;
 
     public Usuario() {
     }
@@ -52,6 +54,14 @@ public class Usuario {
 
     public void setSenhaHash(String senhaHash) {
         this.senhaHash = senhaHash;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override
