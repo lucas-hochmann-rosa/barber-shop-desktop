@@ -78,6 +78,24 @@ public class ServicoDAO {
     }
 
     /**
+     * Usado para bloquear nome duplicado dentro da mesma barbearia.
+     * excluirId > 0 ignora o próprio registro (caso de edição).
+     */
+    public boolean existePorNome(int barbeariaId, String nome, int excluirId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM servicos WHERE barbearia_id = ? AND LOWER(nome) = LOWER(?)" +
+                (excluirId > 0 ? " AND id <> ?" : "");
+        try (Connection conn = ConexaoMySQL.getConexao();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, barbeariaId);
+            pstmt.setString(2, nome);
+            if (excluirId > 0) pstmt.setInt(3, excluirId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+
+    /**
      * Compatibilidade: algumas telas chamam "excluir" em vez de "deletar".
      */
     public void excluir(int id) throws SQLException {

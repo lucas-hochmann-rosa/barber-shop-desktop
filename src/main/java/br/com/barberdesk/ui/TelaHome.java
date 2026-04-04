@@ -645,6 +645,11 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) throw new IllegalStateException("Sessão inválida: barbearia não definida.");
 
+            if (servicoDAO.existePorNome(b.getId(), s.getNome(), 0)) {
+                JOptionPane.showMessageDialog(this, "Já existe um serviço com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             s.setBarbeariaId(b.getId());
             servicoDAO.inserir(s);
 
@@ -667,13 +672,19 @@ public class TelaHome extends javax.swing.JFrame {
         try {
             Servico original = servicosGerenciarLista.get(row);
             // Trabalhar com uma cópia para evitar alterar a tabela caso cancele
-            Servico copia = new Servico(original.getId(), original.getBarbeariaId(), original.getNome(), original.getPreco(), original.getImagemPath());
+            Servico copia = new Servico(original.getId(), original.getBarbeariaId(), original.getNome(), original.getPreco(), original.getImagemPath(), original.getDuracaoMinutos());
 
             DialogServico dlg = new DialogServico(this, true, copia);
             dlg.setVisible(true);
             if (!dlg.isSalvo()) return;
 
-            servicoDAO.atualizar(dlg.getServico());
+            Servico editado = dlg.getServico();
+            if (servicoDAO.existePorNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
+                JOptionPane.showMessageDialog(this, "Já existe um serviço com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            servicoDAO.atualizar(editado);
             carregarTabelaServicos();
             carregarGridServicos();
         } catch (Exception e) {
@@ -718,6 +729,11 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) throw new IllegalStateException("Sessão inválida: barbearia não definida.");
 
+            if (barbeiroDAO.existePorNome(b.getId(), barb.getNome(), 0)) {
+                JOptionPane.showMessageDialog(this, "Já existe um barbeiro com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             barb.setBarbeariaId(b.getId());
             barbeiroDAO.inserir(barb);
 
@@ -744,7 +760,13 @@ public class TelaHome extends javax.swing.JFrame {
             dlg.setVisible(true);
             if (!dlg.isSalvo()) return;
 
-            barbeiroDAO.atualizar(dlg.getBarbeiro());
+            Barbeiro editado = dlg.getBarbeiro();
+            if (barbeiroDAO.existePorNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
+                JOptionPane.showMessageDialog(this, "Já existe um barbeiro com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            barbeiroDAO.atualizar(editado);
             carregarTabelaBarbeiros();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,

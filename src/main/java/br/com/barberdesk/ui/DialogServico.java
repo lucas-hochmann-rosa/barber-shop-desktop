@@ -183,6 +183,10 @@ public class DialogServico extends javax.swing.JDialog {
 
         try {
             BigDecimal preco = new BigDecimal(precoStr);
+            if (preco.compareTo(BigDecimal.ZERO) <= 0) {
+                JOptionPane.showMessageDialog(this, "O preço deve ser maior que zero.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             servico.setNome(nome);
             servico.setPreco(preco);
             servico.setImagemPath(imagemPath);
