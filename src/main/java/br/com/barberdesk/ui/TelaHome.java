@@ -5,6 +5,8 @@ import br.com.barberdesk.model.*;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class TelaHome extends javax.swing.JFrame {
+
+    private static final Logger logger = LoggerFactory.getLogger(TelaHome.class);
 
     private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private ServicoDAO servicoDAO = new ServicoDAO();
@@ -88,7 +92,7 @@ public class TelaHome extends javax.swing.JFrame {
             }
 
             menu.show(comp, x, y);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { logger.error("Erro ao montar menu de contexto do agendamento", e); }
     }
 
     private void mudarStatus(Agendamento a, StatusAgendamento novo) {
@@ -97,7 +101,7 @@ public class TelaHome extends javax.swing.JFrame {
             agendamentoDAO.atualizar(a);
             carregarAgendamentos();
             carregarHistorico();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { logger.error("Erro ao atualizar status do agendamento", e); }
     }
 
     private void carregarDados() {
@@ -217,7 +221,7 @@ public class TelaHome extends javax.swing.JFrame {
             }
             pnlServicosGrid.revalidate();
             pnlServicosGrid.repaint();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { logger.error("Erro ao carregar grid de serviços", e); }
     }
 
     private void carregarDadosBarbearia() {
@@ -627,7 +631,7 @@ public class TelaHome extends javax.swing.JFrame {
             b.setCulturaValores(txtCulturaB.getText());
             barbeariaDAO.atualizar(b);
             JOptionPane.showMessageDialog(this, "Dados atualizados!");
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { logger.error("Erro ao salvar dados da barbearia", e); }
     }
 
     private void btnNovoServicoActionPerformed(java.awt.event.ActionEvent evt) {

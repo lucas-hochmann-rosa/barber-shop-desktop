@@ -5,6 +5,8 @@ import br.com.barberdesk.model.*;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 public class TelaNovoAgendamento extends javax.swing.JFrame {
+
+    private static final Logger logger = LoggerFactory.getLogger(TelaNovoAgendamento.class);
 
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
@@ -62,7 +66,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
             atualizarFotoBarbeiro();
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { logger.error("Erro ao carregar combos de serviço/barbeiro", e); }
     }
 
     private void atualizarFotoBarbeiro() {
@@ -209,7 +213,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao agendar: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Erro ao salvar novo agendamento", e);
         }
     }
 

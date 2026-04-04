@@ -6,10 +6,14 @@ import br.com.barberdesk.service.*;
 import br.com.barberdesk.ui.TelaLogin;
 import br.com.barberdesk.ui.TelaCadastroInicial;
 import com.formdev.flatlaf.FlatLightLaf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.sql.SQLException;
 
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -34,7 +38,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null,
                         "Erro ao conectar ao banco de dados:\n" + e.getMessage(),
                         "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
+                logger.error("Erro ao inicializar o BarberDesk", e);
                 System.exit(1);
             }
         });
