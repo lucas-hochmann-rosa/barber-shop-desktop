@@ -42,6 +42,14 @@
             <version>2.6</version>
         </dependency>
 
+        <!-- Pool de conexões. 4.0.3 é a última versão compatível com Java 8
+             (a partir da 5.0 o HikariCP exige Java 11+). -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
         <!-- Logging: console + arquivo (logs/barberdesk.log), ver src/main/resources/logback.xml -->
         <dependency>
             <groupId>org.slf4j</groupId>
