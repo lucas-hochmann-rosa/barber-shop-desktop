@@ -8,6 +8,7 @@ import br.com.barberdesk.model.Barbeiro;
 import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.Servico;
 import br.com.barberdesk.model.StatusAgendamento;
+import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
@@ -25,6 +26,7 @@ public class TelaEditarAgendamento extends JFrame {
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
+    private final AgendaService agendaService = new AgendaService();
 
     private JTextField txtCliente;
     private JTextField txtContato;
@@ -38,6 +40,7 @@ public class TelaEditarAgendamento extends JFrame {
     private JButton btnSalvar;
     private JButton btnExcluir;
     private JButton btnAcaoStatus;
+    private JButton btnCancelar;
 
     private Agendamento atual;
 
@@ -101,15 +104,18 @@ public class TelaEditarAgendamento extends JFrame {
         root.add(form, BorderLayout.CENTER);
 
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnCancelar = new JButton("Cancelar Agendamento");
         btnExcluir = new JButton("Excluir");
         btnSalvar = new JButton("Salvar");
         btnAcaoStatus = new JButton("Iniciar");
 
+        btnCancelar.addActionListener(e -> cancelarAgendamento());
         btnExcluir.addActionListener(e -> excluir());
         btnSalvar.addActionListener(e -> salvar());
         btnAcaoStatus.addActionListener(e -> alternarStatus());
 
         actions.add(btnAcaoStatus);
+        actions.add(btnCancelar);
         actions.add(btnExcluir);
         actions.add(btnSalvar);
 
@@ -194,7 +200,11 @@ public class TelaEditarAgendamento extends JFrame {
 
     private void atualizarUIStatus() {
         StatusAgendamento st = atual.getStatus();
-        lblStatus.setText("Status: " + (st != null ? st.name() : "-"));
+        String texto = "Status: " + (st != null ? st.name() : "-");
+        if (st == StatusAgendamento.CANCELADO && atual.getMotivoCancelamento() != null && !atual.getMotivoCancelamento().isEmpty()) {
+            texto += " — Motivo: " + atual.getMotivoCancelamento();
+        }
+        lblStatus.setText(texto);
 
         if (st == StatusAgendamento.AGENDADO) {
             btnAcaoStatus.setText("Iniciar Serviço");
@@ -204,6 +214,23 @@ public class TelaEditarAgendamento extends JFrame {
             btnAcaoStatus.setEnabled(true);
         } else {
             btnAcaoStatus.setEnabled(false);
+        }
+
+        btnCancelar.setEnabled(st == StatusAgendamento.AGENDADO || st == StatusAgendamento.EM_ATENDIMENTO);
+    }
+
+    private void cancelarAgendamento() {
+        String motivo = JOptionPane.showInputDialog(this, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
+        if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
+        try {
+            agendaService.cancelarAgendamento(atual.getId(), motivo.trim());
+            atual.setStatus(StatusAgendamento.CANCELADO);
+            atual.setMotivoCancelamento(motivo.trim());
+            atualizarUIStatus();
+            JOptionPane.showMessageDialog(this, "Agendamento cancelado.");
+            dispose();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cancelar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -265,12 +292,13 @@ public class TelaEditarAgendamento extends JFrame {
     private void alternarStatus() {
         try {
             if (atual.getStatus() == StatusAgendamento.AGENDADO) {
+                agendaService.iniciarAtendimento(atual.getId());
                 atual.setStatus(StatusAgendamento.EM_ATENDIMENTO);
             } else if (atual.getStatus() == StatusAgendamento.EM_ATENDIMENTO) {
+                agendaService.concluirAtendimento(atual.getId());
                 atual.setStatus(StatusAgendamento.CONCLUIDO);
             } else { return; }
 
-            agendamentoDAO.atualizar(atual);
             atualizarUIStatus();
             JOptionPane.showMessageDialog(this, "Status atualizado para " + atual.getStatus().name() + ".");
             if (atual.getStatus() == StatusAgendamento.CONCLUIDO) dispose();

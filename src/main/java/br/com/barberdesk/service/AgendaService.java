@@ -4,53 +4,33 @@ import br.com.barberdesk.dao.AgendamentoDAO;
 import br.com.barberdesk.model.Agendamento;
 import br.com.barberdesk.model.StatusAgendamento;
 import java.sql.SQLException;
-import java.util.List;
 
+/**
+ * Centraliza as transições de status de um agendamento (iniciar, concluir,
+ * cancelar) — antes duplicadas em TelaHome e TelaEditarAgendamento.
+ */
 public class AgendaService {
-    private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-
-    public List<Agendamento> listarPendentes(int barbeariaId) throws SQLException {
-        return agendamentoDAO.listarPendentes(barbeariaId);
-    }
-
-    public List<Agendamento> listarTodos(int barbeariaId) throws SQLException {
-        return agendamentoDAO.listarTodos(barbeariaId);
-    }
-
-    public int criarAgendamento(Agendamento agendamento) throws SQLException {
-        agendamento.setStatus(StatusAgendamento.AGENDADO);
-        return agendamentoDAO.inserir(agendamento);
-    }
-
-    public void editarAgendamento(Agendamento agendamento) throws SQLException {
-        agendamentoDAO.atualizar(agendamento);
-    }
-
-    public void excluirAgendamento(int id) throws SQLException {
-        agendamentoDAO.deletar(id);
-    }
+    private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
 
     public void iniciarAtendimento(int id) throws SQLException {
-        Agendamento agendamento = agendamentoDAO.buscarPorId(id);
-        if (agendamento != null) {
-            agendamento.setStatus(StatusAgendamento.EM_ATENDIMENTO);
-            agendamentoDAO.atualizar(agendamento);
-        }
+        alterarStatus(id, StatusAgendamento.EM_ATENDIMENTO, null);
     }
 
     public void concluirAtendimento(int id) throws SQLException {
-        Agendamento agendamento = agendamentoDAO.buscarPorId(id);
-        if (agendamento != null) {
-            agendamento.setStatus(StatusAgendamento.CONCLUIDO);
-            agendamentoDAO.atualizar(agendamento);
-        }
+        alterarStatus(id, StatusAgendamento.CONCLUIDO, null);
     }
 
-    public void cancelarAgendamento(int id) throws SQLException {
+    public void cancelarAgendamento(int id, String motivo) throws SQLException {
+        alterarStatus(id, StatusAgendamento.CANCELADO, motivo);
+    }
+
+    private void alterarStatus(int id, StatusAgendamento novoStatus, String motivoCancelamento) throws SQLException {
         Agendamento agendamento = agendamentoDAO.buscarPorId(id);
-        if (agendamento != null) {
-            agendamento.setStatus(StatusAgendamento.CANCELADO);
-            agendamentoDAO.atualizar(agendamento);
+        if (agendamento == null) return;
+        agendamento.setStatus(novoStatus);
+        if (motivoCancelamento != null) {
+            agendamento.setMotivoCancelamento(motivoCancelamento);
         }
+        agendamentoDAO.atualizar(agendamento);
     }
 }

@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS agendamentos (
   data_hora DATETIME NOT NULL,
   origem_contato VARCHAR(20) NOT NULL,
   status VARCHAR(20) NOT NULL,
+  motivo_cancelamento VARCHAR(255) NULL,
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id),
 
   INDEX idx_agend_servico (servico_id),

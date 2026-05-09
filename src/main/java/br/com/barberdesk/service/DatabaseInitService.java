@@ -89,6 +89,9 @@ public class DatabaseInitService {
      * V3: duração por serviço, para que o conflito de horário considere o tempo
      *     real de cada serviço em vez de uma janela fixa (ver AgendamentoDAO.verificarConflito).
      *     Segue o mesmo padrão de snapshot da V2, agora para a duração.
+     *
+     * V5: motivo de cancelamento (V4 é a migração de usuarios.salt, em
+     *     aplicarMigracaoUsuarios).
      */
     private void aplicarMigracoes(Connection conn) throws SQLException {
         // Se a tabela de agendamentos não existir ainda, não há o que migrar.
@@ -139,6 +142,9 @@ public class DatabaseInitService {
                     "WHERE a.duracao_minutos_snapshot IS NULL"
                 );
             } catch (SQLException ignored) {}
+
+            // 6) V5: motivo de cancelamento
+            try { st.execute("ALTER TABLE agendamentos ADD COLUMN motivo_cancelamento VARCHAR(255) NULL"); } catch (SQLException ignored) {}
         }
     }
 

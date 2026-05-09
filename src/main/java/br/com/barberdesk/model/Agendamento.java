@@ -22,6 +22,9 @@ public class Agendamento {
     // do serviço mude depois. Ver AgendamentoDAO.verificarConflito.
     private int duracaoMinutos = 30;
 
+    // Preenchido só quando status = CANCELADO.
+    private String motivoCancelamento;
+
     public Agendamento() {
     }
 
@@ -146,6 +149,14 @@ public class Agendamento {
 
     public void setDuracaoMinutos(int duracaoMinutos) {
         this.duracaoMinutos = duracaoMinutos;
+    }
+
+    public String getMotivoCancelamento() {
+        return motivoCancelamento;
+    }
+
+    public void setMotivoCancelamento(String motivoCancelamento) {
+        this.motivoCancelamento = motivoCancelamento;
     }
 
     @Override

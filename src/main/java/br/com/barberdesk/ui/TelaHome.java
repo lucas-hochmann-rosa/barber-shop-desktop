@@ -2,6 +2,7 @@ package br.com.barberdesk.ui;
 
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
+import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
@@ -26,6 +27,7 @@ public class TelaHome extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
+    private final AgendaService agendaService = new AgendaService();
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     // Listas de apoio para seleção nas tabelas de gerenciamento
@@ -77,17 +79,17 @@ public class TelaHome extends javax.swing.JFrame {
 
             if (a.getStatus() == StatusAgendamento.AGENDADO) {
                 JMenuItem itemIniciar = new JMenuItem("Iniciar Serviço");
-                itemIniciar.addActionListener(e -> mudarStatus(a, StatusAgendamento.EM_ATENDIMENTO));
+                itemIniciar.addActionListener(e -> iniciarAtendimento(a.getId()));
                 menu.add(itemIniciar);
             } else if (a.getStatus() == StatusAgendamento.EM_ATENDIMENTO) {
                 JMenuItem itemTerminar = new JMenuItem("Terminar Serviço");
-                itemTerminar.addActionListener(e -> mudarStatus(a, StatusAgendamento.CONCLUIDO));
+                itemTerminar.addActionListener(e -> concluirAtendimento(a.getId()));
                 menu.add(itemTerminar);
             }
 
             if (a.getStatus() != StatusAgendamento.CONCLUIDO && a.getStatus() != StatusAgendamento.CANCELADO) {
                 JMenuItem itemCancelar = new JMenuItem("Cancelar Agendamento");
-                itemCancelar.addActionListener(e -> mudarStatus(a, StatusAgendamento.CANCELADO));
+                itemCancelar.addActionListener(e -> cancelarAgendamento(a.getId()));
                 menu.add(itemCancelar);
             }
 
@@ -95,13 +97,30 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao montar menu de contexto do agendamento", e); }
     }
 
-    private void mudarStatus(Agendamento a, StatusAgendamento novo) {
+    private void iniciarAtendimento(int id) {
         try {
-            a.setStatus(novo);
-            agendamentoDAO.atualizar(a);
+            agendaService.iniciarAtendimento(id);
             carregarAgendamentos();
             carregarHistorico();
-        } catch (SQLException e) { logger.error("Erro ao atualizar status do agendamento", e); }
+        } catch (SQLException e) { logger.error("Erro ao iniciar atendimento", e); }
+    }
+
+    private void concluirAtendimento(int id) {
+        try {
+            agendaService.concluirAtendimento(id);
+            carregarAgendamentos();
+            carregarHistorico();
+        } catch (SQLException e) { logger.error("Erro ao concluir atendimento", e); }
+    }
+
+    private void cancelarAgendamento(int id) {
+        String motivo = JOptionPane.showInputDialog(this, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
+        if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
+        try {
+            agendaService.cancelarAgendamento(id, motivo.trim());
+            carregarAgendamentos();
+            carregarHistorico();
+        } catch (SQLException e) { logger.error("Erro ao cancelar agendamento", e); }
     }
 
     private void carregarDados() {

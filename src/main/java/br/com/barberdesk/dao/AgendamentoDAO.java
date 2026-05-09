@@ -53,7 +53,7 @@ public class AgendamentoDAO {
 
         String sql = "UPDATE agendamentos SET " +
                 "servico_id=?, barbeiro_id=?, servico_nome_snapshot=?, barbeiro_nome_snapshot=?, duracao_minutos_snapshot=?, " +
-                "cliente_nome=?, contato=?, data_hora=?, origem_contato=?, status=? " +
+                "cliente_nome=?, contato=?, data_hora=?, origem_contato=?, status=?, motivo_cancelamento=? " +
                 "WHERE id=?";
 
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -69,7 +69,8 @@ public class AgendamentoDAO {
             stmt.setTimestamp(8, Timestamp.valueOf(a.getDataHora()));
             stmt.setString(9, a.getOrigemContato() != null ? a.getOrigemContato().name() : OrigemContato.OUTRO.name());
             stmt.setString(10, a.getStatus() != null ? a.getStatus().name() : StatusAgendamento.AGENDADO.name());
-            stmt.setInt(11, a.getId());
+            stmt.setString(11, a.getMotivoCancelamento());
+            stmt.setInt(12, a.getId());
 
             stmt.executeUpdate();
         }
@@ -231,6 +232,8 @@ public class AgendamentoDAO {
 
         int duracao = rs.getInt("duracao_minutos_snapshot");
         a.setDuracaoMinutos(rs.wasNull() || duracao <= 0 ? 30 : duracao);
+
+        a.setMotivoCancelamento(rs.getString("motivo_cancelamento"));
 
         return a;
     }
