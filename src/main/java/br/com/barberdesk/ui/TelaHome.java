@@ -32,6 +32,7 @@ public class TelaHome extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
+    private ClienteDAO clienteDAO = new ClienteDAO();
     private final AgendaService agendaService = new AgendaService();
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
@@ -68,6 +69,7 @@ public class TelaHome extends javax.swing.JFrame {
         tblHistorico.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblHistorico.getModel()));
         tblGerenciarServicos.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarServicos.getModel()));
         tblGerenciarBarbeiros.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarBarbeiros.getModel()));
+        tblClientes.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblClientes.getModel()));
 
         // RF11: classifica visualmente as linhas por status/proximidade do horário.
         tblAgendamentos.setDefaultRenderer(Object.class, new StatusRowRenderer(() -> agendamentosPendentesAtuais));
@@ -190,8 +192,36 @@ public class TelaHome extends javax.swing.JFrame {
         carregarGridServicos();
         carregarTabelaServicos();
         carregarTabelaBarbeiros();
+        carregarTabelaClientes();
         carregarDadosBarbearia();
         carregarHistorico();
+    }
+
+    private void carregarTabelaClientes() {
+        try {
+            Barbearia b = AppContext.getInstance().getBarbeariaAtual();
+            if (b == null) return;
+
+            DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
+            model.setRowCount(0);
+            for (Cliente c : clienteDAO.listarPorBarbearia(b.getId())) {
+                model.addRow(new Object[]{ c.getNome(), c.getContato() });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar clientes:\n" + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void aplicarFiltroClientes() {
+        TableRowSorter<?> sorter = (TableRowSorter<?>) tblClientes.getRowSorter();
+        String texto = txtBuscaClientes.getText().trim();
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto)));
+        }
     }
 
     private void carregarTabelaServicos() {
@@ -417,6 +447,11 @@ public class TelaHome extends javax.swing.JFrame {
         btnNovoBarbeiro = new javax.swing.JButton();
         btnEditarBarbeiroB = new javax.swing.JButton();
         btnExcluirBarbeiro = new javax.swing.JButton();
+        pnlClientes = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        txtBuscaClientes = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblClientes = new javax.swing.JTable();
         pnlHistorico = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -668,6 +703,41 @@ public class TelaHome extends javax.swing.JFrame {
         pnlGerenciarBarbeiros.add(btnExcluirBarbeiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 370, 100, 30));
 
         tabBarbearia.addTab("Barbeiros", pnlGerenciarBarbeiros);
+
+        pnlClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel16.setText("Buscar:");
+        pnlClientes.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 13, -1, -1));
+
+        txtBuscaClientes.setToolTipText("Filtra por nome ou contato");
+        txtBuscaClientes.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { aplicarFiltroClientes(); }
+            public void removeUpdate(DocumentEvent e) { aplicarFiltroClientes(); }
+            public void changedUpdate(DocumentEvent e) { aplicarFiltroClientes(); }
+        });
+        pnlClientes.add(txtBuscaClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 8, 300, 30));
+
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome", "Contato"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane9.setViewportView(tblClientes);
+
+        pnlClientes.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 45, 530, 400));
+
+        tabBarbearia.addTab("Clientes", pnlClientes);
 
         pnlMinhaBarbearia.add(tabBarbearia, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 560, 500));
 
@@ -960,6 +1030,7 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -969,11 +1040,13 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblHintAgendamentos;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlCards;
+    private javax.swing.JPanel pnlClientes;
     private javax.swing.JPanel pnlDadosGerais;
     private javax.swing.JPanel pnlGerenciarBarbeiros;
     private javax.swing.JPanel pnlGerenciarServicos;
@@ -984,9 +1057,11 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSideMenu;
     private javax.swing.JTabbedPane tabBarbearia;
     private javax.swing.JTable tblAgendamentos;
+    private javax.swing.JTable tblClientes;
     private javax.swing.JTable tblGerenciarBarbeiros;
     private javax.swing.JTable tblGerenciarServicos;
     private javax.swing.JTable tblHistorico;
+    private javax.swing.JTextField txtBuscaClientes;
     private javax.swing.JTextField txtBuscaHistorico;
     private javax.swing.JTextField txtCEPB;
     private javax.swing.JTextArea txtCulturaB;
