@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
@@ -318,6 +319,8 @@ public class TelaHome extends javax.swing.JFrame {
             txtNomeB.setText(b.getNome() != null ? b.getNome() : "");
             txtCEPB.setText(b.getCep() != null ? b.getCep() : "");
             txtCulturaB.setText(b.getCulturaValores() != null ? b.getCulturaValores() : "");
+            txtHorarioAbertura.setText(DateTimeUtil.formatTime(b.getHorarioAbertura()));
+            txtHorarioFechamento.setText(DateTimeUtil.formatTime(b.getHorarioFechamento()));
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
                     "Erro ao carregar dados da barbearia:\n" + e.getMessage(),
@@ -396,6 +399,11 @@ public class TelaHome extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtCulturaB = new javax.swing.JTextArea();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtHorarioAbertura = UIUtil.criarCampoMascarado("##:##");
+        jLabel15 = new javax.swing.JLabel();
+        txtHorarioFechamento = UIUtil.criarCampoMascarado("##:##");
         btnSalvarB = new javax.swing.JButton();
         pnlGerenciarServicos = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -543,6 +551,17 @@ public class TelaHome extends javax.swing.JFrame {
         jScrollPane5.setViewportView(txtCulturaB);
 
         pnlDadosGerais.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 530, 100));
+
+        jLabel13.setText("Horário de Funcionamento (deixe em branco para não restringir):");
+        pnlDadosGerais.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 265, -1, -1));
+
+        jLabel14.setText("Abertura:");
+        pnlDadosGerais.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, -1, -1));
+        pnlDadosGerais.add(txtHorarioAbertura, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 285, 80, 30));
+
+        jLabel15.setText("Fechamento:");
+        pnlDadosGerais.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, -1, -1));
+        pnlDadosGerais.add(txtHorarioFechamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 285, 80, 30));
 
         btnSalvarB.setText("Salvar Alterações");
         btnSalvarB.addActionListener(new java.awt.event.ActionListener() {
@@ -730,13 +749,32 @@ public class TelaHome extends javax.swing.JFrame {
 
     private void btnSalvarBActionPerformed(java.awt.event.ActionEvent evt) {
         try {
+            LocalTime abertura = parseHorarioOuNulo(txtHorarioAbertura.getText());
+            LocalTime fechamento = parseHorarioOuNulo(txtHorarioFechamento.getText());
+            if (abertura != null && fechamento != null && !abertura.isBefore(fechamento)) {
+                JOptionPane.showMessageDialog(this, "O horário de abertura deve ser antes do fechamento.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             b.setNome(txtNomeB.getText());
             b.setCep(txtCEPB.getText());
             b.setCulturaValores(txtCulturaB.getText());
+            b.setHorarioAbertura(abertura);
+            b.setHorarioFechamento(fechamento);
             barbeariaDAO.atualizar(b);
             JOptionPane.showMessageDialog(this, "Dados atualizados!");
-        } catch (SQLException e) { logger.error("Erro ao salvar dados da barbearia", e); }
+        } catch (SQLException e) {
+            logger.error("Erro ao salvar dados da barbearia", e);
+        } catch (java.time.format.DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Horário inválido. Use o formato HH:mm.", "Validação", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /** Texto do campo mascarado ainda com placeholders ("__:__") ou vazio conta como "sem restrição". */
+    private LocalTime parseHorarioOuNulo(String texto) {
+        if (texto == null || texto.replace('_', ' ').trim().isEmpty()) return null;
+        return DateTimeUtil.parseTime(texto.trim());
     }
 
     private void btnNovoServicoActionPerformed(java.awt.event.ActionEvent evt) {
@@ -919,6 +957,9 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -949,6 +990,8 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JTextField txtBuscaHistorico;
     private javax.swing.JTextField txtCEPB;
     private javax.swing.JTextArea txtCulturaB;
+    private javax.swing.JFormattedTextField txtHorarioAbertura;
+    private javax.swing.JFormattedTextField txtHorarioFechamento;
     private javax.swing.JTextField txtNomeB;
     // End of variables declaration//GEN-END:variables
 }

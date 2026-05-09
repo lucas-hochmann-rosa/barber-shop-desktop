@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS barbearias (
   nome VARCHAR(120) NOT NULL,
   cep VARCHAR(12) NOT NULL,
   data_fundacao DATE,
-  cultura_valores TEXT
+  cultura_valores TEXT,
+  horario_abertura TIME NULL,
+  horario_fechamento TIME NULL
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (

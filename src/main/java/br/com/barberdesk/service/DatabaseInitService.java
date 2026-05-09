@@ -35,6 +35,7 @@ public class DatabaseInitService {
         try (Connection conn = ConexaoMySQL.getConexao()) {
             aplicarMigracoes(conn);
             aplicarMigracaoUsuarios(conn);
+            aplicarMigracaoBarbearia(conn);
         }
     }
 
@@ -157,6 +158,18 @@ public class DatabaseInitService {
         if (!tabelaExiste(conn, "usuarios")) return;
         try (Statement st = conn.createStatement()) {
             try { st.execute("ALTER TABLE usuarios ADD COLUMN salt VARCHAR(64) NULL"); } catch (SQLException ignored) {}
+        }
+    }
+
+    /**
+     * V6: horário de funcionamento configurável. Nulo = sem restrição (mantém o
+     * comportamento anterior de aceitar agendamento em qualquer horário).
+     */
+    private void aplicarMigracaoBarbearia(Connection conn) throws SQLException {
+        if (!tabelaExiste(conn, "barbearias")) return;
+        try (Statement st = conn.createStatement()) {
+            try { st.execute("ALTER TABLE barbearias ADD COLUMN horario_abertura TIME NULL"); } catch (SQLException ignored) {}
+            try { st.execute("ALTER TABLE barbearias ADD COLUMN horario_fechamento TIME NULL"); } catch (SQLException ignored) {}
         }
     }
 

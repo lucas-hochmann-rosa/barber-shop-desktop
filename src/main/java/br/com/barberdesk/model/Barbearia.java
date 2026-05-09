@@ -1,6 +1,7 @@
 package br.com.barberdesk.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Barbearia {
     private int id;
@@ -8,6 +9,9 @@ public class Barbearia {
     private String cep;
     private LocalDate dataFundacao;
     private String culturaValores;
+    // Nulos = sem horário de funcionamento configurado (agendamento permitido a qualquer hora).
+    private LocalTime horarioAbertura;
+    private LocalTime horarioFechamento;
 
     public Barbearia() {
     }
@@ -65,6 +69,22 @@ public class Barbearia {
 
     public void setCulturaValores(String culturaValores) {
         this.culturaValores = culturaValores;
+    }
+
+    public LocalTime getHorarioAbertura() {
+        return horarioAbertura;
+    }
+
+    public void setHorarioAbertura(LocalTime horarioAbertura) {
+        this.horarioAbertura = horarioAbertura;
+    }
+
+    public LocalTime getHorarioFechamento() {
+        return horarioFechamento;
+    }
+
+    public void setHorarioFechamento(LocalTime horarioFechamento) {
+        this.horarioFechamento = horarioFechamento;
     }
 
     @Override

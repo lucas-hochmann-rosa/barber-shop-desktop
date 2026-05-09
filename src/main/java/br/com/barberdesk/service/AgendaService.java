@@ -2,8 +2,11 @@ package br.com.barberdesk.service;
 
 import br.com.barberdesk.dao.AgendamentoDAO;
 import br.com.barberdesk.model.Agendamento;
+import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.StatusAgendamento;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * Centraliza as transições de status de um agendamento (iniciar, concluir,
@@ -22,6 +25,21 @@ public class AgendaService {
 
     public void cancelarAgendamento(int id, String motivo) throws SQLException {
         alterarStatus(id, StatusAgendamento.CANCELADO, motivo);
+    }
+
+    /**
+     * Sem horário de abertura/fechamento configurado na barbearia = sem
+     * restrição (mantém o comportamento anterior a essa funcionalidade).
+     */
+    public boolean dentroDoHorarioFuncionamento(Barbearia barbearia, LocalDateTime dataHora, int duracaoMinutos) {
+        if (barbearia == null || dataHora == null) return true;
+        LocalTime abertura = barbearia.getHorarioAbertura();
+        LocalTime fechamento = barbearia.getHorarioFechamento();
+        if (abertura == null || fechamento == null) return true;
+
+        LocalTime inicio = dataHora.toLocalTime();
+        LocalTime fim = inicio.plusMinutes(duracaoMinutos);
+        return !inicio.isBefore(abertura) && !fim.isAfter(fechamento);
     }
 
     private void alterarStatus(int id, StatusAgendamento novoStatus, String motivoCancelamento) throws SQLException {

@@ -2,6 +2,7 @@ package br.com.barberdesk.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
@@ -32,5 +33,13 @@ public class DateTimeUtil {
 
     public static LocalDateTime parseDateTime(String dateTimeStr) {
         return LocalDateTime.parse(dateTimeStr, DATETIME_FORMATTER);
+    }
+
+    public static String formatTime(LocalTime time) {
+        return time != null ? time.format(TIME_FORMATTER) : "";
+    }
+
+    public static LocalTime parseTime(String timeStr) {
+        return LocalTime.parse(timeStr, TIME_FORMATTER);
     }
 }

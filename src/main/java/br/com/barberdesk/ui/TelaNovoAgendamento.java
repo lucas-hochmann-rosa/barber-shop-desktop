@@ -2,6 +2,7 @@ package br.com.barberdesk.ui;
 
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
+import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
@@ -20,6 +21,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
     private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    private final AgendaService agendaService = new AgendaService();
     private List<Servico> servicosLista;
     private List<Barbeiro> barbeirosLista;
     private Runnable onAgendamentoSalvo;
@@ -179,7 +181,17 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             }
 
             LocalDateTime dataHora = DateTimeUtil.parseDateTime(txtData.getText(), txtHora.getText());
-            int bId = AppContext.getInstance().getBarbeariaAtual().getId();
+            Barbearia barbearia = AppContext.getInstance().getBarbeariaAtual();
+            int bId = barbearia.getId();
+
+            if (!agendaService.dentroDoHorarioFuncionamento(barbearia, dataHora, serv.getDuracaoMinutos())) {
+                JOptionPane.showMessageDialog(this,
+                        "Fora do horário de funcionamento da barbearia (" +
+                                DateTimeUtil.formatTime(barbearia.getHorarioAbertura()) + " às " +
+                                DateTimeUtil.formatTime(barbearia.getHorarioFechamento()) + ").",
+                        "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
             if (agendamentoDAO.verificarConflito(barb.getId(), dataHora, serv.getDuracaoMinutos())) {
                 JOptionPane.showMessageDialog(this, "Erro: este barbeiro já possui um agendamento nesse horário!", "Conflito", JOptionPane.ERROR_MESSAGE);

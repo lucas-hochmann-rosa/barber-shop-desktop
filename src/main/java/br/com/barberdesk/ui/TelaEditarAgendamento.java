@@ -4,6 +4,7 @@ import br.com.barberdesk.dao.AgendamentoDAO;
 import br.com.barberdesk.dao.BarbeiroDAO;
 import br.com.barberdesk.dao.ServicoDAO;
 import br.com.barberdesk.model.Agendamento;
+import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.Barbeiro;
 import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.Servico;
@@ -257,6 +258,16 @@ public class TelaEditarAgendamento extends JFrame {
 
             if (servico == null || barbeiro == null || origem == null) {
                 JOptionPane.showMessageDialog(this, "Selecione Serviço, Barbeiro e Origem.", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Barbearia barbearia = AppContext.getInstance().getBarbeariaAtual();
+            if (!agendaService.dentroDoHorarioFuncionamento(barbearia, dataHora, servico.getDuracaoMinutos())) {
+                JOptionPane.showMessageDialog(this,
+                        "Fora do horário de funcionamento da barbearia (" +
+                                DateTimeUtil.formatTime(barbearia.getHorarioAbertura()) + " às " +
+                                DateTimeUtil.formatTime(barbearia.getHorarioFechamento()) + ").",
+                        "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
