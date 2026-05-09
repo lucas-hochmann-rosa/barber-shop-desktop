@@ -38,6 +38,20 @@ CREATE TABLE IF NOT EXISTS barbeiros (
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)
 );
 
+-- Diretório de clientes, populado automaticamente a partir dos agendamentos
+-- (não há tela dedicada de cadastro). agendamentos continua guardando
+-- cliente_nome/contato como texto livre — esta tabela é só um índice de
+-- consulta/busca por cima disso, não uma FK obrigatória.
+CREATE TABLE IF NOT EXISTS clientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  barbearia_id INT NOT NULL,
+  nome VARCHAR(120) NOT NULL,
+  contato VARCHAR(120) NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (barbearia_id) REFERENCES barbearias(id),
+  UNIQUE KEY ux_cliente_contato (barbearia_id, contato)
+);
+
 CREATE TABLE IF NOT EXISTS agendamentos (
   id INT AUTO_INCREMENT PRIMARY KEY,
   barbearia_id INT NOT NULL,

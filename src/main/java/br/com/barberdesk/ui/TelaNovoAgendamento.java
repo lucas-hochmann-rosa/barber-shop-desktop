@@ -213,6 +213,14 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             a.setStatus(StatusAgendamento.AGENDADO);
             
             agendamentoDAO.inserir(a);
+
+            // Mantém o diretório de clientes atualizado — não interrompe o fluxo se falhar.
+            try {
+                new ClienteDAO().registrar(bId, cliente, contato);
+            } catch (SQLException e) {
+                logger.warn("Não foi possível registrar o cliente no diretório", e);
+            }
+
             JOptionPane.showMessageDialog(this, "Agendamento realizado com sucesso!");
 
             // Atualiza a Home imediatamente (sem precisar trocar de tela)

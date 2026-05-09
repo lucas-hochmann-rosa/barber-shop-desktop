@@ -36,6 +36,7 @@ public class DatabaseInitService {
             aplicarMigracoes(conn);
             aplicarMigracaoUsuarios(conn);
             aplicarMigracaoBarbearia(conn);
+            aplicarMigracaoClientes(conn);
         }
     }
 
@@ -170,6 +171,27 @@ public class DatabaseInitService {
         try (Statement st = conn.createStatement()) {
             try { st.execute("ALTER TABLE barbearias ADD COLUMN horario_abertura TIME NULL"); } catch (SQLException ignored) {}
             try { st.execute("ALTER TABLE barbearias ADD COLUMN horario_fechamento TIME NULL"); } catch (SQLException ignored) {}
+        }
+    }
+
+    /**
+     * V7: diretório de clientes (ver ClienteDAO) — tabela nova, então
+     * CREATE TABLE IF NOT EXISTS já é idempotente por si só.
+     */
+    private void aplicarMigracaoClientes(Connection conn) throws SQLException {
+        if (!tabelaExiste(conn, "barbearias")) return;
+        try (Statement st = conn.createStatement()) {
+            st.execute(
+                "CREATE TABLE IF NOT EXISTS clientes (" +
+                "  id INT AUTO_INCREMENT PRIMARY KEY," +
+                "  barbearia_id INT NOT NULL," +
+                "  nome VARCHAR(120) NOT NULL," +
+                "  contato VARCHAR(120) NOT NULL," +
+                "  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                "  FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)," +
+                "  UNIQUE KEY ux_cliente_contato (barbearia_id, contato)" +
+                ")"
+            );
         }
     }
 
