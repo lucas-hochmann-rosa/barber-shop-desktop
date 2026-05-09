@@ -1,7 +1,9 @@
 package br.com.barberdesk.util;
 
+import java.awt.Desktop;
 import java.awt.Image;
 import java.io.File;
+import java.net.URI;
 import java.text.ParseException;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -23,6 +25,39 @@ public class UIUtil {
             throw new IllegalArgumentException("Máscara inválida: " + mascara, e);
         }
     }
+
+    /**
+     * "Contato" do agendamento nem sempre é telefone (pode ser @ do Instagram,
+     * por exemplo — ver OrigemContato). Considera número válido só quando sobram
+     * pelo menos 8 dígitos depois de remover tudo que não é dígito.
+     */
+    public static boolean pareceNumeroDeTelefone(String contato) {
+        return contato != null && contato.replaceAll("\\D", "").length() >= 8;
+    }
+
+    /**
+     * Abre a conversa do WhatsApp Web/Desktop para o contato informado. Assume
+     * DDD+número brasileiro quando não vier com código do país (prefixa 55).
+     */
+    public static void abrirWhatsApp(java.awt.Component parent, String contato) {
+        String digitos = contato != null ? contato.replaceAll("\\D", "") : "";
+        if (digitos.length() < 8) {
+            showWarning("WhatsApp", "Contato não parece ser um número de telefone válido.");
+            return;
+        }
+        if (!digitos.startsWith("55")) {
+            digitos = "55" + digitos;
+        }
+
+        try {
+            Desktop.getDesktop().browse(new URI("https://wa.me/" + digitos));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(parent,
+                    "Não foi possível abrir o WhatsApp: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public static void showInfo(String title, String message) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }

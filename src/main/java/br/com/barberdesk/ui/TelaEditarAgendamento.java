@@ -41,6 +41,7 @@ public class TelaEditarAgendamento extends JFrame {
     private JButton btnExcluir;
     private JButton btnAcaoStatus;
     private JButton btnCancelar;
+    private JButton btnWhatsApp;
 
     private Agendamento atual;
 
@@ -104,16 +105,19 @@ public class TelaEditarAgendamento extends JFrame {
         root.add(form, BorderLayout.CENTER);
 
         JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnWhatsApp = new JButton("WhatsApp");
         btnCancelar = new JButton("Cancelar Agendamento");
         btnExcluir = new JButton("Excluir");
         btnSalvar = new JButton("Salvar");
         btnAcaoStatus = new JButton("Iniciar");
 
+        btnWhatsApp.addActionListener(e -> UIUtil.abrirWhatsApp(this, txtContato.getText()));
         btnCancelar.addActionListener(e -> cancelarAgendamento());
         btnExcluir.addActionListener(e -> excluir());
         btnSalvar.addActionListener(e -> salvar());
         btnAcaoStatus.addActionListener(e -> alternarStatus());
 
+        actions.add(btnWhatsApp);
         actions.add(btnAcaoStatus);
         actions.add(btnCancelar);
         actions.add(btnExcluir);
@@ -156,6 +160,7 @@ public class TelaEditarAgendamento extends JFrame {
 
             txtCliente.setText(atual.getClienteNome());
             txtContato.setText(atual.getContato());
+            btnWhatsApp.setEnabled(UIUtil.pareceNumeroDeTelefone(atual.getContato()));
             txtDataHora.setText(DateTimeUtil.formatDateTime(atual.getDataHora()));
             cbOrigem.setSelectedItem(atual.getOrigemContato());
 
