@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -353,6 +355,16 @@ public class TelaHome extends javax.swing.JFrame {
         new TelaNovoAgendamento(s, this::carregarAgendamentos).setVisible(true);
     }
 
+    private void aplicarFiltroHistorico() {
+        TableRowSorter<?> sorter = (TableRowSorter<?>) tblHistorico.getRowSorter();
+        String texto = txtBuscaHistorico.getText().trim();
+        if (texto.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto)));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -399,6 +411,8 @@ public class TelaHome extends javax.swing.JFrame {
         btnExcluirBarbeiro = new javax.swing.JButton();
         pnlHistorico = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtBuscaHistorico = new javax.swing.JTextField();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblHistorico = new javax.swing.JTable();
 
@@ -646,6 +660,17 @@ public class TelaHome extends javax.swing.JFrame {
         jLabel11.setText("Histórico de Agendamentos");
         pnlHistorico.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
+        jLabel12.setText("Buscar:");
+        pnlHistorico.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 78, -1, -1));
+
+        txtBuscaHistorico.setToolTipText("Filtra por cliente, contato, serviço, barbeiro ou status");
+        txtBuscaHistorico.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { aplicarFiltroHistorico(); }
+            public void removeUpdate(DocumentEvent e) { aplicarFiltroHistorico(); }
+            public void changedUpdate(DocumentEvent e) { aplicarFiltroHistorico(); }
+        });
+        pnlHistorico.add(txtBuscaHistorico, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 73, 350, 30));
+
         tblHistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -664,7 +689,7 @@ public class TelaHome extends javax.swing.JFrame {
         });
         jScrollPane8.setViewportView(tblHistorico);
 
-        pnlHistorico.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 560, 500));
+        pnlHistorico.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 560, 460));
 
         pnlCards.add(pnlHistorico, "cardHistorico");
 
@@ -893,6 +918,7 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvarB;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -920,6 +946,7 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JTable tblGerenciarBarbeiros;
     private javax.swing.JTable tblGerenciarServicos;
     private javax.swing.JTable tblHistorico;
+    private javax.swing.JTextField txtBuscaHistorico;
     private javax.swing.JTextField txtCEPB;
     private javax.swing.JTextArea txtCulturaB;
     private javax.swing.JTextField txtNomeB;
