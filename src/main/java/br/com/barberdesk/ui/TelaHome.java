@@ -13,9 +13,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -33,6 +35,11 @@ public class TelaHome extends javax.swing.JFrame {
     // Listas de apoio para seleção nas tabelas de gerenciamento
     private List<Servico> servicosGerenciarLista;
     private List<Barbeiro> barbeirosGerenciarLista;
+
+    // Espelham as linhas de tblAgendamentos/tblHistorico, na mesma ordem — usadas
+    // pelo StatusRowRenderer pra colorir a linha por status/proximidade (RF11).
+    private List<Agendamento> agendamentosPendentesAtuais;
+    private List<Agendamento> agendamentosHistoricoAtuais;
 
     public TelaHome() {
         initComponents();
@@ -58,6 +65,58 @@ public class TelaHome extends javax.swing.JFrame {
         tblHistorico.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblHistorico.getModel()));
         tblGerenciarServicos.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarServicos.getModel()));
         tblGerenciarBarbeiros.setRowSorter(new TableRowSorter<>((DefaultTableModel) tblGerenciarBarbeiros.getModel()));
+
+        // RF11: classifica visualmente as linhas por status/proximidade do horário.
+        tblAgendamentos.setDefaultRenderer(Object.class, new StatusRowRenderer(() -> agendamentosPendentesAtuais));
+        tblHistorico.setDefaultRenderer(Object.class, new StatusRowRenderer(() -> agendamentosHistoricoAtuais));
+    }
+
+    /**
+     * Colore a linha pelo status do agendamento e, quando ainda está AGENDADO,
+     * destaca os que começam em até 30 minutos — RF11 (classificação visual por
+     * status/proximidade).
+     */
+    private static class StatusRowRenderer extends DefaultTableCellRenderer {
+        private static final Color COR_CANCELADO = new Color(248, 215, 218);
+        private static final Color COR_CONCLUIDO = new Color(212, 237, 218);
+        private static final Color COR_EM_ATENDIMENTO = new Color(204, 229, 255);
+        private static final Color COR_INICIO_IMINENTE = new Color(255, 243, 205);
+
+        private final java.util.function.Supplier<List<Agendamento>> origemSupplier;
+
+        StatusRowRenderer(java.util.function.Supplier<List<Agendamento>> origemSupplier) {
+            this.origemSupplier = origemSupplier;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                         boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (!isSelected) {
+                c.setBackground(corDaLinha(table, row));
+            }
+            return c;
+        }
+
+        private Color corDaLinha(JTable table, int viewRow) {
+            List<Agendamento> origem = origemSupplier.get();
+            if (origem == null) return Color.WHITE;
+
+            int modelRow = table.convertRowIndexToModel(viewRow);
+            if (modelRow < 0 || modelRow >= origem.size()) return Color.WHITE;
+
+            Agendamento a = origem.get(modelRow);
+            if (a.getStatus() == StatusAgendamento.CANCELADO) return COR_CANCELADO;
+            if (a.getStatus() == StatusAgendamento.CONCLUIDO) return COR_CONCLUIDO;
+            if (a.getStatus() == StatusAgendamento.EM_ATENDIMENTO) return COR_EM_ATENDIMENTO;
+
+            if (a.getStatus() == StatusAgendamento.AGENDADO && a.getDataHora() != null) {
+                long minutosParaComecar = java.time.Duration.between(LocalDateTime.now(), a.getDataHora()).toMinutes();
+                if (minutosParaComecar >= 0 && minutosParaComecar <= 30) return COR_INICIO_IMINENTE;
+            }
+
+            return Color.WHITE;
+        }
     }
 
     private void mostrarMenuContexto(Component comp, int x, int y) {
@@ -178,6 +237,7 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
             List<Agendamento> lista = agendamentoDAO.listarPendentesPorBarbearia(b.getId());
+            agendamentosPendentesAtuais = lista;
             DefaultTableModel model = (DefaultTableModel) tblAgendamentos.getModel();
             model.setRowCount(0);
             // Adicionar coluna oculta para ID se necessário, ou usar a primeira coluna
@@ -268,6 +328,7 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
             List<Agendamento> lista = agendamentoDAO.listarPorBarbearia(b.getId());
+            agendamentosHistoricoAtuais = lista;
             DefaultTableModel model = (DefaultTableModel) tblHistorico.getModel();
             model.setRowCount(0);
             for (Agendamento a : lista) {
