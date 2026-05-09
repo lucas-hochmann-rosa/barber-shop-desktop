@@ -3,6 +3,7 @@ package br.com.barberdesk.ui;
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.AgendaService;
+import br.com.barberdesk.service.RelatorioService;
 import br.com.barberdesk.util.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.util.UIUtil;
@@ -11,8 +12,10 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -34,6 +37,7 @@ public class TelaHome extends javax.swing.JFrame {
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
     private ClienteDAO clienteDAO = new ClienteDAO();
     private final AgendaService agendaService = new AgendaService();
+    private final RelatorioService relatorioService = new RelatorioService();
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     // Listas de apoio para seleção nas tabelas de gerenciamento
@@ -407,6 +411,7 @@ public class TelaHome extends javax.swing.JFrame {
         btnHome = new javax.swing.JButton();
         btnMinhaBarbearia = new javax.swing.JButton();
         btnHistorico = new javax.swing.JButton();
+        btnRelatorios = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         pnlCards = new javax.swing.JPanel();
         pnlHome = new javax.swing.JPanel();
@@ -458,6 +463,20 @@ public class TelaHome extends javax.swing.JFrame {
         txtBuscaHistorico = new javax.swing.JTextField();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblHistorico = new javax.swing.JTable();
+        pnlRelatorios = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        txtRelatorioDe = UIUtil.criarCampoMascarado("##/##/####");
+        jLabel19 = new javax.swing.JLabel();
+        txtRelatorioAte = UIUtil.criarCampoMascarado("##/##/####");
+        btnGerarRelatorio = new javax.swing.JButton();
+        lblFaturamentoTotal = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblServicosVendidos = new javax.swing.JTable();
+        jLabel21 = new javax.swing.JLabel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblRankingBarbeiros = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BarberDesk - Sistema de Gerenciamento");
@@ -495,6 +514,14 @@ public class TelaHome extends javax.swing.JFrame {
             }
         });
         pnlSideMenu.add(btnHistorico, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 180, 40));
+
+        btnRelatorios.setText("Relatórios");
+        btnRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatoriosActionPerformed(evt);
+            }
+        });
+        pnlSideMenu.add(btnRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 180, 40));
 
         btnSair.setText("Sair");
         btnSair.addActionListener(new java.awt.event.ActionListener() {
@@ -782,6 +809,80 @@ public class TelaHome extends javax.swing.JFrame {
 
         pnlCards.add(pnlHistorico, "cardHistorico");
 
+        pnlRelatorios.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel17.setText("Relatórios");
+        pnlRelatorios.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jLabel18.setText("De:");
+        pnlRelatorios.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 78, -1, -1));
+        pnlRelatorios.add(txtRelatorioDe, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 73, 100, 30));
+
+        jLabel19.setText("Até:");
+        pnlRelatorios.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 78, -1, -1));
+        pnlRelatorios.add(txtRelatorioAte, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 73, 100, 30));
+
+        btnGerarRelatorio.setText("Gerar");
+        btnGerarRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarRelatorioActionPerformed(evt);
+            }
+        });
+        pnlRelatorios.add(btnGerarRelatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 73, 100, 30));
+
+        lblFaturamentoTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblFaturamentoTotal.setText("Faturamento no período: —");
+        pnlRelatorios.add(lblFaturamentoTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 400, -1));
+
+        jLabel20.setText("Serviços mais vendidos");
+        pnlRelatorios.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 155, -1, -1));
+
+        tblServicosVendidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Serviço", "Qtd.", "Faturamento"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(tblServicosVendidos);
+
+        pnlRelatorios.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 175, 270, 300));
+
+        jLabel21.setText("Ranking de Barbeiros");
+        pnlRelatorios.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 155, -1, -1));
+
+        tblRankingBarbeiros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Barbeiro", "Atendimentos"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(tblRankingBarbeiros);
+
+        pnlRelatorios.add(jScrollPane11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 175, 270, 300));
+
+        pnlCards.add(pnlRelatorios, "cardRelatorios");
+
         getContentPane().add(pnlCards, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 600, 600));
 
         pack();
@@ -807,6 +908,54 @@ public class TelaHome extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardHistorico");
         carregarHistorico();
+    }
+
+    private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {
+        CardLayout cl = (CardLayout) pnlCards.getLayout();
+        cl.show(pnlCards, "cardRelatorios");
+        if (txtRelatorioDe.getText().replace('_', ' ').trim().isEmpty()) {
+            LocalDate hoje = LocalDate.now();
+            txtRelatorioDe.setText(DateTimeUtil.formatDate(hoje.withDayOfMonth(1)));
+            txtRelatorioAte.setText(DateTimeUtil.formatDate(hoje));
+        }
+        gerarRelatorio();
+    }
+
+    private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {
+        gerarRelatorio();
+    }
+
+    private void gerarRelatorio() {
+        try {
+            Barbearia b = AppContext.getInstance().getBarbeariaAtual();
+            if (b == null) return;
+
+            LocalDate inicio = DateTimeUtil.parseDate(txtRelatorioDe.getText().trim());
+            LocalDate fim = DateTimeUtil.parseDate(txtRelatorioAte.getText().trim());
+            if (inicio.isAfter(fim)) {
+                JOptionPane.showMessageDialog(this, "A data \"De\" deve ser antes da data \"Até\".", "Validação", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            BigDecimal total = relatorioService.faturamentoTotal(b.getId(), inicio, fim);
+            lblFaturamentoTotal.setText("Faturamento no período: " + moedaFormat.format(total));
+
+            DefaultTableModel modelServicos = (DefaultTableModel) tblServicosVendidos.getModel();
+            modelServicos.setRowCount(0);
+            for (RelatorioService.ItemRelatorio item : relatorioService.servicosMaisVendidos(b.getId(), inicio, fim)) {
+                modelServicos.addRow(new Object[]{ item.getNome(), item.getQuantidade(), moedaFormat.format(item.getTotal()) });
+            }
+
+            DefaultTableModel modelBarbeiros = (DefaultTableModel) tblRankingBarbeiros.getModel();
+            modelBarbeiros.setRowCount(0);
+            for (RelatorioService.ItemRelatorio item : relatorioService.rankingBarbeiros(b.getId(), inicio, fim)) {
+                modelBarbeiros.addRow(new Object[]{ item.getNome(), item.getQuantidade() });
+            }
+        } catch (java.time.format.DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Data inválida. Use o formato dd/MM/yyyy.", "Validação", JOptionPane.WARNING_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao gerar relatório:\n" + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1017,11 +1166,13 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarServicoB;
     private javax.swing.JButton btnExcluirBarbeiro;
     private javax.swing.JButton btnExcluirServico;
+    private javax.swing.JButton btnGerarRelatorio;
     private javax.swing.JButton btnHistorico;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnMinhaBarbearia;
     private javax.swing.JButton btnNovoBarbeiro;
     private javax.swing.JButton btnNovoServico;
+    private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvarB;
     private javax.swing.JLabel jLabel10;
@@ -1031,16 +1182,24 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JLabel lblFaturamentoTotal;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblHintAgendamentos;
@@ -1053,6 +1212,7 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHistorico;
     private javax.swing.JPanel pnlHome;
     private javax.swing.JPanel pnlMinhaBarbearia;
+    private javax.swing.JPanel pnlRelatorios;
     private javax.swing.JPanel pnlServicosGrid;
     private javax.swing.JPanel pnlSideMenu;
     private javax.swing.JTabbedPane tabBarbearia;
@@ -1061,6 +1221,8 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JTable tblGerenciarBarbeiros;
     private javax.swing.JTable tblGerenciarServicos;
     private javax.swing.JTable tblHistorico;
+    private javax.swing.JTable tblRankingBarbeiros;
+    private javax.swing.JTable tblServicosVendidos;
     private javax.swing.JTextField txtBuscaClientes;
     private javax.swing.JTextField txtBuscaHistorico;
     private javax.swing.JTextField txtCEPB;
@@ -1068,5 +1230,7 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtHorarioAbertura;
     private javax.swing.JFormattedTextField txtHorarioFechamento;
     private javax.swing.JTextField txtNomeB;
+    private javax.swing.JFormattedTextField txtRelatorioAte;
+    private javax.swing.JFormattedTextField txtRelatorioDe;
     // End of variables declaration//GEN-END:variables
 }
