@@ -29,8 +29,7 @@
 ```bash
 git clone https://github.com/lucas-hochmann-rosa/barber-shop-desktop.git
 cd barber-shop-desktop
-# crie o banco uma vez (as tabelas são criadas automaticamente no 1º start):
-#   CREATE DATABASE barberdesk;
+docker compose up -d          # sobe um MySQL já configurado (veja docker-compose.yml)
 mvn clean package
 java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 ```
@@ -44,10 +43,11 @@ Detalhes de cada passo nas seções abaixo.
 O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede interna, com foco no controle operacional da barbearia:
 
 - Cadastro inicial da empresa, equipe e serviços.
-- Login de acesso com senha em hash SHA-256.
-- Agendamento com validação de conflito por barbeiro e horário.
-- Painel Home com agenda pendente e grid de serviços.
-- Histórico completo de atendimentos.
+- Login de acesso com senha em hash salgado (PBKDF2).
+- Agendamento com validação de conflito por barbeiro e horário (considerando a duração real do serviço) e de horário de funcionamento.
+- Painel Home com agenda pendente, classificada visualmente por status/proximidade, e grid de serviços.
+- Histórico completo de atendimentos, com busca.
+- Diretório de clientes e dashboard de relatórios (faturamento, serviços mais vendidos, ranking de barbeiros).
 
 ---
 
@@ -81,6 +81,14 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
   - bloqueia agendamento do mesmo barbeiro quando os intervalos se sobrepõem de verdade (considerando a duração de cada serviço), não uma janela fixa;
   - permite o mesmo horário para barbeiros diferentes;
   - permite agendamentos "encostados" (um termina exatamente quando o outro começa).
+- Horário de funcionamento configurável por barbearia, validado ao criar/editar agendamento.
+- Diretório de clientes, populado automaticamente a partir dos agendamentos, com busca.
+- Cancelamento de agendamento captura o motivo.
+- Atalho para abrir o WhatsApp do cliente a partir do agendamento.
+- Classificação visual de agendamentos por status/proximidade do horário (linhas coloridas na tabela).
+- Busca/filtro no histórico e no diretório de clientes.
+- Tela de Relatórios: faturamento por período, serviços mais vendidos e ranking de barbeiros.
+- Logging em arquivo (`~/.barberdesk/logs/`) e pool de conexões com o banco (HikariCP).
 
 ---
 
@@ -111,22 +119,25 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 barber-shop-desktop/
 ├── pom.xml
 ├── nbactions.xml                # Configuração de execução direta pela IDE NetBeans
-├── README.md / README.en.md
+├── docker-compose.yml            # MySQL local já configurado pros defaults do projeto
+├── README.md / README.en.md / ROADMAP.md
 ├── LICENCE
 ├── docs/
 │   └── screenshots/               # Prints do sistema usados no README
 ├── .github/
-│   └── workflows/build.yml         # CI: compila o projeto a cada push/PR
+│   └── workflows/build.yml         # CI: compila e roda os testes a cada push/PR
 ├── src/main/java/br/com/barberdesk/
 │   ├── app/Main.java                # Ponto de entrada: decide login vs. cadastro inicial
 │   ├── dao/                          # Acesso a dados (MySQL), uma classe por entidade
 │   ├── model/                         # Entidades de domínio (POJOs)
-│   ├── service/                        # Regras de negócio e orquestração entre DAOs
+│   ├── service/                        # Regras de negócio (agenda, relatórios, setup inicial)
 │   ├── ui/                              # Telas Swing (NetBeans GUI Builder)
 │   └── util/                             # Helpers (contexto de sessão, hash, layout, datas)
 ├── src/main/resources/
 │   ├── config.properties                 # Conexão com o banco (sobrescrevível por env vars)
+│   ├── logback.xml                        # Configuração de log (console + arquivo)
 │   └── db/schema.sql                      # Schema inicial, criado automaticamente no 1º start
+├── src/test/java/br/com/barberdesk/       # Testes JUnit 5 (lógica pura: hash, datas, equals/hashCode)
 └── target/                                 # Artefatos gerados de build (JAR) — não versionado
 ```
 
@@ -134,8 +145,10 @@ barber-shop-desktop/
 
 - **app/Main.java**: ponto de entrada e decisão entre cadastro inicial e login.
 - **service/DatabaseInitService.java**: criação de schema e migrações automáticas.
+- **service/AgendaService.java**: transições de status do agendamento e validação de horário de funcionamento.
+- **service/RelatorioService.java**: agregações para a tela de Relatórios.
 - **dao/**: camada de acesso MySQL (CRUD e regras de consulta).
-- **ui/TelaHome.java**: painel principal, histórico e manutenção da barbearia.
+- **ui/TelaHome.java**: painel principal, histórico, clientes, relatórios e manutenção da barbearia.
 - **ui/TelaNovoAgendamento.java** e **ui/TelaEditarAgendamento.java**: fluxo operacional da agenda.
 
 ---
@@ -148,9 +161,15 @@ barber-shop-desktop/
 
 **Build:** Maven
 
-**Banco de dados:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`)
+**Banco de dados:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), pool de conexões [HikariCP](https://github.com/brettwooldridge/HikariCP)
 
-**CI:** GitHub Actions (compilação automática a cada push/PR)
+**Logging:** SLF4J + Logback (console e arquivo)
+
+**Testes:** JUnit 5
+
+**Dev local:** Docker Compose (MySQL)
+
+**CI:** GitHub Actions (compila e roda os testes a cada push/PR)
 
 ---
 
@@ -181,13 +200,21 @@ cd barber-shop-desktop
 
 ### 🗄️ Banco de Dados
 
-Crie o banco no MySQL antes da primeira execução:
+Opção 1 — Docker Compose (recomendado para desenvolvimento local):
+
+```bash
+docker compose up -d
+```
+
+Já sobe um MySQL 8 configurado com os defaults de `config.properties` (schema `barberdesk`, usuário `root` sem senha).
+
+Opção 2 — MySQL próprio: crie o banco antes da primeira execução:
 
 ```sql
 CREATE DATABASE barberdesk;
 ```
 
-> As tabelas são criadas automaticamente pelo sistema no primeiro start (`src/main/resources/db/schema.sql`).
+> Em ambas as opções, as tabelas são criadas automaticamente pelo sistema no primeiro start (`src/main/resources/db/schema.sql`).
 
 ---
 
@@ -237,8 +264,10 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 | `TelaLogin` | Autenticação de acesso |
 | `TelaHome` | Agenda pendente e atalhos de operação |
 | `Minha Barbearia` | Edição de dados gerais, serviços e barbeiros |
-| `Histórico` | Visualização de todos os agendamentos |
+| `Histórico` | Visualização de todos os agendamentos, com busca |
 | `TelaNovoAgendamento` / `TelaEditarAgendamento` | Cadastro, edição, exclusão e mudança de status |
+| `Clientes` (aba em Minha Barbearia) | Diretório de clientes, com busca |
+| `Relatórios` | Faturamento, serviços mais vendidos e ranking de barbeiros por período |
 
 ---
 
@@ -250,6 +279,8 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - Home exibe apenas agendamentos não concluídos.
 - Histórico exibe todos os status.
 - Conflito por barbeiro considera a duração real do serviço (sobreposição de intervalo, não janela fixa).
+- Agendamento fora do horário de funcionamento configurado da barbearia é bloqueado (quando configurado).
+- Cancelamento captura o motivo.
 - Status suportados:
   - `AGENDADO`
   - `EM_ATENDIMENTO`
@@ -283,7 +314,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - **RF10**: Validar conflito de horário apenas quando houver coincidência de data/hora para o mesmo barbeiro.
   **Status**: Implementado com ajuste de regra: o conflito considera a sobreposição real de intervalo (início/fim de cada agendamento, pela duração do serviço) para o mesmo barbeiro, não só a coincidência exata de data/hora.
 - **RF11**: Classificar visualmente os agendamentos conforme sua proximidade ou status.
-  **Status**: Pendente — ver [Melhorias Futuras](#-melhorias-futuras).
+  **Status**: Implementado — linhas coloridas por status e por proximidade do horário (agendamentos a menos de 30 min do início).
 
 ### Requisitos Não Funcionais
 
@@ -306,7 +337,13 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 
 ## 🧪 Testes Locais Rápidos
 
-Fluxo manual sugerido:
+Há uma suíte de testes automatizados (JUnit 5) para a lógica pura do projeto — hash de senha, formatação/parse de data e `equals()`/`hashCode()` dos models:
+
+```bash
+mvn test
+```
+
+Cobre só a lógica que não depende de banco/GUI. Fluxo manual sugerido para o resto:
 
 1. Iniciar a aplicação sem dados no banco e validar a abertura do cadastro inicial.
 2. Criar barbearia + usuário + serviços + barbeiros.
@@ -315,8 +352,10 @@ Fluxo manual sugerido:
 5. Tentar conflito (mesmo barbeiro, horário sobreposto considerando a duração do serviço) e validar bloqueio.
 6. Alterar status para `EM_ATENDIMENTO` e `CONCLUIDO`; confirmar saída da Home e presença no histórico.
 7. Excluir serviço/barbeiro usado e validar histórico preservado (snapshot de nomes).
+8. Cancelar um agendamento informando o motivo e conferir que aparece no histórico.
+9. Gerar um relatório para um período com agendamentos concluídos.
 
-> Não há, ainda, suíte automatizada de testes versionada no projeto — ver [Melhorias Futuras](#-melhorias-futuras).
+> Testes de integração dos DAOs contra um MySQL real ainda não existem — ver [Melhorias Futuras](#-melhorias-futuras).
 
 ---
 
@@ -336,6 +375,10 @@ Prints das telas principais, para referência visual rápida do sistema:
 | --- | --- |
 | ![Minha Barbearia](docs/screenshots/minha-barbearia.png) | ![Histórico](docs/screenshots/historico.png) |
 
+| Clientes | Relatórios |
+| --- | --- |
+| ![Clientes](docs/screenshots/clientes.png) | ![Relatórios](docs/screenshots/relatorios.png) |
+
 > Ver [`docs/screenshots/`](docs/screenshots/) para os nomes de arquivo esperados.
 
 ---
@@ -346,17 +389,17 @@ Resumo rápido abaixo — a lista completa e priorizada vive em [`ROADMAP.md`](R
 
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 
-- **Hash de senha com salt**: hoje é SHA-256 sem salt (`HashUtil`), adequado ao escopo atual (uso local/rede interna). Migrar para BCrypt/PBKDF2 com salt por usuário antes de qualquer exposição externa.
-- **Pool de conexões**: cada chamada de DAO abre uma nova conexão MySQL — funciona bem para uso single-user, mas não escala para múltiplos usuários simultâneos. Avaliar HikariCP.
-- **Separação de camadas na UI**: `TelaHome.java` e `TelaCadastroInicial.java` concentram bastante lógica de negócio junto com o código gerado pelo GUI Builder; extrair para services/controllers reduziria o acoplamento.
-- **Testes automatizados**: hoje não há suíte de testes. Prioridade: testes unitários para regras de negócio puras e testes de integração dos DAOs contra um MySQL real (ex.: Testcontainers).
-- **RF11 (classificação visual de agendamentos)**: ainda não implementado — ver seção de requisitos acima.
+- **Separação completa de camadas na UI**: `TelaHome.java` ainda concentra bastante código de acesso a dados junto com o código gerado pelo GUI Builder — as transições de status e o cadastro inicial já foram extraídos para services, o resto (grids e CRUDs de serviço/barbeiro) fica para uma sessão dedicada com teste visual.
+- **Testes de integração dos DAOs** contra um MySQL real (ex.: Testcontainers) — hoje só há testes de lógica pura.
+- **Papéis de usuário**: hoje só existe um admin por barbearia; um barbeiro logado ver só a própria agenda exigiria repensar a relação entre `Usuario` e `Barbeiro`, que hoje não existe.
+- **Flyway** no lugar das migrações manuais — adiado por não dar pra validar contra um banco de verdade neste momento.
+- **Instalador nativo** via `jpackage`.
 
 ---
 
 ## ⚠️ Avisos
 
-Projeto pensado para uso local/rede interna de uma única barbearia. Não foi projetado para exposição direta à internet — ver [Melhorias Futuras](#-melhorias-futuras) para o que seria necessário antes disso (hash de senha com salt, pool de conexões, etc.).
+Projeto pensado para uso local/rede interna de uma única barbearia — não foi desenhado para múltiplos tenants nem para diferenciar permissões entre usuários (ver [Melhorias Futuras](#-melhorias-futuras): papéis de usuário ainda não existem).
 
 ---
 

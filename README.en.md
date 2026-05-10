@@ -29,8 +29,7 @@
 ```bash
 git clone https://github.com/lucas-hochmann-rosa/barber-shop-desktop.git
 cd barber-shop-desktop
-# create the database once (tables are created automatically on first start):
-#   CREATE DATABASE barberdesk;
+docker compose up -d          # spins up a pre-configured MySQL (see docker-compose.yml)
 mvn clean package
 java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 ```
@@ -44,10 +43,11 @@ Details for each step below.
 **BarberDesk** is a desktop application (Java Swing) for local/internal-network use, focused on the operational control of a barbershop:
 
 - Initial setup of the company, staff and services.
-- Login secured with a SHA-256 password hash.
-- Appointment scheduling with per-barber/time conflict validation.
-- Home panel with the pending schedule and a service grid.
-- Full appointment history.
+- Login secured with a salted password hash (PBKDF2).
+- Appointment scheduling with per-barber/time conflict validation (accounting for real service duration) and business-hours validation.
+- Home panel with the pending schedule, visually classified by status/proximity, and a service grid.
+- Full appointment history, with search.
+- Client directory and reports dashboard (revenue, top services, barber ranking).
 
 ---
 
@@ -81,6 +81,14 @@ Details for each step below.
   - blocks a second appointment for the same barber when the intervals truly overlap (accounting for each service's duration), not a fixed window;
   - allows the same time slot for different barbers;
   - allows back-to-back appointments (one ending exactly when the next starts).
+- Configurable business hours per barbershop, validated on appointment creation/edit.
+- Client directory, auto-populated from appointments, with search.
+- Appointment cancellation captures a reason.
+- Shortcut to open the client's WhatsApp chat from the appointment.
+- Visual classification of appointments by status/time proximity (colored table rows).
+- Search/filter on the history and client directory.
+- Reports screen: revenue by period, top services, barber ranking.
+- File logging (`~/.barberdesk/logs/`) and a database connection pool (HikariCP).
 
 ---
 
@@ -111,22 +119,25 @@ Details for each step below.
 barber-shop-desktop/
 ├── pom.xml
 ├── nbactions.xml                # NetBeans IDE run configuration
-├── README.md / README.en.md
+├── docker-compose.yml            # Pre-configured local MySQL, matching the project's defaults
+├── README.md / README.en.md / ROADMAP.md
 ├── LICENCE
 ├── docs/
 │   └── screenshots/               # Screenshots used in the README
 ├── .github/
-│   └── workflows/build.yml         # CI: compiles the project on every push/PR
+│   └── workflows/build.yml         # CI: compiles and runs tests on every push/PR
 ├── src/main/java/br/com/barberdesk/
 │   ├── app/Main.java                # Entry point: decides login vs. initial setup
 │   ├── dao/                          # Data access (MySQL), one class per entity
 │   ├── model/                         # Domain entities (POJOs)
-│   ├── service/                        # Business rules and orchestration between DAOs
+│   ├── service/                        # Business rules (schedule, reports, initial setup)
 │   ├── ui/                              # Swing screens (NetBeans GUI Builder)
 │   └── util/                             # Helpers (session context, hashing, layout, dates)
 ├── src/main/resources/
 │   ├── config.properties                 # Database connection (overridable via env vars)
+│   ├── logback.xml                        # Logging config (console + file)
 │   └── db/schema.sql                      # Initial schema, created automatically on first start
+├── src/test/java/br/com/barberdesk/       # JUnit 5 tests (pure logic: hashing, dates, equals/hashCode)
 └── target/                                 # Generated build artifacts (JAR) — not versioned
 ```
 
@@ -134,8 +145,10 @@ barber-shop-desktop/
 
 - **app/Main.java**: entry point, decides between initial setup and login.
 - **service/DatabaseInitService.java**: schema creation and automatic migrations.
+- **service/AgendaService.java**: appointment status transitions and business-hours validation.
+- **service/RelatorioService.java**: aggregations for the Reports screen.
 - **dao/**: MySQL access layer (CRUD and query rules).
-- **ui/TelaHome.java**: main panel, history and barbershop maintenance.
+- **ui/TelaHome.java**: main panel, history, clients, reports and barbershop maintenance.
 - **ui/TelaNovoAgendamento.java** and **ui/TelaEditarAgendamento.java**: appointment operational flow.
 
 ---
@@ -148,9 +161,15 @@ barber-shop-desktop/
 
 **Build:** Maven
 
-**Database:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`)
+**Database:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), connection pooling via [HikariCP](https://github.com/brettwooldridge/HikariCP)
 
-**CI:** GitHub Actions (automatic compile on every push/PR)
+**Logging:** SLF4J + Logback (console and file)
+
+**Testing:** JUnit 5
+
+**Local dev:** Docker Compose (MySQL)
+
+**CI:** GitHub Actions (compiles and runs tests on every push/PR)
 
 ---
 
@@ -181,13 +200,21 @@ cd barber-shop-desktop
 
 ### 🗄️ Database
 
-Create the database in MySQL before the first run:
+Option 1 — Docker Compose (recommended for local development):
+
+```bash
+docker compose up -d
+```
+
+Spins up a MySQL 8 already configured to match `config.properties` defaults (schema `barberdesk`, user `root` with no password).
+
+Option 2 — your own MySQL: create the database before the first run:
 
 ```sql
 CREATE DATABASE barberdesk;
 ```
 
-> Tables are created automatically by the system on first start (`src/main/resources/db/schema.sql`).
+> Either way, tables are created automatically by the system on first start (`src/main/resources/db/schema.sql`).
 
 ---
 
@@ -237,8 +264,10 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 | `TelaLogin` | Access authentication |
 | `TelaHome` | Pending schedule and operational shortcuts |
 | `Minha Barbearia` | Edit general data, services and barbers |
-| `Histórico` | View every appointment |
+| `Histórico` | View every appointment, with search |
 | `TelaNovoAgendamento` / `TelaEditarAgendamento` | Create, edit, delete and change status |
+| `Clientes` (tab under My Barbershop) | Client directory, with search |
+| `Relatórios` | Revenue, top services and barber ranking by period |
 
 ---
 
@@ -250,6 +279,8 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - Home only shows unfinished appointments.
 - History shows every status.
 - Per-barber conflict accounts for the service's real duration (interval overlap, not a fixed window).
+- An appointment outside the barbershop's configured business hours is blocked (when configured).
+- Cancellation captures a reason.
 - Supported statuses:
   - `AGENDADO` (scheduled)
   - `EM_ATENDIMENTO` (in progress)
@@ -283,7 +314,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 - **RF10**: Validate a time conflict only when date/time coincide for the same barber.
   **Status**: Implemented with a stricter rule: conflicts account for real interval overlap (each appointment's start/end, by service duration) for the same barber, not just an exact date/time match.
 - **RF11**: Visually classify appointments by proximity or status.
-  **Status**: Pending — see [Roadmap](#-roadmap).
+  **Status**: Implemented — rows colored by status and by time proximity (appointments starting within 30 minutes).
 
 ### Non-Functional Requirements
 
@@ -306,7 +337,13 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 
 ## 🧪 Quick Local Testing
 
-Suggested manual flow:
+There's an automated test suite (JUnit 5) for the project's pure logic — password hashing, date parsing/formatting, and model `equals()`/`hashCode()`:
+
+```bash
+mvn test
+```
+
+It only covers logic that doesn't depend on a database/GUI. Suggested manual flow for the rest:
 
 1. Start the app with an empty database and confirm the initial setup screen opens.
 2. Create a barbershop + user + services + barbers.
@@ -315,8 +352,10 @@ Suggested manual flow:
 5. Try a conflicting appointment (same barber, overlapping interval accounting for service duration) and confirm it's blocked.
 6. Change status to `EM_ATENDIMENTO` and `CONCLUIDO`; confirm it leaves Home and shows up in the history.
 7. Delete a service/barber in use and confirm the history is preserved (name snapshot).
+8. Cancel an appointment with a reason and confirm it shows up in the history.
+9. Generate a report for a period with completed appointments.
 
-> There is no automated test suite versioned in the project yet — see [Roadmap](#-roadmap).
+> DAO integration tests against a real MySQL don't exist yet — see [Roadmap](#-roadmap).
 
 ---
 
@@ -336,6 +375,10 @@ Screenshots of the main screens, for a quick visual reference:
 | --- | --- |
 | ![My Barbershop](docs/screenshots/minha-barbearia.png) | ![History](docs/screenshots/historico.png) |
 
+| Clients | Reports |
+| --- | --- |
+| ![Clients](docs/screenshots/clientes.png) | ![Reports](docs/screenshots/relatorios.png) |
+
 > See [`docs/screenshots/`](docs/screenshots/) for the expected file names.
 
 ---
@@ -346,17 +389,17 @@ Quick summary below — the full, prioritized list lives in [`ROADMAP.md`](ROADM
 
 Known items, tracked deliberately as next steps rather than oversights:
 
-- **Salted password hashing**: currently plain SHA-256 (`HashUtil`), fine for the current scope (local/internal-network use). Migrate to BCrypt/PBKDF2 with a per-user salt before any external exposure.
-- **Connection pooling**: every DAO call opens a new MySQL connection today — works fine for single-user use, doesn't scale to concurrent users. Evaluate HikariCP.
-- **UI layer separation**: `TelaHome.java` and `TelaCadastroInicial.java` mix a fair amount of business logic with GUI-Builder-generated code; extracting it into services/controllers would reduce coupling.
-- **Automated tests**: no test suite exists yet. Priority: unit tests for pure business rules and integration tests for the DAOs against a real MySQL (e.g. Testcontainers).
-- **RF11 (visual appointment classification)**: not implemented yet — see the requirements section above.
+- **Full UI layer separation**: `TelaHome.java` still mixes a fair amount of data access with GUI-Builder-generated code — status transitions and initial setup were already extracted into services; the rest (service/barber CRUD grids) is left for a dedicated session with visual testing.
+- **DAO integration tests** against a real MySQL (e.g. Testcontainers) — only pure-logic tests exist today.
+- **User roles**: currently a single admin per barbershop; having a logged-in barber see only their own schedule would require rethinking the relationship between `Usuario` and `Barbeiro`, which doesn't exist today.
+- **Flyway** instead of the manual migrations — deferred since it can't be validated against a real database in this environment.
+- **Native installer** via `jpackage`.
 
 ---
 
 ## ⚠️ Disclaimer
 
-Built for local/internal-network use by a single barbershop. Not designed for direct internet exposure — see [Roadmap](#-roadmap) for what that would require (salted password hashing, connection pooling, etc.).
+Built for local/internal-network use by a single barbershop — not designed for multi-tenant use or per-user permissions (see [Roadmap](#-roadmap): user roles don't exist yet).
 
 ---
 
