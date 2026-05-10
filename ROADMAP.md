@@ -59,9 +59,12 @@ Convenção: cada item referencia o(s) arquivo(s) afetado(s) para facilitar reto
 ## Status de execução
 
 - **Concluído e compilando** (`javac`, verificado a cada leva): Tiers 1, 2, 5, 6 quase completo, e a maior parte do Tier 3/4.
-- **Verificado de verdade** (não só compilado): os 19 testes JUnit rodam e passam (`junit-platform-console-standalone`, já que não há Maven neste ambiente).
-- **Ainda não testado contra um MySQL/GUI real**: nada disso rodou contra um banco de verdade nem foi visto na tela. Antes de considerar 100% pronto, meça isso na prática:
-  - `docker compose up -d` + `mvn clean package` + `java -jar target/BarberDesk-1.0-SNAPSHOT.jar`;
+- **Testes automatizados**: os 19 testes JUnit rodam e passam (`junit-platform-console-standalone`, já que não há Maven neste ambiente).
+- **Testado contra MySQL real** (docker compose, sem Maven — classes compiladas com `javac` e executadas com `java -cp` direto): a app conecta, o HikariCP sobe, o schema é criado do zero e as migrações (V2–V7) rodam sem erro, `ensureSchema()` é seguro de chamar de novo num banco já existente (restart), e um driver manual (`ManualDriver.java`, não versionado) exercitou de ponta a ponta: cadastro inicial, login com hash salgado, upgrade automático de conta com hash legado, conflito de horário (bloqueia sobreposição, permite encostado, permite barbeiro diferente), horário de funcionamento, diretório de cliente, cancelamento com motivo e o dashboard de relatórios. **Esse teste real encontrou e corrigiu 3 bugs que só apareciam contra um banco de verdade:**
+  1. `schema.sql` usava `DROP INDEX IF EXISTS`, sintaxe que **não existe** no MySQL — toda instalação nova quebrava nesse ponto. Bug pré-existente, anterior a esta sessão.
+  2. `RelatorioService` agrupava por um alias (`GROUP BY nome`) que colidia com a coluna real `servicos.nome`/`barbeiros.nome` do JOIN — MySQL rejeitava com `sql_mode=only_full_group_by`.
+  3. O registro do cliente no diretório só acontecia dentro do handler da UI (`TelaNovoAgendamento`), não no `AgendaService`/DAO — qualquer outro caminho de criação de agendamento não passaria pelo `ClienteDAO`. Centralizado em `AgendaService.criarAgendamento`.
+- **Não verificado**: a GUI em si (não há display interativo disponível para automação neste ambiente — o processo Java sobe e conecta no banco normalmente, mas a janela Swing não pôde ser capturada/inspecionada). O `docker-compose.yml` está de pé e o banco está limpo (schema criado, sem dados) — abra o app de verdade (`mvn clean package && java -jar target/...jar`, ou pela IDE) pra conferir visualmente:
   - conferir visualmente os layouts editados à mão sem NetBeans (campo de duração em `DialogServico`, horário de funcionamento e aba Clientes em `TelaHome`, tela de Relatórios);
   - testar o fluxo de conflito de horário com serviços de duração diferente;
   - testar cancelamento com motivo, link do WhatsApp, filtro de histórico/clientes, e a geração de relatório com dados reais;
