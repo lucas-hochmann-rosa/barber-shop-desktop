@@ -53,11 +53,15 @@ public class RelatorioService {
     }
 
     public List<ItemRelatorio> servicosMaisVendidos(int barbeariaId, LocalDate inicio, LocalDate fim) throws SQLException {
+        // GROUP BY repete a expressão (não usa o alias "nome"): como servicos.nome também se
+        // chama "nome", agrupar pelo alias colide com a coluna real da tabela e o MySQL, em
+        // sql_mode=only_full_group_by, rejeita a query por não conseguir provar dependência
+        // funcional entre o COALESCE (que pode usar o snapshot OU a coluna viva) e essa coluna.
         String sql = "SELECT COALESCE(a.servico_nome_snapshot, s.nome, 'Serviço removido') AS nome, " +
                 "COUNT(*) AS qtd, COALESCE(SUM(s.preco), 0) AS total " +
                 "FROM agendamentos a LEFT JOIN servicos s ON a.servico_id = s.id " +
                 "WHERE a.barbearia_id = ? AND a.status = 'CONCLUIDO' AND DATE(a.data_hora) BETWEEN ? AND ? " +
-                "GROUP BY nome ORDER BY qtd DESC LIMIT 10";
+                "GROUP BY COALESCE(a.servico_nome_snapshot, s.nome, 'Serviço removido') ORDER BY qtd DESC LIMIT 10";
         return listarItens(barbeariaId, inicio, fim, sql);
     }
 
@@ -66,7 +70,7 @@ public class RelatorioService {
                 "COUNT(*) AS qtd, 0 AS total " +
                 "FROM agendamentos a LEFT JOIN barbeiros b ON a.barbeiro_id = b.id " +
                 "WHERE a.barbearia_id = ? AND a.status = 'CONCLUIDO' AND DATE(a.data_hora) BETWEEN ? AND ? " +
-                "GROUP BY nome ORDER BY qtd DESC LIMIT 10";
+                "GROUP BY COALESCE(a.barbeiro_nome_snapshot, b.nome, 'Barbeiro removido') ORDER BY qtd DESC LIMIT 10";
         return listarItens(barbeariaId, inicio, fim, sql);
     }
 

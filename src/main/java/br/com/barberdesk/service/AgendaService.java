@@ -1,9 +1,12 @@
 package br.com.barberdesk.service;
 
 import br.com.barberdesk.dao.AgendamentoDAO;
+import br.com.barberdesk.dao.ClienteDAO;
 import br.com.barberdesk.model.Agendamento;
 import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.StatusAgendamento;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,7 +16,28 @@ import java.time.LocalTime;
  * cancelar) — antes duplicadas em TelaHome e TelaEditarAgendamento.
  */
 public class AgendaService {
+    private static final Logger logger = LoggerFactory.getLogger(AgendaService.class);
+
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    private final ClienteDAO clienteDAO = new ClienteDAO();
+
+    /**
+     * Cria o agendamento e garante que o cliente entra no diretório — as duas
+     * coisas sempre andam juntas, então ficam num só método em vez de a UI
+     * ter que lembrar de chamar as duas (era esse o caso antes: só
+     * TelaNovoAgendamento registrava o cliente, então qualquer outro caminho
+     * de criação de agendamento não passaria pelo diretório). Falha ao
+     * registrar o cliente não desfaz o agendamento — ele já foi persistido.
+     */
+    public int criarAgendamento(Agendamento agendamento) throws SQLException {
+        int id = agendamentoDAO.inserir(agendamento);
+        try {
+            clienteDAO.registrar(agendamento.getBarbeariaId(), agendamento.getClienteNome(), agendamento.getContato());
+        } catch (SQLException e) {
+            logger.warn("Agendamento {} criado, mas não foi possível registrar o cliente no diretório", id, e);
+        }
+        return id;
+    }
 
     public void iniciarAtendimento(int id) throws SQLException {
         alterarStatus(id, StatusAgendamento.EM_ATENDIMENTO, null);

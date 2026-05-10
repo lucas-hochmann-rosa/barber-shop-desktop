@@ -212,14 +212,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             a.setOrigemContato(OrigemContato.valueOf(cbOrigem.getSelectedItem().toString().toUpperCase()));
             a.setStatus(StatusAgendamento.AGENDADO);
             
-            agendamentoDAO.inserir(a);
-
-            // Mantém o diretório de clientes atualizado — não interrompe o fluxo se falhar.
-            try {
-                new ClienteDAO().registrar(bId, cliente, contato);
-            } catch (SQLException e) {
-                logger.warn("Não foi possível registrar o cliente no diretório", e);
-            }
+            agendaService.criarAgendamento(a);
 
             JOptionPane.showMessageDialog(this, "Agendamento realizado com sucesso!");
 
