@@ -2,13 +2,35 @@ package br.com.barberdesk.util;
 
 import java.awt.Desktop;
 import java.awt.Image;
-import java.io.File;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.net.URI;
+import java.net.URL;
 import java.text.ParseException;
+import java.util.Base64;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
 public class UIUtil {
+
+    private static Image iconeApp;
+    private static boolean iconeCarregado = false;
+
+    /**
+     * Ícone do app (src/main/resources/icon.png), aplicado em toda janela.
+     * Carregado uma única vez e reaproveitado — retorna null silenciosamente
+     * se o recurso não existir, pra não travar a tela por causa de um ícone.
+     */
+    public static void aplicarIcone(Window janela) {
+        if (!iconeCarregado) {
+            URL recurso = UIUtil.class.getClassLoader().getResource("icon.png");
+            iconeApp = recurso != null ? Toolkit.getDefaultToolkit().getImage(recurso) : null;
+            iconeCarregado = true;
+        }
+        if (iconeApp != null) {
+            janela.setIconImage(iconeApp);
+        }
+    }
 
     /**
      * Campo de texto com máscara fixa (ex.: "##/##/####" para data). Restringe o
@@ -24,6 +46,17 @@ public class UIUtil {
             // Máscara inválida é erro de programação (string estática), não de usuário.
             throw new IllegalArgumentException("Máscara inválida: " + mascara, e);
         }
+    }
+
+    /**
+     * Um campo mascarado mostra os caracteres de preenchimento (ex.:
+     * "__/__/____") mesmo sem o usuário ter digitado nada — getText() não
+     * fica "" nesse caso, só cheio de placeholder. Considera vazio quando não
+     * sobra nenhum dígito de verdade.
+     */
+    public static boolean campoMascaradoVazio(JFormattedTextField campo) {
+        String texto = campo.getText();
+        return texto == null || texto.replaceAll("[^0-9]", "").isEmpty();
     }
 
     /**
@@ -86,7 +119,12 @@ public class UIUtil {
         return true;
     }
 
-    public static void exibirMiniatura(JLabel label, String path, int width, int height) {
+    /**
+     * Mostra a imagem de um barbeiro/serviço a partir do Base64 gravado no
+     * banco (ver ImageStorageUtil) — não depende de um arquivo existir no
+     * disco, então sobrevive a troca de máquina/pasta.
+     */
+    public static void exibirMiniatura(JLabel label, String base64, int width, int height) {
         int w = width;
         int h = height;
 
@@ -109,21 +147,15 @@ public class UIUtil {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
 
-        if (path == null || path.trim().isEmpty()) {
-            label.setIcon(null);
-            label.setText("Sem imagem");
-            return;
-        }
-
-        File file = new File(path);
-        if (!file.exists()) {
+        if (base64 == null || base64.trim().isEmpty()) {
             label.setIcon(null);
             label.setText("Sem imagem");
             return;
         }
 
         try {
-            ImageIcon icon = new ImageIcon(path);
+            byte[] dados = Base64.getDecoder().decode(base64);
+            ImageIcon icon = new ImageIcon(dados);
             Image img = icon.getImage();
 
             // Redimensiona "fit" preservando proporção, sem cortar
@@ -144,10 +176,10 @@ public class UIUtil {
 
     /**
      * Overload de conveniência para manter compatibilidade com telas que
-     * chamam exibirMiniatura(label, path) sem largura/altura.
+     * chamam exibirMiniatura(label, base64) sem largura/altura.
      */
-    public static void exibirMiniatura(JLabel label, String path) {
+    public static void exibirMiniatura(JLabel label, String base64) {
         // Usa o tamanho do próprio label (ou preferred size) para evitar corte
-        exibirMiniatura(label, path, 0, 0);
+        exibirMiniatura(label, base64, 0, 0);
     }
 }
