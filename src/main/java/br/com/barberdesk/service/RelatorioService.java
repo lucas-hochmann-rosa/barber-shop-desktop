@@ -17,7 +17,7 @@ import java.util.List;
  * agendamento — não existe snapshot de preço, só de nome/duração (ver
  * AgendamentoDAO). Se o preço de um serviço mudar, relatórios de períodos
  * passados passam a refletir o preço novo. Limitação conhecida, documentada
- * no ROADMAP.
+ * no README ("Melhorias Futuras").
  */
 public class RelatorioService {
 

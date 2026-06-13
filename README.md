@@ -88,6 +88,8 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 - Classificação visual de agendamentos por status/proximidade do horário (linhas coloridas na tabela).
 - Busca/filtro no histórico e no diretório de clientes.
 - Tela de Relatórios: faturamento por período, serviços mais vendidos e ranking de barbeiros.
+- Fotos de barbeiro/serviço guardadas como Base64 direto no banco — não depende de um arquivo existir num caminho específico do disco.
+- Ícone próprio do aplicativo em todas as janelas.
 - Logging em arquivo (`~/.barberdesk/logs/`) e pool de conexões com o banco (HikariCP).
 
 ---
@@ -120,7 +122,7 @@ barber-shop-desktop/
 ├── pom.xml
 ├── nbactions.xml                # Configuração de execução direta pela IDE NetBeans
 ├── docker-compose.yml            # MySQL local já configurado pros defaults do projeto
-├── README.md / README.en.md / ROADMAP.md
+├── README.md / README.en.md
 ├── LICENCE
 ├── docs/
 │   └── screenshots/               # Prints do sistema usados no README
@@ -384,8 +386,6 @@ Prints das telas principais, para referência visual rápida do sistema:
 ---
 
 ## 🚀 Melhorias Futuras
-
-Resumo rápido abaixo — a lista completa e priorizada vive em [`ROADMAP.md`](ROADMAP.md).
 
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 

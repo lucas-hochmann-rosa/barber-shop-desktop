@@ -88,6 +88,8 @@ Details for each step below.
 - Visual classification of appointments by status/time proximity (colored table rows).
 - Search/filter on the history and client directory.
 - Reports screen: revenue by period, top services, barber ranking.
+- Barber/service photos stored as Base64 directly in the database — no dependency on a file existing at some disk path.
+- Custom application icon on every window.
 - File logging (`~/.barberdesk/logs/`) and a database connection pool (HikariCP).
 
 ---
@@ -120,7 +122,7 @@ barber-shop-desktop/
 ├── pom.xml
 ├── nbactions.xml                # NetBeans IDE run configuration
 ├── docker-compose.yml            # Pre-configured local MySQL, matching the project's defaults
-├── README.md / README.en.md / ROADMAP.md
+├── README.md / README.en.md
 ├── LICENCE
 ├── docs/
 │   └── screenshots/               # Screenshots used in the README
@@ -384,8 +386,6 @@ Screenshots of the main screens, for a quick visual reference:
 ---
 
 ## 🚀 Roadmap
-
-Quick summary below — the full, prioritized list lives in [`ROADMAP.md`](ROADMAP.md) (Portuguese, project-internal planning doc).
 
 Known items, tracked deliberately as next steps rather than oversights:
 
