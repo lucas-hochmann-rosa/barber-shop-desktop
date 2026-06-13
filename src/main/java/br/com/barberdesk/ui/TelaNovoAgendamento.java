@@ -168,7 +168,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
             String cliente = txtCliente.getText();
             String contato = txtContato.getText();
 
-            if (cliente.isEmpty() || contato.isEmpty() || txtData.getText().isEmpty() || txtHora.getText().isEmpty()) {
+            if (cliente.isEmpty() || contato.isEmpty() || UIUtil.campoMascaradoVazio(txtData) || UIUtil.campoMascaradoVazio(txtHora)) {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
                 return;
             }

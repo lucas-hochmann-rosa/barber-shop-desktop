@@ -246,7 +246,7 @@ public class TelaEditarAgendamento extends JFrame {
             String contato = txtContato.getText().trim();
             String dh = txtDataHora.getText().trim();
 
-            if (cliente.isEmpty() || contato.isEmpty() || dh.isEmpty()) {
+            if (cliente.isEmpty() || contato.isEmpty() || UIUtil.campoMascaradoVazio(txtDataHora)) {
                 JOptionPane.showMessageDialog(this, "Preencha Cliente, Contato e Data/Hora.", "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }

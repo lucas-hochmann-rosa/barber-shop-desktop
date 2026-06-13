@@ -913,7 +913,7 @@ public class TelaHome extends javax.swing.JFrame {
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardRelatorios");
-        if (txtRelatorioDe.getText().replace('_', ' ').trim().isEmpty()) {
+        if (UIUtil.campoMascaradoVazio(txtRelatorioDe)) {
             LocalDate hoje = LocalDate.now();
             txtRelatorioDe.setText(DateTimeUtil.formatDate(hoje.withDayOfMonth(1)));
             txtRelatorioAte.setText(DateTimeUtil.formatDate(hoje));
@@ -992,7 +992,7 @@ public class TelaHome extends javax.swing.JFrame {
 
     /** Texto do campo mascarado ainda com placeholders ("__:__") ou vazio conta como "sem restrição". */
     private LocalTime parseHorarioOuNulo(String texto) {
-        if (texto == null || texto.replace('_', ' ').trim().isEmpty()) return null;
+        if (texto == null || texto.replaceAll("[^0-9]", "").isEmpty()) return null;
         return DateTimeUtil.parseTime(texto.trim());
     }
 
