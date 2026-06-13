@@ -30,8 +30,8 @@ public class DialogBarbeiro extends javax.swing.JDialog {
     private void preencherCampos() {
         if (barbeiro != null) {
             txtNome.setText(barbeiro.getNome());
-            this.imagemPath = barbeiro.getImagemPath() != null ? barbeiro.getImagemPath() : "";
-            UIUtil.exibirMiniatura(lblPreview, imagemPath);
+            this.imagemBase64 = barbeiro.getImagemBase64() != null ? barbeiro.getImagemBase64() : "";
+            UIUtil.exibirMiniatura(lblPreview, imagemBase64);
         }
     }
 
@@ -140,8 +140,8 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                this.imagemPath = ImageStorageUtil.armazenar(chooser.getSelectedFile());
-                UIUtil.exibirMiniatura(lblPreview, imagemPath);
+                this.imagemBase64 = ImageStorageUtil.paraBase64(chooser.getSelectedFile());
+                UIUtil.exibirMiniatura(lblPreview, imagemBase64);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Erro ao salvar a imagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
