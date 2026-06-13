@@ -37,6 +37,7 @@ public class DatabaseInitService {
             aplicarMigracaoUsuarios(conn);
             aplicarMigracaoBarbearia(conn);
             aplicarMigracaoClientes(conn);
+            aplicarMigracaoImagens(conn);
         }
     }
 
@@ -192,6 +193,22 @@ public class DatabaseInitService {
                 "  UNIQUE KEY ux_cliente_contato (barbearia_id, contato)" +
                 ")"
             );
+        }
+    }
+
+    /**
+     * V8: fotos de barbeiro/serviço passam a ser guardadas em Base64 direto no
+     * banco em vez de um caminho de arquivo (ver ImageStorageUtil) — não
+     * depende mais de um arquivo existir no disco em algum lugar. Caminhos
+     * antigos gravados em imagem_path não são migrados automaticamente (não
+     * dá pra converter um caminho de arquivo em Base64 sem o arquivo estar
+     * acessível); o usuário só precisa escolher a foto de novo nesses casos.
+     */
+    private void aplicarMigracaoImagens(Connection conn) throws SQLException {
+        if (!tabelaExiste(conn, "servicos") || !tabelaExiste(conn, "barbeiros")) return;
+        try (Statement st = conn.createStatement()) {
+            try { st.execute("ALTER TABLE servicos CHANGE COLUMN imagem_path imagem_base64 LONGTEXT NULL"); } catch (SQLException ignored) {}
+            try { st.execute("ALTER TABLE barbeiros CHANGE COLUMN imagem_path imagem_base64 LONGTEXT NULL"); } catch (SQLException ignored) {}
         }
     }
 

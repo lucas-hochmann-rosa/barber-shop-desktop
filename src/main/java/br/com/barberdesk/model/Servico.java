@@ -7,29 +7,29 @@ public class Servico {
     private int barbeariaId;
     private String nome;
     private BigDecimal preco;
-    private String imagemPath;
+    private String imagemBase64;
     private int duracaoMinutos = 30;
 
     public Servico() {
     }
 
-    public Servico(int barbeariaId, String nome, BigDecimal preco, String imagemPath) {
+    public Servico(int barbeariaId, String nome, BigDecimal preco, String imagemBase64) {
         this.barbeariaId = barbeariaId;
         this.nome = nome;
         this.preco = preco;
-        this.imagemPath = imagemPath;
+        this.imagemBase64 = imagemBase64;
     }
 
-    public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemPath) {
+    public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemBase64) {
         this.id = id;
         this.barbeariaId = barbeariaId;
         this.nome = nome;
         this.preco = preco;
-        this.imagemPath = imagemPath;
+        this.imagemBase64 = imagemBase64;
     }
 
-    public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemPath, int duracaoMinutos) {
-        this(id, barbeariaId, nome, preco, imagemPath);
+    public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemBase64, int duracaoMinutos) {
+        this(id, barbeariaId, nome, preco, imagemBase64);
         this.duracaoMinutos = duracaoMinutos;
     }
 
@@ -65,12 +65,12 @@ public class Servico {
         this.preco = preco;
     }
 
-    public String getImagemPath() {
-        return imagemPath;
+    public String getImagemBase64() {
+        return imagemBase64;
     }
 
-    public void setImagemPath(String imagemPath) {
-        this.imagemPath = imagemPath;
+    public void setImagemBase64(String imagemBase64) {
+        this.imagemBase64 = imagemBase64;
     }
 
     public int getDuracaoMinutos() {
@@ -83,11 +83,11 @@ public class Servico {
 
     // Alias para compatibilidade com as telas
     public String getFotoCaminho() {
-        return imagemPath;
+        return imagemBase64;
     }
 
     public void setFotoCaminho(String fotoCaminho) {
-        this.imagemPath = fotoCaminho;
+        this.imagemBase64 = fotoCaminho;
     }
 
     @Override

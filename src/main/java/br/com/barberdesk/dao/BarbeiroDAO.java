@@ -36,12 +36,12 @@ public class BarbeiroDAO {
     }
 
     public int inserir(Barbeiro barbeiro) throws SQLException {
-        String sql = "INSERT INTO barbeiros (barbearia_id, nome, imagem_path) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO barbeiros (barbearia_id, nome, imagem_base64) VALUES (?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, barbeiro.getBarbeariaId());
             pstmt.setString(2, barbeiro.getNome());
-            pstmt.setString(3, barbeiro.getImagemPath());
+            pstmt.setString(3, barbeiro.getImagemBase64());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -53,11 +53,11 @@ public class BarbeiroDAO {
     }
 
     public void atualizar(Barbeiro barbeiro) throws SQLException {
-        String sql = "UPDATE barbeiros SET nome = ?, imagem_path = ? WHERE id = ?";
+        String sql = "UPDATE barbeiros SET nome = ?, imagem_base64 = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, barbeiro.getNome());
-            pstmt.setString(2, barbeiro.getImagemPath());
+            pstmt.setString(2, barbeiro.getImagemBase64());
             pstmt.setInt(3, barbeiro.getId());
             pstmt.executeUpdate();
         }
@@ -101,7 +101,7 @@ public class BarbeiroDAO {
         int id = rs.getInt("id");
         int barbeariaId = rs.getInt("barbearia_id");
         String nome = rs.getString("nome");
-        String imagemPath = rs.getString("imagem_path");
-        return new Barbeiro(id, barbeariaId, nome, imagemPath);
+        String imagemBase64 = rs.getString("imagem_base64");
+        return new Barbeiro(id, barbeariaId, nome, imagemBase64);
     }
 }

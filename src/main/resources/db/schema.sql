@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS servicos (
   barbearia_id INT NOT NULL,
   nome VARCHAR(120) NOT NULL,
   preco DECIMAL(10,2) NOT NULL,
-  imagem_path VARCHAR(255),
+  imagem_base64 LONGTEXT NULL,
   duracao_minutos INT NOT NULL DEFAULT 30,
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)
 );
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS barbeiros (
   id INT AUTO_INCREMENT PRIMARY KEY,
   barbearia_id INT NOT NULL,
   nome VARCHAR(120) NOT NULL,
-  imagem_path VARCHAR(255),
+  imagem_base64 LONGTEXT NULL,
   FOREIGN KEY (barbearia_id) REFERENCES barbearias(id)
 );
 

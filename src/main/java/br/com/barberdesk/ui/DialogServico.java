@@ -13,7 +13,7 @@ public class DialogServico extends javax.swing.JDialog {
 
     private Servico servico;
     private boolean salvo = false;
-    private String imagemPath = "";
+    private String imagemBase64 = "";
 
     public DialogServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -189,7 +189,7 @@ public class DialogServico extends javax.swing.JDialog {
             }
             servico.setNome(nome);
             servico.setPreco(preco);
-            servico.setImagemPath(imagemPath);
+            servico.setImagemBase64(imagemBase64);
             servico.setDuracaoMinutos((Integer) spnDuracao.getValue());
             this.salvo = true;
             this.dispose();

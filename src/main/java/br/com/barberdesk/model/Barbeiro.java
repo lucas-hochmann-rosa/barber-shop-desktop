@@ -4,22 +4,22 @@ public class Barbeiro {
     private int id;
     private int barbeariaId;
     private String nome;
-    private String imagemPath;
+    private String imagemBase64;
 
     public Barbeiro() {
     }
 
-    public Barbeiro(int barbeariaId, String nome, String imagemPath) {
+    public Barbeiro(int barbeariaId, String nome, String imagemBase64) {
         this.barbeariaId = barbeariaId;
         this.nome = nome;
-        this.imagemPath = imagemPath;
+        this.imagemBase64 = imagemBase64;
     }
 
-    public Barbeiro(int id, int barbeariaId, String nome, String imagemPath) {
+    public Barbeiro(int id, int barbeariaId, String nome, String imagemBase64) {
         this.id = id;
         this.barbeariaId = barbeariaId;
         this.nome = nome;
-        this.imagemPath = imagemPath;
+        this.imagemBase64 = imagemBase64;
     }
 
     public int getId() {
@@ -46,21 +46,21 @@ public class Barbeiro {
         this.nome = nome;
     }
 
-    public String getImagemPath() {
-        return imagemPath;
+    public String getImagemBase64() {
+        return imagemBase64;
     }
 
-    public void setImagemPath(String imagemPath) {
-        this.imagemPath = imagemPath;
+    public void setImagemBase64(String imagemBase64) {
+        this.imagemBase64 = imagemBase64;
     }
 
     // Alias para compatibilidade com as telas
     public String getFotoCaminho() {
-        return imagemPath;
+        return imagemBase64;
     }
 
     public void setFotoCaminho(String fotoCaminho) {
-        this.imagemPath = fotoCaminho;
+        this.imagemBase64 = fotoCaminho;
     }
 
     @Override

@@ -1034,7 +1034,7 @@ public class TelaHome extends javax.swing.JFrame {
         try {
             Servico original = servicosGerenciarLista.get(row);
             // Trabalhar com uma cópia para evitar alterar a tabela caso cancele
-            Servico copia = new Servico(original.getId(), original.getBarbeariaId(), original.getNome(), original.getPreco(), original.getImagemPath(), original.getDuracaoMinutos());
+            Servico copia = new Servico(original.getId(), original.getBarbeariaId(), original.getNome(), original.getPreco(), original.getImagemBase64(), original.getDuracaoMinutos());
 
             DialogServico dlg = new DialogServico(this, true, copia);
             dlg.setVisible(true);
@@ -1116,7 +1116,7 @@ public class TelaHome extends javax.swing.JFrame {
 
         try {
             Barbeiro original = barbeirosGerenciarLista.get(row);
-            Barbeiro copia = new Barbeiro(original.getId(), original.getBarbeariaId(), original.getNome(), original.getImagemPath());
+            Barbeiro copia = new Barbeiro(original.getId(), original.getBarbeariaId(), original.getNome(), original.getImagemBase64());
 
             DialogBarbeiro dlg = new DialogBarbeiro(this, true, copia);
             dlg.setVisible(true);

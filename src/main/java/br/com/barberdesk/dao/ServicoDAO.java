@@ -37,13 +37,13 @@ public class ServicoDAO {
     }
 
     public int inserir(Servico servico) throws SQLException {
-        String sql = "INSERT INTO servicos (barbearia_id, nome, preco, imagem_path, duracao_minutos) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO servicos (barbearia_id, nome, preco, imagem_base64, duracao_minutos) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, servico.getBarbeariaId());
             pstmt.setString(2, servico.getNome());
             pstmt.setBigDecimal(3, servico.getPreco());
-            pstmt.setString(4, servico.getImagemPath());
+            pstmt.setString(4, servico.getImagemBase64());
             pstmt.setInt(5, servico.getDuracaoMinutos());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -56,12 +56,12 @@ public class ServicoDAO {
     }
 
     public void atualizar(Servico servico) throws SQLException {
-        String sql = "UPDATE servicos SET nome = ?, preco = ?, imagem_path = ?, duracao_minutos = ? WHERE id = ?";
+        String sql = "UPDATE servicos SET nome = ?, preco = ?, imagem_base64 = ?, duracao_minutos = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, servico.getNome());
             pstmt.setBigDecimal(2, servico.getPreco());
-            pstmt.setString(3, servico.getImagemPath());
+            pstmt.setString(3, servico.getImagemBase64());
             pstmt.setInt(4, servico.getDuracaoMinutos());
             pstmt.setInt(5, servico.getId());
             pstmt.executeUpdate();
@@ -107,9 +107,9 @@ public class ServicoDAO {
         int barbeariaId = rs.getInt("barbearia_id");
         String nome = rs.getString("nome");
         BigDecimal preco = rs.getBigDecimal("preco");
-        String imagemPath = rs.getString("imagem_path");
+        String imagemBase64 = rs.getString("imagem_base64");
         int duracaoMinutos = rs.getInt("duracao_minutos");
         if (rs.wasNull()) duracaoMinutos = 30;
-        return new Servico(id, barbeariaId, nome, preco, imagemPath, duracaoMinutos);
+        return new Servico(id, barbeariaId, nome, preco, imagemBase64, duracaoMinutos);
     }
 }

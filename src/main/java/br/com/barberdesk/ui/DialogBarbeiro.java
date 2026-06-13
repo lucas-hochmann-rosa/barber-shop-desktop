@@ -12,7 +12,7 @@ public class DialogBarbeiro extends javax.swing.JDialog {
 
     private Barbeiro barbeiro;
     private boolean salvo = false;
-    private String imagemPath = "";
+    private String imagemBase64 = "";
 
     public DialogBarbeiro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -157,7 +157,7 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         }
 
         barbeiro.setNome(nome);
-        barbeiro.setImagemPath(imagemPath);
+        barbeiro.setImagemBase64(imagemBase64);
         this.salvo = true;
         this.dispose();
     }

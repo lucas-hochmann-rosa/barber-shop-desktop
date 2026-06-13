@@ -1,38 +1,51 @@
 package br.com.barberdesk.util;
 
+import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.UUID;
+import java.util.Base64;
 
 /**
- * Copia imagens escolhidas pelo usuário para uma pasta gerenciada pelo próprio
- * app, fora da pasta de instalação — evita que o caminho salvo no banco
- * dependa de onde o arquivo original estava (ex.: Downloads), que pode ser
- * movido ou apagado depois. Não migra imagens já cadastradas antes desta
- * mudança: aquelas continuam apontando pro caminho original enquanto ele
- * existir.
+ * Converte a imagem escolhida pelo usuário (foto de barbeiro/serviço) para
+ * Base64, gravado direto no banco — evita depender de um caminho de arquivo
+ * que pode não existir mais depois (pasta movida, imagem apagada, banco
+ * restaurado em outra máquina). Redimensiona antes de codificar para não
+ * inflar o banco com fotos de câmera em resolução alta.
  */
 public class ImageStorageUtil {
 
-    private static final Path DIRETORIO_IMAGENS =
-            Paths.get(System.getProperty("user.home"), ".barberdesk", "images");
+    private static final int DIMENSAO_MAXIMA = 480;
 
-    public static String armazenar(File origem) throws IOException {
-        Files.createDirectories(DIRETORIO_IMAGENS);
+    public static String paraBase64(File origem) throws IOException {
+        BufferedImage original = ImageIO.read(origem);
+        if (original == null) {
+            throw new IOException("Arquivo não é uma imagem reconhecida: " + origem.getName());
+        }
 
-        String nomeArquivo = UUID.randomUUID() + extrairExtensao(origem.getName());
-        Path destino = DIRETORIO_IMAGENS.resolve(nomeArquivo);
+        BufferedImage redimensionada = redimensionar(original, DIMENSAO_MAXIMA);
 
-        Files.copy(origem.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
-        return destino.toAbsolutePath().toString();
+        ByteArrayOutputStream saida = new ByteArrayOutputStream();
+        ImageIO.write(redimensionada, "png", saida);
+        return Base64.getEncoder().encodeToString(saida.toByteArray());
     }
 
-    private static String extrairExtensao(String nomeArquivo) {
-        int idx = nomeArquivo.lastIndexOf('.');
-        return idx >= 0 ? nomeArquivo.substring(idx) : "";
+    private static BufferedImage redimensionar(BufferedImage original, int dimensaoMaxima) {
+        int largura = original.getWidth();
+        int altura = original.getHeight();
+        if (largura <= dimensaoMaxima && altura <= dimensaoMaxima) {
+            return original;
+        }
+
+        double escala = Math.min((double) dimensaoMaxima / largura, (double) dimensaoMaxima / altura);
+        int novaLargura = Math.max(1, (int) (largura * escala));
+        int novaAltura = Math.max(1, (int) (altura * escala));
+
+        Image escalada = original.getScaledInstance(novaLargura, novaAltura, Image.SCALE_SMOOTH);
+        BufferedImage resultado = new BufferedImage(novaLargura, novaAltura, BufferedImage.TYPE_INT_ARGB);
+        resultado.getGraphics().drawImage(escalada, 0, 0, null);
+        return resultado;
     }
 }
