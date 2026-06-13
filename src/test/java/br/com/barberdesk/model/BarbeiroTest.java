@@ -22,7 +22,7 @@ class BarbeiroTest {
     }
 
     @Test
-    void getFotoCaminhoEhAliasDeImagemPath() {
+    void getFotoCaminhoEhAliasDeImagemBase64() {
         Barbeiro b = new Barbeiro(1, 10, "João", "foto.png");
         assertEquals("foto.png", b.getFotoCaminho());
     }
