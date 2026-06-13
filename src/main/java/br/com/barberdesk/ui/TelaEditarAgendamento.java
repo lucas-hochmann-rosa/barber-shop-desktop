@@ -52,6 +52,7 @@ public class TelaEditarAgendamento extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 450);
         setLocationRelativeTo(null);
+        UIUtil.aplicarIcone(this);
 
         initUI();
         carregarDados();

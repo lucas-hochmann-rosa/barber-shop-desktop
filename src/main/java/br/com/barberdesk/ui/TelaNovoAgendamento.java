@@ -28,6 +28,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     public TelaNovoAgendamento() {
         initComponents();
+        UIUtil.aplicarIcone(this);
         setLocationRelativeTo(null);
         // Ajuste de tamanho: o botão de salvar estava ficando fora da área visível
         // por causa das coordenadas do AbsoluteLayout.

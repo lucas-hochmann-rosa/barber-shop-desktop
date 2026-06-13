@@ -17,12 +17,14 @@ public class DialogBarbeiro extends javax.swing.JDialog {
     public DialogBarbeiro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        UIUtil.aplicarIcone(this);
         this.barbeiro = new Barbeiro();
     }
 
     public DialogBarbeiro(java.awt.Frame parent, boolean modal, Barbeiro barbeiro) {
         super(parent, modal);
         initComponents();
+        UIUtil.aplicarIcone(this);
         this.barbeiro = barbeiro;
         preencherCampos();
     }

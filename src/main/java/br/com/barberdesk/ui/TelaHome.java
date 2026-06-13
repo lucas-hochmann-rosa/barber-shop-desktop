@@ -51,6 +51,7 @@ public class TelaHome extends javax.swing.JFrame {
 
     public TelaHome() {
         initComponents();
+        UIUtil.aplicarIcone(this);
         configurarTabela();
         carregarDados();
     }

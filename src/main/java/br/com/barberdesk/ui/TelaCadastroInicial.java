@@ -4,6 +4,7 @@ import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.SetupService;
 import br.com.barberdesk.util.AppContext;
+import br.com.barberdesk.util.UIUtil;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
 
     public TelaCadastroInicial() {
         initComponents();
+        UIUtil.aplicarIcone(this);
         setLocationRelativeTo(null);
     }
 

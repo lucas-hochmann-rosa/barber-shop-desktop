@@ -18,12 +18,14 @@ public class DialogServico extends javax.swing.JDialog {
     public DialogServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        UIUtil.aplicarIcone(this);
         this.servico = new Servico();
     }
 
     public DialogServico(java.awt.Frame parent, boolean modal, Servico servico) {
         super(parent, modal);
         initComponents();
+        UIUtil.aplicarIcone(this);
         this.servico = servico;
         preencherCampos();
     }
