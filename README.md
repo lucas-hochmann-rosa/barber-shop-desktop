@@ -1,4 +1,4 @@
-# 💈 barber-shop-desktop — *BarberDesk*
+# 💈 barber-shop-desktop - *BarberDesk*
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-desktop">
@@ -88,7 +88,7 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 - Classificação visual de agendamentos por status/proximidade do horário (linhas coloridas na tabela).
 - Busca/filtro no histórico e no diretório de clientes.
 - Tela de Relatórios: faturamento por período, serviços mais vendidos e ranking de barbeiros.
-- Fotos de barbeiro/serviço guardadas como Base64 direto no banco — não depende de um arquivo existir num caminho específico do disco.
+- Fotos de barbeiro/serviço guardadas como Base64 direto no banco - não depende de um arquivo existir num caminho específico do disco.
 - Ícone próprio do aplicativo em todas as janelas.
 - Logging em arquivo (`~/.barberdesk/logs/`) e pool de conexões com o banco (HikariCP).
 
@@ -141,7 +141,7 @@ barber-shop-desktop/
 │   ├── logback.xml                        # Configuração de log (console + arquivo)
 │   └── db/schema.sql                      # Schema inicial, criado automaticamente no 1º start
 ├── src/test/java/br/com/barberdesk/       # Testes JUnit 5 (lógica pura: hash, datas, equals/hashCode)
-└── target/                                 # Artefatos gerados de build (JAR) — não versionado
+└── target/                                 # Artefatos gerados de build (JAR) - não versionado
 ```
 
 ### Organização
@@ -178,8 +178,8 @@ barber-shop-desktop/
 
 ## 📐 Regras de construção do projeto
 
-- Identificadores (classes, métodos, variáveis, tabelas e colunas do banco) ficam em português — é o vocabulário natural do domínio (barbearia, agendamento, barbeiro) e o sistema é feito para uso local/BR.
-- Comentários no código ficam reservados para decisões não óbvias — o "porquê", não o "o quê".
+- Identificadores (classes, métodos, variáveis, tabelas e colunas do banco) ficam em português - é o vocabulário natural do domínio (barbearia, agendamento, barbeiro) e o sistema é feito para uso local/BR.
+- Comentários no código ficam reservados para decisões não óbvias - o "porquê", não o "o quê".
 - Textos de interface (telas Swing, mensagens ao usuário) ficam sempre em português: é o idioma de quem realmente usa o sistema.
 - Nenhuma credencial é commitada: `config.properties` traz apenas defaults de ambiente local (senha vazia), com suporte a sobrescrita por variável de ambiente para outros ambientes.
 
@@ -203,7 +203,7 @@ cd barber-shop-desktop
 
 ### 🗄️ Banco de Dados
 
-Opção 1 — Docker Compose (recomendado para desenvolvimento local):
+Opção 1 - Docker Compose (recomendado para desenvolvimento local):
 
 ```bash
 docker compose up -d
@@ -211,7 +211,7 @@ docker compose up -d
 
 Já sobe um MySQL 8 configurado com os defaults de `config.properties` (schema `barberdesk`, usuário `root` sem senha).
 
-Opção 2 — MySQL próprio: crie o banco antes da primeira execução:
+Opção 2 - MySQL próprio: crie o banco antes da primeira execução:
 
 ```sql
 CREATE DATABASE barberdesk;
@@ -261,7 +261,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 
 ## 📦 Deploy (Windows / Linux)
 
-O projeto não gera instalador nativo (MSI/DEB/RPM) — é um JAR executável multiplataforma via JVM. Empacotar e rodar segue os mesmos passos em qualquer sistema operacional, com pequenas diferenças de comando abaixo.
+O projeto não gera instalador nativo (MSI/DEB/RPM) - é um JAR executável multiplataforma via JVM. Empacotar e rodar segue os mesmos passos em qualquer sistema operacional, com pequenas diferenças de comando abaixo.
 
 ### 1. Gerar o pacote
 
@@ -269,7 +269,7 @@ O projeto não gera instalador nativo (MSI/DEB/RPM) — é um JAR executável mu
 mvn clean package
 ```
 
-Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutidas (`maven-shade-plugin`) — não precisa de mais nada no classpath pra rodar.
+Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutidas (`maven-shade-plugin`) - não precisa de mais nada no classpath pra rodar.
 
 ### 🪟 Windows
 
@@ -309,7 +309,7 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
    ```
    Salve em `~/.local/share/applications/barberdesk.desktop`.
 
-> Em ambos os sistemas, a aplicação não guarda estado fora do banco — mover o `.jar` de lugar ou trocar de máquina não afeta os dados, desde que `config.properties`/variáveis de ambiente apontem pro MySQL correto (ver [Variáveis de Ambiente](#-variáveis-de-ambiente)).
+> Em ambos os sistemas, a aplicação não guarda estado fora do banco - mover o `.jar` de lugar ou trocar de máquina não afeta os dados, desde que `config.properties`/variáveis de ambiente apontem pro MySQL correto (ver [Variáveis de Ambiente](#-variáveis-de-ambiente)).
 
 ---
 
@@ -371,7 +371,7 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
 - **RF10**: Validar conflito de horário apenas quando houver coincidência de data/hora para o mesmo barbeiro.
   **Status**: Implementado com ajuste de regra: o conflito considera a sobreposição real de intervalo (início/fim de cada agendamento, pela duração do serviço) para o mesmo barbeiro, não só a coincidência exata de data/hora.
 - **RF11**: Classificar visualmente os agendamentos conforme sua proximidade ou status.
-  **Status**: Implementado — linhas coloridas por status e por proximidade do horário (agendamentos a menos de 30 min do início).
+  **Status**: Implementado - linhas coloridas por status e por proximidade do horário (agendamentos a menos de 30 min do início).
 
 ### Requisitos Não Funcionais
 
@@ -394,7 +394,7 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
 
 ## 🧪 Testes Locais Rápidos
 
-Há uma suíte de testes automatizados (JUnit 5) para a lógica pura do projeto — hash de senha, formatação/parse de data e `equals()`/`hashCode()` dos models:
+Há uma suíte de testes automatizados (JUnit 5) para a lógica pura do projeto - hash de senha, formatação/parse de data e `equals()`/`hashCode()` dos models:
 
 ```bash
 mvn test
@@ -412,7 +412,7 @@ Cobre só a lógica que não depende de banco/GUI. Fluxo manual sugerido para o 
 8. Cancelar um agendamento informando o motivo e conferir que aparece no histórico.
 9. Gerar um relatório para um período com agendamentos concluídos.
 
-> Testes de integração dos DAOs contra um MySQL real ainda não existem — ver [Melhorias Futuras](#-melhorias-futuras).
+> Testes de integração dos DAOs contra um MySQL real ainda não existem - ver [Melhorias Futuras](#-melhorias-futuras).
 
 ---
 
@@ -444,17 +444,17 @@ Prints das telas principais, para referência visual rápida do sistema:
 
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 
-- **Separação completa de camadas na UI**: `TelaHome.java` ainda concentra bastante código de acesso a dados junto com o código gerado pelo GUI Builder — as transições de status e o cadastro inicial já foram extraídos para services, o resto (grids e CRUDs de serviço/barbeiro) fica para uma sessão dedicada com teste visual.
-- **Testes de integração dos DAOs** contra um MySQL real (ex.: Testcontainers) — hoje só há testes de lógica pura.
+- **Separação completa de camadas na UI**: `TelaHome.java` ainda concentra bastante código de acesso a dados junto com o código gerado pelo GUI Builder - as transições de status e o cadastro inicial já foram extraídos para services, o resto (grids e CRUDs de serviço/barbeiro) fica para uma sessão dedicada com teste visual.
+- **Testes de integração dos DAOs** contra um MySQL real (ex.: Testcontainers) - hoje só há testes de lógica pura.
 - **Papéis de usuário**: hoje só existe um admin por barbearia; um barbeiro logado ver só a própria agenda exigiria repensar a relação entre `Usuario` e `Barbeiro`, que hoje não existe.
-- **Flyway** no lugar das migrações manuais — adiado por não dar pra validar contra um banco de verdade neste momento.
+- **Flyway** no lugar das migrações manuais - adiado por não dar pra validar contra um banco de verdade neste momento.
 - **Instalador nativo** via `jpackage`.
 
 ---
 
 ## ⚠️ Avisos
 
-Projeto pensado para uso local/rede interna de uma única barbearia — não foi desenhado para múltiplos tenants nem para diferenciar permissões entre usuários (ver [Melhorias Futuras](#-melhorias-futuras): papéis de usuário ainda não existem).
+Projeto pensado para uso local/rede interna de uma única barbearia - não foi desenhado para múltiplos tenants nem para diferenciar permissões entre usuários (ver [Melhorias Futuras](#-melhorias-futuras): papéis de usuário ainda não existem).
 
 ---
 

@@ -1,4 +1,4 @@
-# 💈 barber-shop-desktop — *BarberDesk*
+# 💈 barber-shop-desktop - *BarberDesk*
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-desktop">
@@ -88,7 +88,7 @@ Details for each step below.
 - Visual classification of appointments by status/time proximity (colored table rows).
 - Search/filter on the history and client directory.
 - Reports screen: revenue by period, top services, barber ranking.
-- Barber/service photos stored as Base64 directly in the database — no dependency on a file existing at some disk path.
+- Barber/service photos stored as Base64 directly in the database - no dependency on a file existing at some disk path.
 - Custom application icon on every window.
 - File logging (`~/.barberdesk/logs/`) and a database connection pool (HikariCP).
 
@@ -141,7 +141,7 @@ barber-shop-desktop/
 │   ├── logback.xml                        # Logging config (console + file)
 │   └── db/schema.sql                      # Initial schema, created automatically on first start
 ├── src/test/java/br/com/barberdesk/       # JUnit 5 tests (pure logic: hashing, dates, equals/hashCode)
-└── target/                                 # Generated build artifacts (JAR) — not versioned
+└── target/                                 # Generated build artifacts (JAR) - not versioned
 ```
 
 ### Organization
@@ -178,8 +178,8 @@ barber-shop-desktop/
 
 ## 📐 Project Ground Rules
 
-- Identifiers (classes, methods, variables, database tables and columns) stay in Portuguese — it's the natural domain vocabulary (barbershop, appointment, barber) and the system is built for local/Brazilian use.
-- Code comments are reserved for non-obvious decisions — the "why", not the "what".
+- Identifiers (classes, methods, variables, database tables and columns) stay in Portuguese - it's the natural domain vocabulary (barbershop, appointment, barber) and the system is built for local/Brazilian use.
+- Code comments are reserved for non-obvious decisions - the "why", not the "what".
 - UI copy (Swing screens, user-facing messages) stays in Portuguese: it's the language of the actual end users.
 - No credentials are committed: `config.properties` only ships local-environment defaults (empty password), overridable via environment variables for other environments.
 
@@ -203,7 +203,7 @@ cd barber-shop-desktop
 
 ### 🗄️ Database
 
-Option 1 — Docker Compose (recommended for local development):
+Option 1 - Docker Compose (recommended for local development):
 
 ```bash
 docker compose up -d
@@ -211,7 +211,7 @@ docker compose up -d
 
 Spins up a MySQL 8 already configured to match `config.properties` defaults (schema `barberdesk`, user `root` with no password).
 
-Option 2 — your own MySQL: create the database before the first run:
+Option 2 - your own MySQL: create the database before the first run:
 
 ```sql
 CREATE DATABASE barberdesk;
@@ -261,7 +261,7 @@ java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 
 ## 📦 Deploy (Windows / Linux)
 
-This project doesn't produce a native installer (MSI/DEB/RPM) — it's a cross-platform executable JAR via the JVM. Packaging and running follows the same steps on any OS, with small command differences below.
+This project doesn't produce a native installer (MSI/DEB/RPM) - it's a cross-platform executable JAR via the JVM. Packaging and running follows the same steps on any OS, with small command differences below.
 
 ### 1. Build the package
 
@@ -269,7 +269,7 @@ This project doesn't produce a native installer (MSI/DEB/RPM) — it's a cross-p
 mvn clean package
 ```
 
-Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bundled in (`maven-shade-plugin`) — nothing else needed on the classpath to run it.
+Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bundled in (`maven-shade-plugin`) - nothing else needed on the classpath to run it.
 
 ### 🪟 Windows
 
@@ -309,7 +309,7 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
    ```
    Save it as `~/.local/share/applications/barberdesk.desktop`.
 
-> On both systems, the application keeps no state outside the database — moving the `.jar` around or switching machines doesn't affect the data, as long as `config.properties`/environment variables point to the right MySQL instance (see [Environment Configuration](#-environment-configuration)).
+> On both systems, the application keeps no state outside the database - moving the `.jar` around or switching machines doesn't affect the data, as long as `config.properties`/environment variables point to the right MySQL instance (see [Environment Configuration](#-environment-configuration)).
 
 ---
 
@@ -371,7 +371,7 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
 - **RF10**: Validate a time conflict only when date/time coincide for the same barber.
   **Status**: Implemented with a stricter rule: conflicts account for real interval overlap (each appointment's start/end, by service duration) for the same barber, not just an exact date/time match.
 - **RF11**: Visually classify appointments by proximity or status.
-  **Status**: Implemented — rows colored by status and by time proximity (appointments starting within 30 minutes).
+  **Status**: Implemented - rows colored by status and by time proximity (appointments starting within 30 minutes).
 
 ### Non-Functional Requirements
 
@@ -394,7 +394,7 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
 
 ## 🧪 Quick Local Testing
 
-There's an automated test suite (JUnit 5) for the project's pure logic — password hashing, date parsing/formatting, and model `equals()`/`hashCode()`:
+There's an automated test suite (JUnit 5) for the project's pure logic - password hashing, date parsing/formatting, and model `equals()`/`hashCode()`:
 
 ```bash
 mvn test
@@ -412,7 +412,7 @@ It only covers logic that doesn't depend on a database/GUI. Suggested manual flo
 8. Cancel an appointment with a reason and confirm it shows up in the history.
 9. Generate a report for a period with completed appointments.
 
-> DAO integration tests against a real MySQL don't exist yet — see [Roadmap](#-roadmap).
+> DAO integration tests against a real MySQL don't exist yet - see [Roadmap](#-roadmap).
 
 ---
 
@@ -444,17 +444,17 @@ Screenshots of the main screens, for a quick visual reference:
 
 Known items, tracked deliberately as next steps rather than oversights:
 
-- **Full UI layer separation**: `TelaHome.java` still mixes a fair amount of data access with GUI-Builder-generated code — status transitions and initial setup were already extracted into services; the rest (service/barber CRUD grids) is left for a dedicated session with visual testing.
-- **DAO integration tests** against a real MySQL (e.g. Testcontainers) — only pure-logic tests exist today.
+- **Full UI layer separation**: `TelaHome.java` still mixes a fair amount of data access with GUI-Builder-generated code - status transitions and initial setup were already extracted into services; the rest (service/barber CRUD grids) is left for a dedicated session with visual testing.
+- **DAO integration tests** against a real MySQL (e.g. Testcontainers) - only pure-logic tests exist today.
 - **User roles**: currently a single admin per barbershop; having a logged-in barber see only their own schedule would require rethinking the relationship between `Usuario` and `Barbeiro`, which doesn't exist today.
-- **Flyway** instead of the manual migrations — deferred since it can't be validated against a real database in this environment.
+- **Flyway** instead of the manual migrations - deferred since it can't be validated against a real database in this environment.
 - **Native installer** via `jpackage`.
 
 ---
 
 ## ⚠️ Disclaimer
 
-Built for local/internal-network use by a single barbershop — not designed for multi-tenant use or per-user permissions (see [Roadmap](#-roadmap): user roles don't exist yet).
+Built for local/internal-network use by a single barbershop - not designed for multi-tenant use or per-user permissions (see [Roadmap](#-roadmap): user roles don't exist yet).
 
 ---
 
