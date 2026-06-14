@@ -103,6 +103,7 @@ Details for each step below.
 - [Installation](#-installation)
 - [Environment Configuration](#-environment-configuration)
 - [Usage](#-usage)
+- [Deploy (Windows / Linux)](#-deploy-windows--linux)
 - [Main Screens](#-main-screens)
 - [Business Rules](#-business-rules-implemented)
 - [Requirements Compliance](#-requirements-compliance-current-state)
@@ -255,6 +256,60 @@ Or override via environment variables:
 mvn clean package
 java -jar target/BarberDesk-1.0-SNAPSHOT.jar
 ```
+
+---
+
+## 📦 Deploy (Windows / Linux)
+
+This project doesn't produce a native installer (MSI/DEB/RPM) — it's a cross-platform executable JAR via the JVM. Packaging and running follows the same steps on any OS, with small command differences below.
+
+### 1. Build the package
+
+```bash
+mvn clean package
+```
+
+Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bundled in (`maven-shade-plugin`) — nothing else needed on the classpath to run it.
+
+### 🪟 Windows
+
+1. **Java**: check you have JRE/JDK 8+ installed (`java -version` in PowerShell/CMD). If not, download [Eclipse Temurin](https://adoptium.net/) and install it.
+2. **Database**: bring it up via Docker Compose (`docker compose up -d`, requires Docker Desktop) or install [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) and create the `barberdesk` database manually.
+3. **Run**:
+   ```powershell
+   java -jar target\BarberDesk-1.0-SNAPSHOT.jar
+   ```
+4. **Desktop shortcut** (optional): create a `BarberDesk.bat` file next to the `.jar`:
+   ```bat
+   @echo off
+   start javaw -jar "%~dp0BarberDesk-1.0-SNAPSHOT.jar"
+   ```
+   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, convert `icon.png` to `.ico` (Windows shortcuts don't accept `.png` directly) and point the shortcut to it.
+
+### 🐧 Linux
+
+1. **Java**: install a JRE/JDK 8+ through your distro's package manager, e.g.:
+   ```bash
+   sudo apt install openjdk-17-jre   # Debian/Ubuntu
+   sudo dnf install java-17-openjdk  # Fedora
+   ```
+2. **Database**: `docker compose up -d` (requires Docker) or install MySQL locally (`sudo apt install mysql-server`) and create the `barberdesk` database.
+3. **Run**:
+   ```bash
+   java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+   ```
+4. **`.desktop` launcher** (optional, to show up in the application menu):
+   ```ini
+   [Desktop Entry]
+   Name=BarberDesk
+   Exec=java -jar /full/path/to/BarberDesk-1.0-SNAPSHOT.jar
+   Icon=/full/path/to/icon.png
+   Type=Application
+   Categories=Office;
+   ```
+   Save it as `~/.local/share/applications/barberdesk.desktop`.
+
+> On both systems, the application keeps no state outside the database — moving the `.jar` around or switching machines doesn't affect the data, as long as `config.properties`/environment variables point to the right MySQL instance (see [Environment Configuration](#-environment-configuration)).
 
 ---
 
