@@ -26,9 +26,33 @@ public class UIUtil {
             URL recurso = UIUtil.class.getClassLoader().getResource("icon.png");
             iconeApp = recurso != null ? Toolkit.getDefaultToolkit().getImage(recurso) : null;
             iconeCarregado = true;
+            aplicarIconeNaTaskbar(iconeApp);
         }
         if (iconeApp != null) {
             janela.setIconImage(iconeApp);
+        }
+    }
+
+    /**
+     * java.awt.Taskbar só existe a partir do Java 9 — o projeto compila com
+     * --release 8 (ver pom.xml), então a chamada precisa ser via reflection
+     * pra não quebrar a compilação. setIconImage no JFrame já cobre a barra
+     * de título/Alt-Tab; a barra de tarefas do Windows usa essa API à parte.
+     */
+    private static void aplicarIconeNaTaskbar(Image icone) {
+        if (icone == null) {
+            return;
+        }
+        try {
+            Class<?> taskbarClass = Class.forName("java.awt.Taskbar");
+            Object isSupported = taskbarClass.getMethod("isTaskbarSupported").invoke(null);
+            if (!Boolean.TRUE.equals(isSupported)) {
+                return;
+            }
+            Object taskbar = taskbarClass.getMethod("getTaskbar").invoke(null);
+            taskbarClass.getMethod("setIconImage", Image.class).invoke(taskbar, icone);
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            // Java 8 (classe não existe) ou plataforma sem suporte a esse recurso — sem problema.
         }
     }
 
