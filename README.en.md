@@ -1,4 +1,4 @@
-# 💈 barber-shop-desktop — *the BarberDesk*
+# 💈 barber-shop-desktop — *BarberDesk*
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-desktop">
