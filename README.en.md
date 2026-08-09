@@ -280,7 +280,7 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
    @echo off
    start javaw -jar "%~dp0BarberDesk-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, convert `icon.png` to `.ico` (Windows shortcuts don't accept `.png` directly) and point the shortcut to it.
+   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, point it to `src/main/resources/icon.ico` (already included in the repo — Windows shortcuts don't accept `.png` directly).
 
 ### 🐧 Linux
 
@@ -299,7 +299,7 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
    [Desktop Entry]
    Name=BarberDesk
    Exec=java -jar /full/path/to/BarberDesk-1.0-SNAPSHOT.jar
-   Icon=/full/path/to/icon.png
+   Icon=/full/path/to/icon.ico
    Type=Application
    Categories=Office;
    ```

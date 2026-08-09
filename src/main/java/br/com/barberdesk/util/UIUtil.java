@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
@@ -25,7 +24,7 @@ public class UIUtil {
     private static boolean iconeCarregado = false;
 
     /**
-     * Ícone do app (src/main/resources/icon.png), aplicado em toda janela.
+     * Ícone do app (src/main/resources/icon.ico), aplicado em toda janela.
      * Carregado uma única vez e reaproveitado. Gera várias resoluções
      * pré-renderizadas (setIconImages) em vez de entregar uma imagem grande
      * só — o Windows escala uma imagem única com baixa qualidade ao desenhar
@@ -33,8 +32,8 @@ public class UIUtil {
      */
     public static void aplicarIcone(Window janela) {
         if (!iconeCarregado) {
-            try (InputStream in = UIUtil.class.getClassLoader().getResourceAsStream("icon.png")) {
-                BufferedImage original = in != null ? ImageIO.read(in) : null;
+            try (InputStream in = UIUtil.class.getClassLoader().getResourceAsStream("icon.ico")) {
+                BufferedImage original = in != null ? IcoDecoder.lerMaiorFrame(in) : null;
                 iconesApp = original != null ? gerarTamanhosDeIcone(original) : null;
             } catch (IOException ignored) {
                 iconesApp = null;

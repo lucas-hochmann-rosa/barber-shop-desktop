@@ -280,7 +280,7 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
    @echo off
    start javaw -jar "%~dp0BarberDesk-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, converta `icon.png` para `.ico` (Windows não aceita `.png` como ícone de atalho) e aponte o atalho pra ele.
+   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, aponte-o para `src/main/resources/icon.ico` (já vem pronto no repositório — Windows não aceita `.png` como ícone de atalho).
 
 ### 🐧 Linux
 
@@ -299,7 +299,7 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
    [Desktop Entry]
    Name=BarberDesk
    Exec=java -jar /caminho/completo/para/BarberDesk-1.0-SNAPSHOT.jar
-   Icon=/caminho/completo/para/icon.png
+   Icon=/caminho/completo/para/icon.ico
    Type=Application
    Categories=Office;
    ```
