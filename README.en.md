@@ -127,8 +127,6 @@ barber-shop-desktop/
 ├── LICENCE
 ├── docs/
 │   └── screenshots/               # Screenshots used in the README
-├── .github/
-│   └── workflows/build.yml         # CI: compiles and runs tests on every push/PR
 ├── src/main/java/br/com/barberdesk/
 │   ├── app/Main.java                # Entry point: decides login vs. initial setup
 │   ├── dao/                          # Data access (MySQL), one class per entity
@@ -171,8 +169,6 @@ barber-shop-desktop/
 **Testing:** JUnit 5
 
 **Local dev:** Docker Compose (MySQL)
-
-**CI:** GitHub Actions (compiles and runs tests on every push/PR)
 
 ---
 
