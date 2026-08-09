@@ -39,14 +39,30 @@ public class AgendaService {
         return id;
     }
 
+    /**
+     * Marca o agendamento como em atendimento (barbeiro iniciou o corte).
+     *
+     * @param id identificador do agendamento
+     */
     public void iniciarAtendimento(int id) throws SQLException {
         alterarStatus(id, StatusAgendamento.EM_ATENDIMENTO, null);
     }
 
+    /**
+     * Marca o agendamento como concluído, encerrando o atendimento.
+     *
+     * @param id identificador do agendamento
+     */
     public void concluirAtendimento(int id) throws SQLException {
         alterarStatus(id, StatusAgendamento.CONCLUIDO, null);
     }
 
+    /**
+     * Cancela o agendamento, registrando o motivo informado.
+     *
+     * @param id     identificador do agendamento
+     * @param motivo justificativa do cancelamento, persistida junto ao agendamento
+     */
     public void cancelarAgendamento(int id, String motivo) throws SQLException {
         alterarStatus(id, StatusAgendamento.CANCELADO, motivo);
     }
@@ -66,6 +82,9 @@ public class AgendaService {
         return !inicio.isBefore(abertura) && !fim.isAfter(fechamento);
     }
 
+    // Implementação compartilhada das transições de status (iniciar/concluir/
+    // cancelar). Se o agendamento não existir mais (ex.: excluído em paralelo),
+    // simplesmente não faz nada em vez de lançar exceção.
     private void alterarStatus(int id, StatusAgendamento novoStatus, String motivoCancelamento) throws SQLException {
         Agendamento agendamento = agendamentoDAO.buscarPorId(id);
         if (agendamento == null) return;

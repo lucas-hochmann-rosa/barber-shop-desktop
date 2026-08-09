@@ -2,11 +2,16 @@ package br.com.barberdesk.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Representa um serviço oferecido pela barbearia (ex.: corte, barba), com preço e duração
+ * padrão, disponível para seleção ao criar um {@link Agendamento}.
+ */
 public class Servico {
     private int id;
     private int barbeariaId;
     private String nome;
     private BigDecimal preco;
+    // Foto do serviço codificada em Base64, salva direto no banco (sem arquivo em disco).
     private String imagemBase64;
     private int duracaoMinutos = 30;
 
@@ -28,6 +33,10 @@ public class Servico {
         this.imagemBase64 = imagemBase64;
     }
 
+    /**
+     * Construtor completo, incluindo a duração — usado ao carregar um serviço já
+     * existente do banco (os demais construtores mantêm a duração padrão de 30 min).
+     */
     public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemBase64, int duracaoMinutos) {
         this(id, barbeariaId, nome, preco, imagemBase64);
         this.duracaoMinutos = duracaoMinutos;
@@ -81,11 +90,17 @@ public class Servico {
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    // Alias para compatibilidade com as telas
+    /**
+     * Alias legado para {@link #getImagemBase64()}, mantido para compatibilidade com telas
+     * que ainda referenciam a foto como "caminho" — na prática retorna a mesma string Base64.
+     */
     public String getFotoCaminho() {
         return imagemBase64;
     }
 
+    /**
+     * Alias legado para {@link #setImagemBase64(String)}. Ver {@link #getFotoCaminho()}.
+     */
     public void setFotoCaminho(String fotoCaminho) {
         this.imagemBase64 = fotoCaminho;
     }

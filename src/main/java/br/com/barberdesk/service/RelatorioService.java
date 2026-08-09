@@ -21,6 +21,11 @@ import java.util.List;
  */
 public class RelatorioService {
 
+    /**
+     * Linha genérica de um relatório de ranking (serviço mais vendido,
+     * barbeiro com mais atendimentos etc.): um nome, uma quantidade de
+     * ocorrências e um valor total associado.
+     */
     public static class ItemRelatorio {
         private final String nome;
         private final long quantidade;
@@ -37,6 +42,21 @@ public class RelatorioService {
         public BigDecimal getTotal() { return total; }
     }
 
+    /**
+     * Soma o preço dos serviços de todos os agendamentos concluídos da
+     * barbearia no período informado (inclusive nas duas pontas).
+     *
+     * Importante: usa o preço ATUAL do serviço (servicos.preco), não um
+     * snapshot do preço no momento do agendamento — não existe snapshot de
+     * preço, só de nome/duração. Se o preço de um serviço for alterado,
+     * relatórios de períodos passados passam a refletir o preço novo
+     * retroativamente. Limitação conhecida (ver javadoc da classe).
+     *
+     * @param barbeariaId identificador da barbearia
+     * @param inicio      data inicial do período (inclusive)
+     * @param fim         data final do período (inclusive)
+     * @return soma dos preços dos serviços concluídos no período, ou zero se não houver nenhum
+     */
     public BigDecimal faturamentoTotal(int barbeariaId, LocalDate inicio, LocalDate fim) throws SQLException {
         String sql = "SELECT COALESCE(SUM(s.preco), 0) FROM agendamentos a " +
                 "LEFT JOIN servicos s ON a.servico_id = s.id " +
@@ -52,6 +72,18 @@ public class RelatorioService {
         }
     }
 
+    /**
+     * Lista os 10 serviços com mais agendamentos concluídos no período,
+     * ordenados por quantidade decrescente. O nome exibido é o snapshot
+     * gravado no agendamento quando disponível, caindo para o nome atual do
+     * serviço e, por fim, para "Serviço removido" caso o serviço tenha sido
+     * excluído.
+     *
+     * @param barbeariaId identificador da barbearia
+     * @param inicio      data inicial do período (inclusive)
+     * @param fim         data final do período (inclusive)
+     * @return até 10 itens, cada um com nome, quantidade e faturamento associado
+     */
     public List<ItemRelatorio> servicosMaisVendidos(int barbeariaId, LocalDate inicio, LocalDate fim) throws SQLException {
         // GROUP BY repete a expressão (não usa o alias "nome"): como servicos.nome também se
         // chama "nome", agrupar pelo alias colide com a coluna real da tabela e o MySQL, em
@@ -65,6 +97,19 @@ public class RelatorioService {
         return listarItens(barbeariaId, inicio, fim, sql);
     }
 
+    /**
+     * Lista os 10 barbeiros com mais atendimentos concluídos no período,
+     * ordenados por quantidade decrescente. O campo "total" sempre vem zerado
+     * aqui, pois este ranking mede volume de atendimentos, não faturamento
+     * por barbeiro. O nome exibido usa o mesmo esquema de fallback (snapshot
+     * → nome atual → "Barbeiro removido") descrito em
+     * {@link #servicosMaisVendidos(int, LocalDate, LocalDate)}.
+     *
+     * @param barbeariaId identificador da barbearia
+     * @param inicio      data inicial do período (inclusive)
+     * @param fim         data final do período (inclusive)
+     * @return até 10 itens, cada um com nome, quantidade de atendimentos e total zero
+     */
     public List<ItemRelatorio> rankingBarbeiros(int barbeariaId, LocalDate inicio, LocalDate fim) throws SQLException {
         String sql = "SELECT COALESCE(a.barbeiro_nome_snapshot, b.nome, 'Barbeiro removido') AS nome, " +
                 "COUNT(*) AS qtd, 0 AS total " +
@@ -74,6 +119,9 @@ public class RelatorioService {
         return listarItens(barbeariaId, inicio, fim, sql);
     }
 
+    // Execução compartilhada das consultas de ranking: aplica os três parâmetros
+    // posicionais comuns (barbearia, início, fim) e monta a lista de itens a
+    // partir das colunas "nome", "qtd" e "total" do result set.
     private List<ItemRelatorio> listarItens(int barbeariaId, LocalDate inicio, LocalDate fim, String sql) throws SQLException {
         List<ItemRelatorio> lista = new ArrayList<>();
         try (Connection conn = ConexaoMySQL.getConexao();

@@ -7,6 +7,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
+/**
+ * Utilitário de hash de senha da aplicação.
+ *
+ * O algoritmo atual é PBKDF2WithHmacSHA256 com salt aleatório por usuário
+ * (120.000 iterações, chave de 256 bits), usado para toda senha nova. O
+ * método {@link #hashSHA256(String)} (SHA-256 puro, sem salt) é mantido
+ * apenas para compatibilidade com contas antigas criadas antes da migração
+ * para PBKDF2 — não deve ser usado para senhas novas.
+ */
 public class HashUtil {
 
     private static final int PBKDF2_ITERACOES = 120_000;

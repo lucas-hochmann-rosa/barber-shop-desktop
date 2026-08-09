@@ -27,6 +27,31 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+/**
+ * Tela principal do sistema, exibida logo após o login bem-sucedido.
+ * <p>
+ * Concentra toda a navegação da aplicação através de um menu lateral fixo
+ * ({@code pnlSideMenu}) que troca os cartões de um {@link java.awt.CardLayout}
+ * ({@code pnlCards}) entre quatro áreas:
+ * <ul>
+ *   <li><b>Home</b> — grid de serviços para agendamento rápido e tabela de
+ *       agendamentos pendentes, com menu de contexto (botão direito) para
+ *       iniciar, concluir ou cancelar um atendimento;</li>
+ *   <li><b>Minha Barbearia</b> — abas para editar os dados gerais da
+ *       barbearia (nome, CEP, cultura/valores, horário de funcionamento) e
+ *       gerenciar (cadastrar/editar/excluir) serviços, barbeiros e a
+ *       listagem de clientes;</li>
+ *   <li><b>Histórico</b> — todos os agendamentos já registrados (qualquer
+ *       status), com busca textual;</li>
+ *   <li><b>Relatórios</b> — faturamento total, serviços mais vendidos e
+ *       ranking de barbeiros num intervalo de datas.</li>
+ * </ul>
+ * A tela não implementa regras de negócio diretamente: delega para os
+ * serviços de domínio ({@link AgendaService}, {@link RelatorioService}) e
+ * para os DAOs, mantendo aqui apenas a orquestração de UI (carregar/atualizar
+ * tabelas, validar entrada de formulário e reagir a eventos dos componentes
+ * gerados pelo NetBeans GUI Builder).
+ */
 public class TelaHome extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(TelaHome.class);
@@ -49,6 +74,13 @@ public class TelaHome extends javax.swing.JFrame {
     private List<Agendamento> agendamentosPendentesAtuais;
     private List<Agendamento> agendamentosHistoricoAtuais;
 
+    /**
+     * Monta a janela: inicializa os componentes gerados pelo NetBeans, aplica
+     * o ícone customizado da aplicação, configura os listeners/renderer das
+     * tabelas e carrega os dados iniciais (agendamentos, serviços,
+     * barbeiros, clientes, dados da barbearia e histórico) a partir do
+     * banco.
+     */
     public TelaHome() {
         initComponents();
         UIUtil.aplicarIcone(this);
@@ -56,6 +88,14 @@ public class TelaHome extends javax.swing.JFrame {
         carregarDados();
     }
 
+    /**
+     * Configura o comportamento das tabelas da tela: adiciona o menu de
+     * contexto (clique com o botão direito) na tabela de agendamentos
+     * pendentes, liga um {@link TableRowSorter} em cada tabela (permitindo
+     * ordenar/filtrar sem alterar a ordem dos dados no model) e registra o
+     * {@link StatusRowRenderer} responsável por colorir as linhas de
+     * agendamentos e histórico conforme o status (RF11).
+     */
     private void configurarTabela() {
         tblAgendamentos.addMouseListener(new MouseAdapter() {
             @Override
@@ -129,6 +169,17 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Monta e exibe o menu de contexto (clique com o botão direito) da linha
+     * selecionada em {@code tblAgendamentos}, oferecendo as ações válidas
+     * para o status atual do agendamento: editar sempre; iniciar serviço se
+     * estiver AGENDADO; terminar serviço se estiver EM_ATENDIMENTO; cancelar
+     * se ainda não estiver CONCLUIDO nem CANCELADO.
+     *
+     * @param comp componente de referência para posicionar o popup
+     * @param x    posição X do popup, relativa a {@code comp}
+     * @param y    posição Y do popup, relativa a {@code comp}
+     */
     private void mostrarMenuContexto(Component comp, int x, int y) {
         int row = tblAgendamentos.getSelectedRow();
         if (row < 0) return;
@@ -166,6 +217,13 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao montar menu de contexto do agendamento", e); }
     }
 
+    /**
+     * Marca o agendamento como EM_ATENDIMENTO através do
+     * {@link AgendaService} e recarrega as tabelas de agendamentos
+     * pendentes e histórico para refletir a mudança de status.
+     *
+     * @param id identificador do agendamento
+     */
     private void iniciarAtendimento(int id) {
         try {
             agendaService.iniciarAtendimento(id);
@@ -174,6 +232,13 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao iniciar atendimento", e); }
     }
 
+    /**
+     * Marca o agendamento como CONCLUIDO através do {@link AgendaService} e
+     * recarrega as tabelas de agendamentos pendentes e histórico para
+     * refletir a mudança de status.
+     *
+     * @param id identificador do agendamento
+     */
     private void concluirAtendimento(int id) {
         try {
             agendaService.concluirAtendimento(id);
@@ -182,6 +247,13 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao concluir atendimento", e); }
     }
 
+    /**
+     * Pede ao usuário um motivo (opcional) e cancela o agendamento através
+     * do {@link AgendaService}, recarregando em seguida as tabelas de
+     * agendamentos pendentes e histórico.
+     *
+     * @param id identificador do agendamento
+     */
     private void cancelarAgendamento(int id) {
         String motivo = JOptionPane.showInputDialog(this, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
         if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
@@ -192,6 +264,12 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao cancelar agendamento", e); }
     }
 
+    /**
+     * Recarrega, de uma só vez, todos os dados exibidos pela tela:
+     * agendamentos pendentes, grid de serviços, tabelas de gerenciamento
+     * (serviços, barbeiros, clientes), dados gerais da barbearia e
+     * histórico. Chamado no construtor para popular a tela na abertura.
+     */
     private void carregarDados() {
         carregarAgendamentos();
         carregarGridServicos();
@@ -202,6 +280,11 @@ public class TelaHome extends javax.swing.JFrame {
         carregarHistorico();
     }
 
+    /**
+     * Recarrega {@code tblClientes} com os clientes da barbearia atual
+     * ({@link AppContext#getBarbeariaAtual()}), limpando as linhas
+     * existentes antes de repopular.
+     */
     private void carregarTabelaClientes() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -219,6 +302,12 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Aplica em {@code tblClientes} o filtro de texto digitado em
+     * {@code txtBuscaClientes}, usando um {@link RowFilter} de regex
+     * case-insensitive sobre todas as colunas visíveis. Texto vazio remove
+     * o filtro (volta a mostrar todas as linhas).
+     */
     private void aplicarFiltroClientes() {
         TableRowSorter<?> sorter = (TableRowSorter<?>) tblClientes.getRowSorter();
         String texto = txtBuscaClientes.getText().trim();
@@ -229,6 +318,13 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Recarrega {@code tblGerenciarServicos} com os serviços da barbearia
+     * atual e guarda a lista em {@code servicosGerenciarLista}, que
+     * espelha a ordem das linhas do model e é usada pelos handlers de
+     * editar/excluir para resolver a linha selecionada na tabela de volta
+     * para o {@link Servico} correspondente.
+     */
     private void carregarTabelaServicos() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -250,6 +346,13 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Recarrega {@code tblGerenciarBarbeiros} com os barbeiros da barbearia
+     * atual e guarda a lista em {@code barbeirosGerenciarLista}, que
+     * espelha a ordem das linhas do model e é usada pelos handlers de
+     * editar/excluir para resolver a linha selecionada na tabela de volta
+     * para o {@link Barbeiro} correspondente.
+     */
     private void carregarTabelaBarbeiros() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -270,6 +373,19 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Recarrega {@code tblAgendamentos} com os agendamentos pendentes da
+     * barbearia atual e guarda a lista em {@code agendamentosPendentesAtuais}.
+     * Essa lista espelha, na mesma ordem, as linhas do model da tabela e é
+     * consultada pelo {@link StatusRowRenderer} para decidir a cor de cada
+     * linha — por isso, ao mapear uma linha visível de volta para o
+     * {@link Agendamento} real, é preciso passar por
+     * {@code table.convertRowIndexToModel(viewRow)} quando há um
+     * {@link TableRowSorter} ativo, já que a ordem visual (ordenada/filtrada
+     * pelo usuário) pode não bater com a ordem do model. Método público
+     * porque também é chamado por outras telas (ex.: edição/novo
+     * agendamento) para atualizar esta tela após uma alteração.
+     */
     public void carregarAgendamentos() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -298,6 +414,12 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Reconstrói o grid de cartões de serviço em {@code pnlServicosGrid} (um
+     * {@link JPanel} por serviço, com miniatura, nome, preço e botão
+     * "Agendar") a partir dos serviços cadastrados na barbearia atual.
+     * Remove todos os cartões existentes antes de recriá-los.
+     */
     private void carregarGridServicos() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -341,6 +463,14 @@ public class TelaHome extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao carregar grid de serviços", e); }
     }
 
+    /**
+     * Preenche os campos da aba "Dados Gerais" (nome, CEP, cultura/valores e
+     * horário de funcionamento) com os dados atuais da barbearia. Antes de
+     * exibir, recarrega a barbearia diretamente do banco em vez de confiar
+     * apenas no {@link AppContext}, para evitar mostrar dados desatualizados
+     * caso o contexto em memória esteja obsoleto, e já atualiza o
+     * {@link AppContext} com o resultado.
+     */
     private void carregarDadosBarbearia() {
         try {
             Barbearia ctx = AppContext.getInstance().getBarbeariaAtual();
@@ -363,6 +493,13 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Recarrega {@code tblHistorico} com todos os agendamentos da barbearia
+     * atual (qualquer status) e guarda a lista em
+     * {@code agendamentosHistoricoAtuais}, que espelha a ordem das linhas do
+     * model e é usada pelo {@link StatusRowRenderer} para colorir cada linha
+     * (mesmo raciocínio de {@link #carregarAgendamentos()}).
+     */
     private void carregarHistorico() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -389,10 +526,24 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Abre {@code TelaNovoAgendamento} já com o serviço pré-selecionado
+     * (atalho a partir do botão "Agendar" de um cartão do grid de
+     * serviços) e recarrega os agendamentos pendentes quando a tela é
+     * fechada.
+     *
+     * @param s serviço a ser pré-selecionado no novo agendamento
+     */
     private void abrirNovoAgendamentoComServico(Servico s) {
         new TelaNovoAgendamento(s, this::carregarAgendamentos).setVisible(true);
     }
 
+    /**
+     * Aplica em {@code tblHistorico} o filtro de texto digitado em
+     * {@code txtBuscaHistorico}, usando um {@link RowFilter} de regex
+     * case-insensitive sobre todas as colunas visíveis (cliente, contato,
+     * serviço, barbeiro, origem e status). Texto vazio remove o filtro.
+     */
     private void aplicarFiltroHistorico() {
         TableRowSorter<?> sorter = (TableRowSorter<?>) tblHistorico.getRowSorter();
         String texto = txtBuscaHistorico.getText().trim();
@@ -890,6 +1041,11 @@ public class TelaHome extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Alterna o {@link CardLayout} de {@code pnlCards} para o cartão "Home"
+     * e recarrega os agendamentos pendentes e o grid de serviços, já que
+     * esses dados podem ter mudado enquanto o usuário estava em outra aba.
+     */
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardHome");
@@ -897,6 +1053,11 @@ public class TelaHome extends javax.swing.JFrame {
         carregarGridServicos();
     }
 
+    /**
+     * Alterna o {@link CardLayout} de {@code pnlCards} para o cartão
+     * "Minha Barbearia" e recarrega os dados da barbearia, a tabela de
+     * serviços e a tabela de barbeiros.
+     */
     private void btnMinhaBarbeariaActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardBarbearia");
@@ -905,12 +1066,22 @@ public class TelaHome extends javax.swing.JFrame {
         carregarTabelaBarbeiros();
     }
 
+    /**
+     * Alterna o {@link CardLayout} de {@code pnlCards} para o cartão
+     * "Histórico" e recarrega a tabela de histórico de agendamentos.
+     */
     private void btnHistoricoActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardHistorico");
         carregarHistorico();
     }
 
+    /**
+     * Alterna o {@link CardLayout} de {@code pnlCards} para o cartão
+     * "Relatórios". Se os campos de data ainda não foram preenchidos (campo
+     * mascarado vazio), assume como período padrão o mês corrente até hoje.
+     * Em seguida já dispara a geração do relatório para o período definido.
+     */
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout cl = (CardLayout) pnlCards.getLayout();
         cl.show(pnlCards, "cardRelatorios");
@@ -922,10 +1093,25 @@ public class TelaHome extends javax.swing.JFrame {
         gerarRelatorio();
     }
 
+    /** Aciona a geração do relatório para o período informado pelo usuário. */
     private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {
         gerarRelatorio();
     }
 
+    /**
+     * Lê o intervalo de datas informado nos campos "De"/"Até", valida que a
+     * data inicial não é posterior à final e usa o {@link RelatorioService}
+     * para calcular o faturamento total, os serviços mais vendidos e o
+     * ranking de barbeiros no período, preenchendo os respectivos
+     * componentes da tela.
+     * <p>
+     * Observação: o faturamento é calculado com o preço ATUAL de cada
+     * serviço, não com um snapshot do preço no momento do agendamento (não
+     * existe esse histórico — só de nome/duração). Se o preço de um serviço
+     * for alterado, relatórios de períodos passados passam a refletir o
+     * preço novo retroativamente; é uma limitação conhecida, já documentada
+     * no javadoc de {@link RelatorioService}.
+     */
     private void gerarRelatorio() {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
@@ -959,14 +1145,28 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /** Encerra a aplicação imediatamente. */
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }
 
+    /**
+     * Abre {@code TelaNovoAgendamento} sem serviço pré-selecionado (botão
+     * "+ Novo Agendamento" da Home) e recarrega os agendamentos pendentes
+     * quando a tela é fechada.
+     */
     private void btnAgendarActionPerformed(java.awt.event.ActionEvent evt) {
         new TelaNovoAgendamento(this::carregarAgendamentos).setVisible(true);
     }
 
+    /**
+     * Salva as alterações da aba "Dados Gerais" (nome, CEP, cultura/valores
+     * e horário de funcionamento) na barbearia atual. Valida que, quando
+     * ambos os horários são informados, a abertura seja antes do
+     * fechamento; campos de horário em branco (ou só com placeholder) são
+     * tratados como "sem restrição de horário" via
+     * {@link #parseHorarioOuNulo(String)}.
+     */
     private void btnSalvarBActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             LocalTime abertura = parseHorarioOuNulo(txtHorarioAbertura.getText());
@@ -997,6 +1197,12 @@ public class TelaHome extends javax.swing.JFrame {
         return DateTimeUtil.parseTime(texto.trim());
     }
 
+    /**
+     * Abre o diálogo de cadastro de serviço; se o usuário salvar, valida que
+     * não existe outro serviço com o mesmo nome na barbearia, insere o novo
+     * serviço no banco e recarrega a tabela de gerenciamento e o grid de
+     * serviços da Home.
+     */
     private void btnNovoServicoActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             DialogServico dlg = new DialogServico(this, true);
@@ -1025,6 +1231,14 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Edita o serviço selecionado em {@code tblGerenciarServicos},
+     * resolvendo a linha selecionada para o {@link Servico} correspondente
+     * via {@code servicosGerenciarLista}. Abre o diálogo com uma cópia do
+     * serviço original (para não refletir alterações na tabela caso o
+     * usuário cancele), valida nome duplicado e, se salvo, persiste e
+     * recarrega a tabela de gerenciamento e o grid de serviços da Home.
+     */
     private void btnEditarServicoBActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblGerenciarServicos.getSelectedRow();
         if (row < 0 || servicosGerenciarLista == null || row >= servicosGerenciarLista.size()) {
@@ -1057,6 +1271,12 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Exclui o serviço selecionado em {@code tblGerenciarServicos}, após
+     * confirmação do usuário (avisando que agendamentos existentes podem
+     * ser afetados), e recarrega a tabela de gerenciamento e o grid de
+     * serviços da Home.
+     */
     private void btnExcluirServicoActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblGerenciarServicos.getSelectedRow();
         if (row < 0 || servicosGerenciarLista == null || row >= servicosGerenciarLista.size()) {
@@ -1081,6 +1301,12 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Abre o diálogo de cadastro de barbeiro; se o usuário salvar, valida
+     * que não existe outro barbeiro com o mesmo nome na barbearia, insere o
+     * novo barbeiro no banco e recarrega a tabela de gerenciamento de
+     * barbeiros.
+     */
     private void btnNovoBarbeiroActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             DialogBarbeiro dlg = new DialogBarbeiro(this, true);
@@ -1108,6 +1334,14 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Edita o barbeiro selecionado em {@code tblGerenciarBarbeiros},
+     * resolvendo a linha selecionada para o {@link Barbeiro} correspondente
+     * via {@code barbeirosGerenciarLista}. Abre o diálogo com uma cópia do
+     * barbeiro original (para não refletir alterações na tabela caso o
+     * usuário cancele), valida nome duplicado e, se salvo, persiste e
+     * recarrega a tabela de gerenciamento de barbeiros.
+     */
     private void btnEditarBarbeiroBActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblGerenciarBarbeiros.getSelectedRow();
         if (row < 0 || barbeirosGerenciarLista == null || row >= barbeirosGerenciarLista.size()) {
@@ -1138,6 +1372,11 @@ public class TelaHome extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Exclui o barbeiro selecionado em {@code tblGerenciarBarbeiros}, após
+     * confirmação do usuário (avisando que agendamentos existentes podem
+     * ser afetados), e recarrega a tabela de gerenciamento de barbeiros.
+     */
     private void btnExcluirBarbeiroActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblGerenciarBarbeiros.getSelectedRow();
         if (row < 0 || barbeirosGerenciarLista == null || row >= barbeirosGerenciarLista.size()) {

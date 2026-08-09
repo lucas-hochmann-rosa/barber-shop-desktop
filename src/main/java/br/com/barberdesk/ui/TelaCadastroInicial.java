@@ -14,9 +14,20 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Tela de configuração inicial: primeiro contato com o sistema, exibida
+ * pelo {@link br.com.barberdesk.app.Main} quando ainda não existe nenhuma
+ * barbearia cadastrada no banco. Reúne num só formulário os dados da
+ * barbearia, os serviços/barbeiros iniciais (mantidos em memória até
+ * salvar) e o usuário administrador, e delega a persistência para
+ * {@link br.com.barberdesk.service.SetupService#criarCadastroInicial}.
+ * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
+ */
 public class TelaCadastroInicial extends javax.swing.JFrame {
 
+    /** Serviços adicionados nesta sessão de cadastro, ainda não gravados no banco. */
     private List<Servico> servicosTemporarios = new ArrayList<>();
+    /** Barbeiros adicionados nesta sessão de cadastro, ainda não gravados no banco. */
     private List<Barbeiro> barbeirosTemporarios = new ArrayList<>();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -26,6 +37,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    /** Redesenha a tabela de serviços a partir da lista em memória. */
     private void atualizarTabelaServicos() {
         DefaultTableModel model = (DefaultTableModel) tblServicos.getModel();
         model.setRowCount(0);
@@ -34,6 +46,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Redesenha a tabela de barbeiros a partir da lista em memória. */
     private void atualizarTabelaBarbeiros() {
         DefaultTableModel model = (DefaultTableModel) tblBarbeiros.getModel();
         model.setRowCount(0);
@@ -384,6 +397,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /** Abre o diálogo de novo serviço e, se salvo, adiciona à lista temporária. */
     private void btnAdicionarServicoActionPerformed(java.awt.event.ActionEvent evt) {
         DialogServico dialog = new DialogServico(this, true);
         dialog.setVisible(true);
@@ -393,6 +407,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Abre o diálogo de edição para o serviço selecionado na tabela. */
     private void btnEditarServicoActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblServicos.getSelectedRow();
         if (row >= 0) {
@@ -405,6 +420,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Remove o serviço selecionado da lista temporária (nada é gravado no banco ainda). */
     private void btnRemoverServicoActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblServicos.getSelectedRow();
         if (row >= 0) {
@@ -413,6 +429,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Abre o diálogo de novo barbeiro e, se salvo, adiciona à lista temporária. */
     private void btnAdicionarBarbeiroActionPerformed(java.awt.event.ActionEvent evt) {
         DialogBarbeiro dialog = new DialogBarbeiro(this, true);
         dialog.setVisible(true);
@@ -422,6 +439,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Abre o diálogo de edição para o barbeiro selecionado na tabela. */
     private void btnEditarBarbeiroActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblBarbeiros.getSelectedRow();
         if (row >= 0) {
@@ -434,6 +452,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /** Remove o barbeiro selecionado da lista temporária (nada é gravado no banco ainda). */
     private void btnRemoverBarbeiroActionPerformed(java.awt.event.ActionEvent evt) {
         int row = tblBarbeiros.getSelectedRow();
         if (row >= 0) {
@@ -442,6 +461,12 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Valida os campos obrigatórios (inclusive pelo menos um serviço e um
+     * barbeiro já adicionados) e persiste tudo de uma vez via SetupService —
+     * barbearia, serviços, barbeiros e usuário administrador nascem juntos
+     * na mesma transação lógica de cadastro inicial.
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
         String nome = txtNomeBarbearia.getText().trim();
         String cep = txtCEP.getText().trim();

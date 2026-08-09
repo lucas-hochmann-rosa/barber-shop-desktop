@@ -19,6 +19,16 @@ public class ImageStorageUtil {
 
     private static final int DIMENSAO_MAXIMA = 480;
 
+    /**
+     * Lê a imagem do arquivo informado, redimensiona (se necessário) para
+     * caber em {@value #DIMENSAO_MAXIMA}px de largura/altura e retorna o
+     * conteúdo codificado em Base64, pronto para ser gravado num campo do
+     * banco de dados.
+     *
+     * @param origem arquivo de imagem escolhido pelo usuário
+     * @return a imagem redimensionada, codificada em PNG/Base64
+     * @throws IOException se o arquivo não puder ser lido ou não for uma imagem reconhecida
+     */
     public static String paraBase64(File origem) throws IOException {
         BufferedImage original = ImageIO.read(origem);
         if (original == null) {
@@ -32,6 +42,16 @@ public class ImageStorageUtil {
         return Base64.getEncoder().encodeToString(saida.toByteArray());
     }
 
+    /**
+     * Redimensiona a imagem mantendo a proporção original, de forma que nem
+     * a largura nem a altura ultrapassem {@code dimensaoMaxima}. Se a imagem
+     * já for menor ou igual ao limite nas duas dimensões, retorna a imagem
+     * original sem nenhuma cópia/processamento.
+     *
+     * @param original      imagem de origem
+     * @param dimensaoMaxima limite, em pixels, para largura e altura
+     * @return a imagem redimensionada, ou a original se já estiver dentro do limite
+     */
     private static BufferedImage redimensionar(BufferedImage original, int dimensaoMaxima) {
         int largura = original.getWidth();
         int altura = original.getHeight();

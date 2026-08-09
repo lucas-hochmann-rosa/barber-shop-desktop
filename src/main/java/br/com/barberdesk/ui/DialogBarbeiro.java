@@ -8,12 +8,34 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Diálogo modal de cadastro/edição de barbeiro, com preview de foto.
+ *
+ * <p>Permite informar o nome do barbeiro e escolher uma imagem de perfil.
+ * A imagem selecionada é convertida e armazenada como Base64 (ver
+ * {@link ImageStorageUtil#paraBase64}), não como caminho de arquivo, para
+ * que fique persistida junto com o restante dos dados do barbeiro.</p>
+ *
+ * <p>A tela que abre este diálogo deve, após ele ser fechado, consultar
+ * {@link #isSalvo()} para saber se o usuário confirmou o cadastro e, em
+ * caso positivo, obter o resultado com {@link #getBarbeiro()}.</p>
+ */
 public class DialogBarbeiro extends javax.swing.JDialog {
 
+    /** Barbeiro sendo criado ou editado; é o objeto devolvido por {@link #getBarbeiro()}. */
     private Barbeiro barbeiro;
+    /** Indica se o usuário confirmou o formulário clicando em "Salvar". */
     private boolean salvo = false;
+    /** Imagem do barbeiro já convertida para Base64 (vazia quando não há imagem). */
     private String imagemBase64 = "";
 
+    /**
+     * Cria o diálogo para cadastro de um novo barbeiro, com um objeto
+     * {@link Barbeiro} vazio a ser preenchido pelo usuário.
+     *
+     * @param parent janela pai do diálogo
+     * @param modal  se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
+     */
     public DialogBarbeiro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -21,6 +43,14 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         this.barbeiro = new Barbeiro();
     }
 
+    /**
+     * Cria o diálogo para edição de um barbeiro já existente, pré-preenchendo
+     * os campos da tela com os dados recebidos.
+     *
+     * @param parent   janela pai do diálogo
+     * @param modal    se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
+     * @param barbeiro barbeiro a ser editado
+     */
     public DialogBarbeiro(java.awt.Frame parent, boolean modal, Barbeiro barbeiro) {
         super(parent, modal);
         initComponents();
@@ -29,6 +59,10 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         preencherCampos();
     }
 
+    /**
+     * Preenche os campos da tela (nome e miniatura de imagem) com os dados
+     * do barbeiro recebido no construtor de edição.
+     */
     private void preencherCampos() {
         if (barbeiro != null) {
             txtNome.setText(barbeiro.getNome());
@@ -37,10 +71,21 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Indica se o usuário confirmou o cadastro/edição clicando em "Salvar".
+     * Deve ser consultado pela tela chamadora antes de usar {@link #getBarbeiro()}.
+     *
+     * @return {@code true} se o formulário foi salvo; {@code false} se foi cancelado/fechado
+     */
     public boolean isSalvo() {
         return salvo;
     }
 
+    /**
+     * Obtém o barbeiro criado ou editado neste diálogo.
+     *
+     * @return o barbeiro com os dados preenchidos na tela
+     */
     public Barbeiro getBarbeiro() {
         return barbeiro;
     }
@@ -135,6 +180,11 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Abre um seletor de arquivos para o usuário escolher uma imagem
+     * (jpg/png/jpeg), converte o arquivo escolhido para Base64 e atualiza
+     * a miniatura de preview exibida na tela.
+     */
     private void btnEscolherImagemActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Imagens", "jpg", "png", "jpeg");
@@ -150,6 +200,11 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Valida o formulário e, se o nome tiver sido preenchido, grava os
+     * dados no objeto {@link #barbeiro}, marca {@link #salvo} como
+     * {@code true} e fecha o diálogo.
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
         String nome = txtNome.getText().trim();
 
@@ -164,6 +219,10 @@ public class DialogBarbeiro extends javax.swing.JDialog {
         this.dispose();
     }
 
+    /**
+     * Cancela o cadastro/edição e fecha o diálogo sem marcar {@link #salvo}
+     * como {@code true} (ou seja, sem gravar as alterações feitas na tela).
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
     }

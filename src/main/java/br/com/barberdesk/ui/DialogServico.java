@@ -9,12 +9,35 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Diálogo modal de cadastro/edição de serviço, com preview de foto.
+ *
+ * <p>Permite informar nome, preço e duração (em minutos) do serviço, além
+ * de escolher uma imagem ilustrativa. A imagem selecionada é convertida e
+ * armazenada como Base64 (ver {@link ImageStorageUtil#paraBase64}), não
+ * como caminho de arquivo, para que fique persistida junto com o restante
+ * dos dados do serviço.</p>
+ *
+ * <p>A tela que abre este diálogo deve, após ele ser fechado, consultar
+ * {@link #isSalvo()} para saber se o usuário confirmou o cadastro e, em
+ * caso positivo, obter o resultado com {@link #getServico()}.</p>
+ */
 public class DialogServico extends javax.swing.JDialog {
 
+    /** Serviço sendo criado ou editado; é o objeto devolvido por {@link #getServico()}. */
     private Servico servico;
+    /** Indica se o usuário confirmou o formulário clicando em "Salvar". */
     private boolean salvo = false;
+    /** Imagem do serviço já convertida para Base64 (vazia quando não há imagem). */
     private String imagemBase64 = "";
 
+    /**
+     * Cria o diálogo para cadastro de um novo serviço, com um objeto
+     * {@link Servico} vazio a ser preenchido pelo usuário.
+     *
+     * @param parent janela pai do diálogo
+     * @param modal  se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
+     */
     public DialogServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -22,6 +45,14 @@ public class DialogServico extends javax.swing.JDialog {
         this.servico = new Servico();
     }
 
+    /**
+     * Cria o diálogo para edição de um serviço já existente, pré-preenchendo
+     * os campos da tela com os dados recebidos.
+     *
+     * @param parent  janela pai do diálogo
+     * @param modal   se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
+     * @param servico serviço a ser editado
+     */
     public DialogServico(java.awt.Frame parent, boolean modal, Servico servico) {
         super(parent, modal);
         initComponents();
@@ -30,6 +61,12 @@ public class DialogServico extends javax.swing.JDialog {
         preencherCampos();
     }
 
+    /**
+     * Preenche os campos da tela (nome, preço, duração e miniatura de
+     * imagem) com os dados do serviço recebido no construtor de edição.
+     * Quando a duração cadastrada não é válida (zero ou negativa), usa
+     * 30 minutos como valor padrão exibido no spinner.
+     */
     private void preencherCampos() {
         if (servico != null) {
             txtNome.setText(servico.getNome());
@@ -40,10 +77,21 @@ public class DialogServico extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Indica se o usuário confirmou o cadastro/edição clicando em "Salvar".
+     * Deve ser consultado pela tela chamadora antes de usar {@link #getServico()}.
+     *
+     * @return {@code true} se o formulário foi salvo; {@code false} se foi cancelado/fechado
+     */
     public boolean isSalvo() {
         return salvo;
     }
 
+    /**
+     * Obtém o serviço criado ou editado neste diálogo.
+     *
+     * @return o serviço com os dados preenchidos na tela
+     */
     public Servico getServico() {
         return servico;
     }
@@ -159,6 +207,11 @@ public class DialogServico extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Abre um seletor de arquivos para o usuário escolher uma imagem
+     * (jpg/png/jpeg), converte o arquivo escolhido para Base64 e atualiza
+     * a miniatura de preview exibida na tela.
+     */
     private void btnEscolherImagemActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Imagens", "jpg", "png", "jpeg");
@@ -174,6 +227,14 @@ public class DialogServico extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Valida o formulário (nome preenchido, preço numérico e maior que
+     * zero) e, se tudo estiver correto, grava os dados no objeto
+     * {@link #servico}, marca {@link #salvo} como {@code true} e fecha o
+     * diálogo. A vírgula digitada no campo de preço é convertida para
+     * ponto antes da conversão para {@link BigDecimal}, para aceitar o
+     * formato numérico brasileiro.
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
         String nome = txtNome.getText().trim();
         String precoStr = txtPreco.getText().trim().replace(",", ".");
@@ -200,6 +261,10 @@ public class DialogServico extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Cancela o cadastro/edição e fecha o diálogo sem marcar {@link #salvo}
+     * como {@code true} (ou seja, sem gravar as alterações feitas na tela).
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
     }

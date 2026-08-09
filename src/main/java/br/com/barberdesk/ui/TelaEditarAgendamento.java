@@ -20,6 +20,14 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Tela de edição de um agendamento existente: permite alterar cliente,
+ * contato, data/hora, serviço, barbeiro e origem, além de gerenciar o
+ * ciclo de vida do agendamento (iniciar/concluir atendimento, cancelar com
+ * motivo, excluir) e abrir o WhatsApp do cliente. Diferente das demais
+ * telas, a UI aqui é montada manualmente com GridBagLayout (sem GUI
+ * Builder do NetBeans), então o arquivo inteiro pode ser editado livremente.
+ */
 public class TelaEditarAgendamento extends JFrame {
 
     private final int agendamentoId;
@@ -46,6 +54,7 @@ public class TelaEditarAgendamento extends JFrame {
 
     private Agendamento atual;
 
+    /** Monta a tela e carrega os dados do agendamento indicado por id. */
     public TelaEditarAgendamento(int agendamentoId) {
         this.agendamentoId = agendamentoId;
         setTitle("BarberDesk - Editar Agendamento");
@@ -58,6 +67,7 @@ public class TelaEditarAgendamento extends JFrame {
         carregarDados();
     }
 
+    /** Monta manualmente todos os componentes e o layout da tela (GridBagLayout). */
     private void initUI() {
         JPanel root = new JPanel(new BorderLayout(10, 10));
         root.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
@@ -130,6 +140,7 @@ public class TelaEditarAgendamento extends JFrame {
         setContentPane(root);
     }
 
+    /** Helper de layout: adiciona uma linha "rótulo + campo" ao formulário em GridBagLayout. */
     private void addRow(JPanel form, GridBagConstraints gc, int row, String label, JComponent field) {
         gc.gridwidth = 1;
         gc.gridx = 0; gc.gridy = row; gc.weightx = 0;
@@ -139,6 +150,7 @@ public class TelaEditarAgendamento extends JFrame {
         form.add(field, gc);
     }
 
+    /** Carrega os combos de serviço/barbeiro e os dados atuais do agendamento, preenchendo o formulário. */
     private void carregarDados() {
         try {
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
@@ -178,6 +190,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Atualiza a miniatura exibida conforme o barbeiro selecionado no combo. */
     private void atualizarFotoBarbeiro() {
         Barbeiro b = (Barbeiro) cbBarbeiro.getSelectedItem();
         if (b != null) {
@@ -185,6 +198,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Seleciona no combo o serviço cujo id bate com o do agendamento (comparação direta, sem reflection). */
     private void selecionarComboPorId(JComboBox<Servico> combo, int id) {
         ComboBoxModel<Servico> model = combo.getModel();
         for (int i = 0; i < model.getSize(); i++) {
@@ -195,6 +209,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Seleciona no combo o barbeiro cujo id bate com o do agendamento. */
     private void selecionarBarbeiroPorId(JComboBox<Barbeiro> combo, int id) {
         ComboBoxModel<Barbeiro> model = combo.getModel();
         for (int i = 0; i < model.getSize(); i++) {
@@ -205,6 +220,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Atualiza o rótulo de status e habilita/desabilita os botões de ação conforme o status atual. */
     private void atualizarUIStatus() {
         StatusAgendamento st = atual.getStatus();
         String texto = "Status: " + (st != null ? st.name() : "-");
@@ -226,6 +242,7 @@ public class TelaEditarAgendamento extends JFrame {
         btnCancelar.setEnabled(st == StatusAgendamento.AGENDADO || st == StatusAgendamento.EM_ATENDIMENTO);
     }
 
+    /** Pede o motivo (opcional) e cancela o agendamento via AgendaService; fecha a tela ao concluir. */
     private void cancelarAgendamento() {
         String motivo = JOptionPane.showInputDialog(this, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
         if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
@@ -241,6 +258,11 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /**
+     * Valida os campos, checa horário de funcionamento e grava as
+     * alterações — inclusive atualizando o snapshot de nome de
+     * serviço/barbeiro se algum dos dois foi trocado.
+     */
     private void salvar() {
         try {
             String cliente = txtCliente.getText().trim();
@@ -294,6 +316,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Exclui o agendamento após confirmação — remoção definitiva, sem soft-delete. */
     private void excluir() {
         int opt = JOptionPane.showConfirmDialog(this, "Excluir este agendamento?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;
@@ -306,6 +329,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
+    /** Avança o status uma etapa: AGENDADO → EM_ATENDIMENTO → CONCLUIDO (fecha a tela ao concluir). */
     private void alternarStatus() {
         try {
             if (atual.getStatus() == StatusAgendamento.AGENDADO) {

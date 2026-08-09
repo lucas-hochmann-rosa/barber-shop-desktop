@@ -20,6 +20,17 @@ import java.sql.Statement;
  */
 public class DatabaseInitService {
 
+    /**
+     * Garante que o schema do banco exista e esteja atualizado.
+     *
+     * Primeiro verifica se a tabela base ("barbearias") já existe; se não
+     * existir, executa o script de criação completo (db/schema.sql). Em
+     * seguida, sempre executa as migrações (independente de o schema ser
+     * novo ou já existente) — elas são idempotentes, então rodar de novo em
+     * um banco já migrado não tem efeito colateral.
+     *
+     * @throws SQLException em caso de falha de acesso ao banco de dados
+     */
     public void ensureSchema() throws SQLException {
         boolean jaExiste;
         try (Connection conn = ConexaoMySQL.getConexao()) {
@@ -41,6 +52,9 @@ public class DatabaseInitService {
         }
     }
 
+    // Verifica a existência de uma tabela via SHOW TABLES LIKE, usado tanto para
+    // decidir se o schema precisa ser criado quanto para tornar cada migração
+    // segura (uma migração só roda se a tabela alvo já existir).
     private boolean tabelaExiste(Connection conn, String table) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement("SHOW TABLES LIKE ?")) {
             pstmt.setString(1, table);
@@ -50,6 +64,11 @@ public class DatabaseInitService {
         }
     }
 
+    // Lê o script SQL do classpath (ignorando linhas de comentário "--" e
+    // linhas vazias), separa os comandos por ";" seguido de quebra de linha e
+    // executa cada um. O split é simples de propósito: não interpreta SQL de
+    // verdade, então só funciona para scripts sem ";" dentro de strings/valores
+    // — suficiente para o schema.sql deste projeto.
     private void executarScript(String resourcePath) throws SQLException {
         InputStream in = DatabaseInitService.class.getClassLoader().getResourceAsStream(resourcePath);
         if (in == null) {
@@ -212,6 +231,12 @@ public class DatabaseInitService {
         }
     }
 
+    // Descobre (via information_schema) e remove todas as foreign keys que
+    // apontam a partir da coluna informada. Usado pela migração V2 para tirar
+    // as FKs de servico_id/barbeiro_id em agendamentos, já que o nome da
+    // constraint pode variar entre instalações e não é conhecido de antemão.
+    // Qualquer falha (permissão insuficiente, constraint já removida, etc.) é
+    // silenciosamente ignorada para não interromper as demais migrações.
     private void dropForeignKeysByColumn(Connection conn, String table, String column) {
         String q = "SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE " +
                 "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? " +

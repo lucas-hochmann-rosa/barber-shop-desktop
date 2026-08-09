@@ -1,5 +1,10 @@
 package br.com.barberdesk.model;
 
+/**
+ * Representa a conta de acesso ao sistema (login/senha) vinculada a uma barbearia.
+ * É a entidade usada para autenticação, distinta do conceito de {@link Barbeiro}
+ * (profissional cadastrado para atendimento).
+ */
 public class Usuario {
     private int id;
     private int barbeariaId;

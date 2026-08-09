@@ -15,6 +15,20 @@ public class SessionService {
     private final AuthService authService = new AuthService();
     private final BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
 
+    /**
+     * Autentica o usuário e monta a sessão com a barbearia vinculada a ele.
+     *
+     * Se o usuário não tiver uma barbearia vinculada (dado antigo/inconsistente),
+     * recorre à primeira barbearia cadastrada no banco como fallback, em vez de
+     * falhar — cenário raro, mas evita travar o login por causa de um vínculo
+     * ausente.
+     *
+     * @param login login do usuário
+     * @param senha senha em texto puro informada no formulário de login
+     * @return a sessão com usuário e barbearia, ou {@code null} se as credenciais forem inválidas
+     * @throws SQLException          em caso de falha de acesso ao banco de dados
+     * @throws IllegalStateException se não houver nenhuma barbearia cadastrada no banco
+     */
     public Session iniciarSessao(String login, String senha) throws SQLException {
         Usuario usuario = authService.autenticar(login, senha);
         if (usuario == null) return null;

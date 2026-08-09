@@ -3,7 +3,18 @@ package br.com.barberdesk.dao;
 import br.com.barberdesk.model.Usuario;
 import java.sql.*;
 
+/**
+ * Acesso a dados da tabela {@code usuarios}: consulta e manutenção das contas de
+ * acesso ao sistema, vinculadas a uma barbearia. Armazena apenas o hash da senha
+ * e o salt usado no cálculo desse hash — a senha em texto puro nunca é
+ * persistida.
+ */
 public class UsuarioDAO {
+    /**
+     * Busca um usuário pelo login, usado na autenticação.
+     *
+     * @return o usuário encontrado, ou {@code null} se não existir
+     */
     public Usuario buscarPorLogin(String login) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE login = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -18,6 +29,11 @@ public class UsuarioDAO {
         return null;
     }
 
+    /**
+     * Busca um usuário pelo ID.
+     *
+     * @return o usuário encontrado, ou {@code null} se não existir
+     */
     public Usuario buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -32,6 +48,13 @@ public class UsuarioDAO {
         return null;
     }
 
+    /**
+     * Insere um novo usuário. Espera que {@code senhaHash} e {@code salt} já
+     * tenham sido calculados pela camada de serviço antes de chegar aqui — este
+     * DAO não faz hashing de senha.
+     *
+     * @return o ID gerado, ou -1 se não foi possível obtê-lo
+     */
     public int inserir(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (barbearia_id, login, senha_hash, salt) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -50,6 +73,9 @@ public class UsuarioDAO {
         return -1;
     }
 
+    /**
+     * Atualiza login, hash de senha e salt de um usuário existente.
+     */
     public void atualizar(Usuario usuario) throws SQLException {
         String sql = "UPDATE usuarios SET login = ?, senha_hash = ?, salt = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -62,6 +88,9 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Converte a linha atual do {@link ResultSet} em um objeto {@link Usuario}.
+     */
     private Usuario extrairUsuario(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         int barbeariaId = rs.getInt("barbearia_id");

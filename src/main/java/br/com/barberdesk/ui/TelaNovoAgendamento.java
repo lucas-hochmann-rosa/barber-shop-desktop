@@ -14,6 +14,14 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
+/**
+ * Tela de criação de um novo agendamento: cliente, contato, serviço,
+ * barbeiro, data/hora e origem do contato. Valida horário de funcionamento
+ * e conflito de agenda antes de persistir via
+ * {@link AgendaService#criarAgendamento}, que também registra o cliente
+ * no diretório automaticamente.
+ * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
+ */
 public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(TelaNovoAgendamento.class);
@@ -24,6 +32,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private final AgendaService agendaService = new AgendaService();
     private List<Servico> servicosLista;
     private List<Barbeiro> barbeirosLista;
+    /** Callback opcional pra atualizar a Home assim que o agendamento é salvo, sem precisar trocar de tela. */
     private Runnable onAgendamentoSalvo;
 
     public TelaNovoAgendamento() {
@@ -38,21 +47,25 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         carregarCombos();
     }
 
+    /** Variante usada quando quem abre a tela quer ser avisado (callback) quando o agendamento for salvo. */
     public TelaNovoAgendamento(Runnable onAgendamentoSalvo) {
         this();
         this.onAgendamentoSalvo = onAgendamentoSalvo;
     }
 
+    /** Variante usada ao agendar a partir do card de um serviço específico na Home — já vem pré-selecionado. */
     public TelaNovoAgendamento(Servico s) {
         this();
         cbServico.setSelectedItem(s);
     }
 
+    /** Combina as duas variantes acima: serviço pré-selecionado e callback de atualização. */
     public TelaNovoAgendamento(Servico s, Runnable onAgendamentoSalvo) {
         this(s);
         this.onAgendamentoSalvo = onAgendamentoSalvo;
     }
 
+    /** Popula os combos de serviço e barbeiro com os cadastros da barbearia atual. */
     private void carregarCombos() {
         try {
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
@@ -72,6 +85,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         } catch (SQLException e) { logger.error("Erro ao carregar combos de serviço/barbeiro", e); }
     }
 
+    /** Atualiza a miniatura exibida conforme o barbeiro selecionado no combo. */
     private void atualizarFotoBarbeiro() {
         Barbeiro b = (Barbeiro) cbBarbeiro.getSelectedItem();
         if (b != null) {
@@ -164,6 +178,13 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         atualizarFotoBarbeiro();
     }
 
+    /**
+     * Valida os campos, checa horário de funcionamento e conflito de
+     * agenda do barbeiro (considerando a duração real do serviço) e, se
+     * tudo certo, cria o agendamento. Snapshots de nome de serviço/barbeiro
+     * são gravados junto pra preservar o histórico caso o cadastro original
+     * mude ou seja removido depois.
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             String cliente = txtCliente.getText();

@@ -5,9 +5,29 @@ import br.com.barberdesk.model.Usuario;
 import br.com.barberdesk.util.HashUtil;
 import java.sql.SQLException;
 
+/**
+ * Responsável pela autenticação de usuários. Também cuida do upgrade
+ * silencioso e transparente de contas antigas, que ainda usam o hash
+ * SHA-256 sem salt, para o esquema atual (PBKDF2 com salt por usuário).
+ */
 public class AuthService {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+    /**
+     * Valida as credenciais informadas contra o usuário cadastrado.
+     *
+     * Se a conta já usa o esquema novo (possui salt), a senha é validada
+     * diretamente com PBKDF2. Se a conta é antiga (sem salt), a senha é
+     * validada pelo hash SHA-256 legado e, em caso de sucesso, a conta é
+     * migrada nesse mesmo login: gera-se um salt novo, recalcula-se o hash
+     * com PBKDF2 e grava-se no banco — sem exigir troca de senha do usuário.
+     *
+     * @param login login do usuário
+     * @param senha senha em texto puro informada no formulário de login
+     * @return o {@link Usuario} autenticado, ou {@code null} se o login não existir
+     *         ou a senha não conferir
+     * @throws SQLException em caso de falha de acesso ao banco de dados
+     */
     public Usuario autenticar(String login, String senha) throws SQLException {
         Usuario usuario = usuarioDAO.buscarPorLogin(login);
         if (usuario == null) return null;

@@ -2,6 +2,12 @@ package br.com.barberdesk.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * Representa um agendamento de atendimento na barbearia — cliente, serviço, barbeiro,
+ * data/hora, origem do contato e status. Mantém snapshots de nome/duração do serviço e
+ * do barbeiro (ver campos abaixo) para preservar o histórico mesmo que o serviço ou o
+ * barbeiro original sejam posteriormente editados ou excluídos.
+ */
 public class Agendamento {
     private int id;
     private int barbeariaId;
@@ -13,7 +19,10 @@ public class Agendamento {
     private OrigemContato origemContato;
     private StatusAgendamento status;
 
-    // Campos auxiliares para exibição (JOIN)
+    // Nome do serviço/barbeiro para exibição: vem do snapshot salvo no agendamento
+    // (colunas servico_nome_snapshot/barbeiro_nome_snapshot) ou, na ausência dele, do
+    // JOIN com o cadastro atual — ver AgendamentoDAO. Preserva o nome histórico mesmo
+    // que o serviço/barbeiro original seja renomeado ou excluído depois.
     private String servicoNome;
     private String barbeiroNome;
 

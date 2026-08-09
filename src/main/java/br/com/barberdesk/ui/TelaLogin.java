@@ -7,13 +7,17 @@ import br.com.barberdesk.util.UIUtil;
 import javax.swing.JOptionPane;
 
 /**
- * Tela de Login do BarberDesk
- * Gerada com GUI Builder do NetBeans
+ * Tela de login: autentica o usuário e abre a {@link TelaHome}. É a
+ * primeira tela exibida quando já existe uma barbearia cadastrada (ver
+ * {@link br.com.barberdesk.app.Main}); caso contrário, o app abre direto
+ * em {@link TelaCadastroInicial}.
+ * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
  */
 public class TelaLogin extends javax.swing.JFrame {
 
     private SessionService sessionService;
 
+    /** Monta a tela e aplica o ícone do app; a sessão em si só começa ao clicar em "Entrar". */
     public TelaLogin() {
         initComponents();
         UIUtil.aplicarIcone(this);

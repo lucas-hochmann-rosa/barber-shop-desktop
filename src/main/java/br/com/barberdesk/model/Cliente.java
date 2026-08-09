@@ -1,5 +1,9 @@
 package br.com.barberdesk.model;
 
+/**
+ * Representa um cliente da barbearia, cadastrado a partir do nome e contato informados
+ * em um {@link Agendamento} (não possui cadastro próprio via tela dedicada).
+ */
 public class Cliente {
     private int id;
     private int barbeariaId;

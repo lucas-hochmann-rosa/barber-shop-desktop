@@ -17,6 +17,11 @@ public class AppContext {
 
     private AppContext() {}
 
+    /**
+     * Retorna a instância única do contexto da aplicação, criando-a na
+     * primeira chamada (lazy initialization). Sem sincronização por design —
+     * ver nota da classe sobre execução single-thread na EDT.
+     */
     public static AppContext getInstance() {
         if (instance == null) {
             instance = new AppContext();
@@ -40,6 +45,11 @@ public class AppContext {
         this.usuarioLogado = usuarioLogado;
     }
     
+    /**
+     * Atalho para obter o id da barbearia atual sem precisar checar nulidade
+     * na chamada. Retorna 0 se nenhuma barbearia estiver definida no contexto
+     * (ex.: antes do login ou durante o cadastro inicial).
+     */
     public int getBarbeariaId() {
         return barbeariaAtual != null ? barbeariaAtual.getId() : 0;
     }

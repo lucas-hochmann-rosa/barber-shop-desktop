@@ -6,7 +6,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Acesso a dados da tabela {@code servicos}: CRUD dos serviços oferecidos por
+ * uma barbearia (nome, preço, imagem e duração), incluindo checagem de nome
+ * duplicado.
+ */
 public class ServicoDAO {
+    /**
+     * Busca um serviço pelo ID.
+     *
+     * @return o serviço encontrado, ou {@code null} se não existir
+     */
     public Servico buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM servicos WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -21,6 +31,9 @@ public class ServicoDAO {
         return null;
     }
 
+    /**
+     * Lista todos os serviços cadastrados em uma barbearia.
+     */
     public List<Servico> listarPorBarbearia(int barbeariaId) throws SQLException {
         String sql = "SELECT * FROM servicos WHERE barbearia_id = ?";
         List<Servico> servicos = new ArrayList<>();
@@ -36,6 +49,11 @@ public class ServicoDAO {
         return servicos;
     }
 
+    /**
+     * Insere um novo serviço.
+     *
+     * @return o ID gerado, ou -1 se não foi possível obtê-lo
+     */
     public int inserir(Servico servico) throws SQLException {
         String sql = "INSERT INTO servicos (barbearia_id, nome, preco, imagem_base64, duracao_minutos) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -55,6 +73,9 @@ public class ServicoDAO {
         return -1;
     }
 
+    /**
+     * Atualiza nome, preço, imagem e duração de um serviço existente.
+     */
     public void atualizar(Servico servico) throws SQLException {
         String sql = "UPDATE servicos SET nome = ?, preco = ?, imagem_base64 = ?, duracao_minutos = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -68,6 +89,9 @@ public class ServicoDAO {
         }
     }
 
+    /**
+     * Remove definitivamente um serviço pelo ID.
+     */
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM servicos WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -102,6 +126,11 @@ public class ServicoDAO {
         deletar(id);
     }
 
+    /**
+     * Converte a linha atual do {@link ResultSet} em um objeto {@link Servico}.
+     * Assume duração de 30 minutos quando a coluna estiver nula (registros
+     * antigos, anteriores à introdução da duração configurável).
+     */
     private Servico extrairServico(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         int barbeariaId = rs.getInt("barbearia_id");

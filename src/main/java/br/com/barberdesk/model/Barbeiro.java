@@ -1,9 +1,14 @@
 package br.com.barberdesk.model;
 
+/**
+ * Representa um profissional (barbeiro) que atende na barbearia, disponível para
+ * seleção ao criar um {@link Agendamento}.
+ */
 public class Barbeiro {
     private int id;
     private int barbeariaId;
     private String nome;
+    // Foto do barbeiro codificada em Base64, salva direto no banco (sem arquivo em disco).
     private String imagemBase64;
 
     public Barbeiro() {
@@ -54,11 +59,17 @@ public class Barbeiro {
         this.imagemBase64 = imagemBase64;
     }
 
-    // Alias para compatibilidade com as telas
+    /**
+     * Alias legado para {@link #getImagemBase64()}, mantido para compatibilidade com telas
+     * que ainda referenciam a foto como "caminho" — na prática retorna a mesma string Base64.
+     */
     public String getFotoCaminho() {
         return imagemBase64;
     }
 
+    /**
+     * Alias legado para {@link #setImagemBase64(String)}. Ver {@link #getFotoCaminho()}.
+     */
     public void setFotoCaminho(String fotoCaminho) {
         this.imagemBase64 = fotoCaminho;
     }

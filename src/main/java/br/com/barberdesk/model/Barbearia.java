@@ -3,6 +3,12 @@ package br.com.barberdesk.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Representa a barbearia cadastrada no sistema — dados institucionais (nome, CEP, data de
+ * fundação, cultura/valores) e horário de funcionamento. O sistema é single-tenant por
+ * instalação, mas as demais entidades (usuário, cliente, barbeiro, serviço, agendamento)
+ * referenciam o id da barbearia para permitir múltiplas unidades no mesmo banco.
+ */
 public class Barbearia {
     private int id;
     private String nome;

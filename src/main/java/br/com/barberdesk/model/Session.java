@@ -1,7 +1,8 @@
 package br.com.barberdesk.model;
 
 /**
- * Representa a sessão do usuário logado.
+ * Representa a sessão do usuário logado, mantendo em memória o {@link Usuario} autenticado
+ * e a {@link Barbearia} associada durante a execução da aplicação.
  */
 public class Session {
     private final Usuario usuario;

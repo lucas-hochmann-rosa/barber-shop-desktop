@@ -5,7 +5,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Acesso a dados da tabela {@code barbeiros}: CRUD dos profissionais cadastrados
+ * em cada barbearia, incluindo checagem de nome duplicado.
+ */
 public class BarbeiroDAO {
+    /**
+     * Busca um barbeiro pelo ID.
+     *
+     * @return o barbeiro encontrado, ou {@code null} se não existir
+     */
     public Barbeiro buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM barbeiros WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -20,6 +29,9 @@ public class BarbeiroDAO {
         return null;
     }
 
+    /**
+     * Lista todos os barbeiros cadastrados em uma barbearia.
+     */
     public List<Barbeiro> listarPorBarbearia(int barbeariaId) throws SQLException {
         String sql = "SELECT * FROM barbeiros WHERE barbearia_id = ?";
         List<Barbeiro> barbeiros = new ArrayList<>();
@@ -35,6 +47,11 @@ public class BarbeiroDAO {
         return barbeiros;
     }
 
+    /**
+     * Insere um novo barbeiro.
+     *
+     * @return o ID gerado, ou -1 se não foi possível obtê-lo
+     */
     public int inserir(Barbeiro barbeiro) throws SQLException {
         String sql = "INSERT INTO barbeiros (barbearia_id, nome, imagem_base64) VALUES (?, ?, ?)";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -52,6 +69,9 @@ public class BarbeiroDAO {
         return -1;
     }
 
+    /**
+     * Atualiza nome e imagem de um barbeiro existente.
+     */
     public void atualizar(Barbeiro barbeiro) throws SQLException {
         String sql = "UPDATE barbeiros SET nome = ?, imagem_base64 = ? WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -63,6 +83,9 @@ public class BarbeiroDAO {
         }
     }
 
+    /**
+     * Remove definitivamente um barbeiro pelo ID.
+     */
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM barbeiros WHERE id = ?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -97,6 +120,9 @@ public class BarbeiroDAO {
         deletar(id);
     }
 
+    /**
+     * Converte a linha atual do {@link ResultSet} em um objeto {@link Barbeiro}.
+     */
     private Barbeiro extrairBarbeiro(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         int barbeariaId = rs.getInt("barbearia_id");

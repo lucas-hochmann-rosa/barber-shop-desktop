@@ -9,6 +9,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Responsável por configurar e disponibilizar o acesso ao banco de dados MySQL.
+ * Mantém um pool de conexões único (HikariCP), inicializado uma única vez de forma
+ * estática a partir de {@code config.properties} (com possibilidade de sobrescrita
+ * via variáveis de ambiente). Todos os DAOs do sistema pedem conexões emprestadas
+ * a essa classe através de {@link #getConexao()}.
+ */
 public class ConexaoMySQL {
     private static final HikariDataSource dataSource;
 
@@ -41,14 +48,26 @@ public class ConexaoMySQL {
         }
     }
 
+    /**
+     * Resolve um valor de configuração dando prioridade à variável de ambiente
+     * {@code envKey}, se ela estiver definida e não vazia; caso contrário, usa o
+     * valor lido do arquivo {@code config.properties} como {@code fallback}.
+     */
     private static String getenvOr(String fallback, String envKey) {
         String v = System.getenv(envKey);
         return (v != null && !v.trim().isEmpty()) ? v.trim() : fallback;
     }
 
-    // Conexão emprestada do pool (HikariCP). O contrato pro resto do código não
-    // muda: continua sendo usada em try-with-resources — close() agora devolve
-    // a conexão pro pool em vez de fechar de verdade a conexão física.
+    /**
+     * Empresta uma conexão do pool HikariCP para uso pelos DAOs.
+     *
+     * Conexão emprestada do pool (HikariCP). O contrato pro resto do código não
+     * muda: continua sendo usada em try-with-resources — close() agora devolve
+     * a conexão pro pool em vez de fechar de verdade a conexão física.
+     *
+     * @return uma conexão ativa, pronta para uso
+     * @throws SQLException se não for possível obter uma conexão do pool
+     */
     public static Connection getConexao() throws SQLException {
         return dataSource.getConnection();
     }

@@ -9,8 +9,26 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Acesso a dados da tabela {@code agendamentos}: CRUD, listagens filtradas por
+ * barbearia/status e verificação de conflito de horário entre agendamentos de um
+ * mesmo barbeiro. Os registros guardam um "snapshot" do nome do serviço, do nome
+ * do barbeiro e da duração no momento do agendamento (colunas {@code *_snapshot}),
+ * de forma que o histórico continue legível mesmo que o serviço ou o barbeiro
+ * originais sejam depois renomeados ou removidos.
+ */
 public class AgendamentoDAO {
 
+    /**
+     * Insere um novo agendamento, validando antes que não haja conflito de horário
+     * para o barbeiro informado (ver {@link #verificarConflito}). Os nomes de
+     * serviço e barbeiro são gravados como snapshot junto com os IDs, para
+     * preservar o histórico caso o serviço/barbeiro original mude depois.
+     *
+     * @param a agendamento a ser inserido
+     * @return o ID gerado para o novo agendamento, ou -1 se não foi possível obtê-lo
+     * @throws SQLException se houver conflito de horário ou falha de acesso ao banco
+     */
     public int inserir(Agendamento a) throws SQLException {
         if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), a.getDuracaoMinutos(), 0)) {
             throw new SQLException("Conflito: este barbeiro já possui um agendamento nesse horário.");
@@ -46,6 +64,14 @@ public class AgendamentoDAO {
         return -1;
     }
 
+    /**
+     * Atualiza os dados de um agendamento existente, revalidando o conflito de
+     * horário (excluindo o próprio registro da checagem, já que ele mesmo ocupa
+     * aquele horário).
+     *
+     * @param a agendamento com os dados atualizados (deve conter o ID)
+     * @throws SQLException se houver conflito de horário ou falha de acesso ao banco
+     */
     public void atualizar(Agendamento a) throws SQLException {
         if (verificarConflito(a.getBarbeiroId(), a.getDataHora(), a.getDuracaoMinutos(), a.getId())) {
             throw new SQLException("Conflito: este barbeiro já possui um agendamento nesse horário.");
@@ -76,6 +102,9 @@ public class AgendamentoDAO {
         }
     }
 
+    /**
+     * Remove definitivamente um agendamento pelo ID.
+     */
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM agendamentos WHERE id=?";
         try (Connection conn = ConexaoMySQL.getConexao();
@@ -85,6 +114,15 @@ public class AgendamentoDAO {
         }
     }
 
+    /**
+     * Busca um agendamento pelo ID. O nome do serviço e do barbeiro exibidos vêm
+     * do snapshot gravado na criação (via {@code COALESCE}); só se recorre ao
+     * nome atual da tabela {@code servicos}/{@code barbeiros} quando o snapshot
+     * estiver vazio (registros antigos, anteriores à introdução do snapshot).
+     *
+     * @param id identificador do agendamento
+     * @return o agendamento encontrado, ou {@code null} se não existir
+     */
     public Agendamento buscarPorId(int id) throws SQLException {
         String sql = "SELECT a.*, " +
                 "COALESCE(a.servico_nome_snapshot, s.nome) AS servico_nome, " +
@@ -104,6 +142,11 @@ public class AgendamentoDAO {
         return null;
     }
 
+    /**
+     * Lista os agendamentos de uma barbearia que ainda estão em aberto, ou seja,
+     * com status {@code AGENDADO} ou {@code EM_ATENDIMENTO} (exclui cancelados,
+     * concluídos etc.), ordenados por data/hora.
+     */
     public List<Agendamento> listarPendentesPorBarbearia(int barbeariaId) throws SQLException {
         String filtro = " AND a.status IN ('" + StatusAgendamento.AGENDADO.name() + "','" + StatusAgendamento.EM_ATENDIMENTO.name() + "')";
         return listar(barbeariaId, filtro);
@@ -116,6 +159,10 @@ public class AgendamentoDAO {
         return listarPendentesPorBarbearia(barbeariaId);
     }
 
+    /**
+     * Lista todos os agendamentos de uma barbearia, independentemente do status,
+     * ordenados por data/hora.
+     */
     public List<Agendamento> listarPorBarbearia(int barbeariaId) throws SQLException {
         return listar(barbeariaId, "");
     }
@@ -138,6 +185,23 @@ public class AgendamentoDAO {
      * atender no mesmo horário normalmente (não há conflito de recurso entre eles).
      * Agendamentos "encostados" (um termina exatamente quando o outro começa) não contam
      * como conflito.
+     */
+    /**
+     * Verifica se existe outro agendamento do mesmo barbeiro cujo intervalo
+     * (início/fim, considerando a duração de cada um) se sobreponha ao intervalo
+     * informado. A busca no banco é restrita a uma janela de +/- {@link
+     * #DURACAO_MAXIMA_MINUTOS} em torno do horário novo (suficiente para conter
+     * qualquer agendamento que possa se sobrepor), e a checagem fina de
+     * sobreposição é feita em memória.
+     *
+     * @param barbeiroId      barbeiro a checar; se <= 0, não há conflito possível
+     * @param dataHora        início do novo agendamento
+     * @param duracaoMinutos  duração do novo agendamento (usa 30 min se <= 0)
+     * @param excluirId       ID de agendamento a ignorar na busca (0 para nenhum) —
+     *                        usado ao editar um agendamento existente, para que ele
+     *                        não conflite consigo mesmo
+     * @return {@code true} se houver sobreposição de horário com outro agendamento
+     *         em aberto ({@code AGENDADO} ou {@code EM_ATENDIMENTO}) do mesmo barbeiro
      */
     public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int duracaoMinutos, int excluirId) throws SQLException {
         if (barbeiroId <= 0 || dataHora == null) return false;
@@ -184,6 +248,11 @@ public class AgendamentoDAO {
         return verificarConflito(barbeiroId, dataHora, duracaoMinutos, 0);
     }
 
+    /**
+     * Monta e executa a consulta de listagem de agendamentos de uma barbearia,
+     * aplicando um filtro SQL adicional opcional (ex.: restrição por status) e
+     * ordenando sempre por data/hora crescente.
+     */
     private List<Agendamento> listar(int barbeariaId, String extraSql) throws SQLException {
         List<Agendamento> lista = new ArrayList<>();
         String sql = "SELECT a.*, " +
@@ -206,6 +275,12 @@ public class AgendamentoDAO {
         return lista;
     }
 
+    /**
+     * Converte a linha atual do {@link ResultSet} em um objeto {@link Agendamento},
+     * tratando valores nulos (IDs de serviço/barbeiro zerados quando ausentes,
+     * origem/status inválidos revertidos para o valor padrão, duração ausente
+     * assumida como 30 minutos).
+     */
     private Agendamento extrairAgendamento(ResultSet rs) throws SQLException {
         Agendamento a = new Agendamento();
         a.setId(rs.getInt("id"));
