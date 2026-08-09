@@ -13,7 +13,7 @@
   <a href="#-tecnologias">
     <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
   </a>
-  <a href="./LICENCE">
+  <a href="./LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-2ea44f?style=for-the-badge">
   </a>
 </p>
@@ -124,7 +124,7 @@ barber-shop-desktop/
 ├── nbactions.xml                # Configuração de execução direta pela IDE NetBeans
 ├── docker-compose.yml            # MySQL local já configurado pros defaults do projeto
 ├── README.md / README.en.md
-├── LICENCE
+├── LICENSE
 ├── docs/
 │   └── screenshots/               # Prints do sistema usados no README
 ├── src/main/java/br/com/barberdesk/
@@ -468,4 +468,4 @@ Projeto pensado para uso local/rede interna de uma única barbearia - não foi d
 
 Licenciado sob MIT. Você pode usar, modificar e distribuir, mantendo o aviso de copyright e atribuindo crédito a **Lucas Hochmann Rosa**.
 
-Consulte o arquivo [LICENCE](./LICENCE).
+Consulte o arquivo [LICENSE](./LICENSE).
