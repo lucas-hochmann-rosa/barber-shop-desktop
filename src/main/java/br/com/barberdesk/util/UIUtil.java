@@ -1,42 +1,71 @@
 package br.com.barberdesk.util;
 
 import java.awt.Desktop;
+import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.RenderingHints;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
 public class UIUtil {
 
-    private static Image iconeApp;
+    private static final int[] TAMANHOS_ICONE = {16, 24, 32, 48, 64, 128, 256};
+
+    private static List<Image> iconesApp;
     private static boolean iconeCarregado = false;
 
     /**
      * Ícone do app (src/main/resources/icon.png), aplicado em toda janela.
-     * Carregado uma única vez e reaproveitado — retorna null silenciosamente
-     * se o recurso não existir, pra não travar a tela por causa de um ícone.
+     * Carregado uma única vez e reaproveitado. Gera várias resoluções
+     * pré-renderizadas (setIconImages) em vez de entregar uma imagem grande
+     * só — o Windows escala uma imagem única com baixa qualidade ao desenhar
+     * o ícone pequeno da barra de título, o que deixava tudo pixelado.
      */
     public static void aplicarIcone(Window janela) {
         if (!iconeCarregado) {
-            URL recurso = UIUtil.class.getClassLoader().getResource("icon.png");
-            iconeApp = recurso != null ? Toolkit.getDefaultToolkit().getImage(recurso) : null;
+            try (InputStream in = UIUtil.class.getClassLoader().getResourceAsStream("icon.png")) {
+                BufferedImage original = in != null ? ImageIO.read(in) : null;
+                iconesApp = original != null ? gerarTamanhosDeIcone(original) : null;
+            } catch (IOException ignored) {
+                iconesApp = null;
+            }
             iconeCarregado = true;
-            aplicarIconeNaTaskbar(iconeApp);
+            aplicarIconeNaTaskbar(iconesApp == null || iconesApp.isEmpty() ? null : iconesApp.get(iconesApp.size() - 1));
         }
-        if (iconeApp != null) {
-            janela.setIconImage(iconeApp);
+        if (iconesApp != null && !iconesApp.isEmpty()) {
+            janela.setIconImages(iconesApp);
         }
+    }
+
+    private static List<Image> gerarTamanhosDeIcone(BufferedImage original) {
+        List<Image> resultado = new ArrayList<>();
+        for (int tamanho : TAMANHOS_ICONE) {
+            BufferedImage escalado = new BufferedImage(tamanho, tamanho, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = escalado.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.drawImage(original, 0, 0, tamanho, tamanho, null);
+            g2.dispose();
+            resultado.add(escalado);
+        }
+        return resultado;
     }
 
     /**
      * java.awt.Taskbar só existe a partir do Java 9 — o projeto compila com
      * --release 8 (ver pom.xml), então a chamada precisa ser via reflection
-     * pra não quebrar a compilação. setIconImage no JFrame já cobre a barra
+     * pra não quebrar a compilação. setIconImages no JFrame já cobre a barra
      * de título/Alt-Tab; a barra de tarefas do Windows usa essa API à parte.
      */
     private static void aplicarIconeNaTaskbar(Image icone) {
