@@ -428,11 +428,9 @@ Prints das telas principais, para referência visual rápida do sistema:
 | --- | --- |
 | ![Minha Barbearia](docs/screenshots/minha-barbearia.png) | ![Histórico](docs/screenshots/historico.png) |
 
-| Clientes | Relatórios |
-| --- | --- |
-| ![Clientes](docs/screenshots/clientes.png) | ![Relatórios](docs/screenshots/relatorios.png) |
-
-> Ver [`docs/screenshots/`](docs/screenshots/) para os nomes de arquivo esperados.
+| Relatórios |
+| --- |
+| ![Relatórios](docs/screenshots/relatorios.png) |
 
 ---
 

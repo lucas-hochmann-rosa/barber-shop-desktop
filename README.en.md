@@ -428,11 +428,9 @@ Screenshots of the main screens, for a quick visual reference:
 | --- | --- |
 | ![My Barbershop](docs/screenshots/minha-barbearia.png) | ![History](docs/screenshots/historico.png) |
 
-| Clients | Reports |
-| --- | --- |
-| ![Clients](docs/screenshots/clientes.png) | ![Reports](docs/screenshots/relatorios.png) |
-
-> See [`docs/screenshots/`](docs/screenshots/) for the expected file names.
+| Reports |
+| --- |
+| ![Reports](docs/screenshots/relatorios.png) |
 
 ---
 
