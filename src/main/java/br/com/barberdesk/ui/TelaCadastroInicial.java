@@ -65,7 +65,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtCEP = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtDataFundacao = new javax.swing.JTextField();
+        txtDataFundacao = UIUtil.criarCampoMascarado("##/##/####");
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtCultura = new javax.swing.JTextArea();
@@ -479,6 +479,11 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
             return;
         }
 
+        if (UIUtil.campoMascaradoVazio(txtDataFundacao)) {
+            JOptionPane.showMessageDialog(this, "Informe a data de fundação.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
             LocalDate dataFundacao = LocalDate.parse(dataStr, dtf);
 
@@ -529,7 +534,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
     private javax.swing.JTable tblServicos;
     private javax.swing.JTextField txtCEP;
     private javax.swing.JTextArea txtCultura;
-    private javax.swing.JTextField txtDataFundacao;
+    private javax.swing.JFormattedTextField txtDataFundacao;
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtNomeBarbearia;
     private javax.swing.JPasswordField txtSenha;
