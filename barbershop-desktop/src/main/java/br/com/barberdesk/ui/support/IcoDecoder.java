@@ -1,4 +1,4 @@
-package br.com.barberdesk.util;
+package br.com.barberdesk.ui.support;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

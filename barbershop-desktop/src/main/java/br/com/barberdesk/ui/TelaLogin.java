@@ -2,8 +2,8 @@ package br.com.barberdesk.ui;
 
 import br.com.barberdesk.model.Session;
 import br.com.barberdesk.service.SessionService;
-import br.com.barberdesk.util.AppContext;
-import br.com.barberdesk.util.UIUtil;
+import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.ui.support.UIUtil;
 import javax.swing.JOptionPane;
 
 /**

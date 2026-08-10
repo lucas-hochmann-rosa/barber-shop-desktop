@@ -1,5 +1,5 @@
-﻿# Build artifacts
-/target/
+﻿# Build artifacts (raiz e cada módulo Maven)
+target/
 
 # IDE
 /.idea/

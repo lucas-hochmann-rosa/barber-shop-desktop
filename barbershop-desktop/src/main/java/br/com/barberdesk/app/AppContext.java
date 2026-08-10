@@ -1,4 +1,4 @@
-package br.com.barberdesk.util;
+package br.com.barberdesk.app;
 
 import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.Usuario;

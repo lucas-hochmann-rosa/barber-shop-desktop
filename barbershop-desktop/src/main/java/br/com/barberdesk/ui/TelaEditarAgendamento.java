@@ -10,9 +10,9 @@ import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.Servico;
 import br.com.barberdesk.model.StatusAgendamento;
 import br.com.barberdesk.service.AgendaService;
-import br.com.barberdesk.util.AppContext;
+import br.com.barberdesk.app.AppContext;
 import br.com.barberdesk.util.DateTimeUtil;
-import br.com.barberdesk.util.UIUtil;
+import br.com.barberdesk.ui.support.UIUtil;
 
 import javax.swing.*;
 import java.awt.*;
