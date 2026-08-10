@@ -1130,13 +1130,13 @@ public class TelaHome extends javax.swing.JFrame {
 
             DefaultTableModel modelServicos = (DefaultTableModel) tblServicosVendidos.getModel();
             modelServicos.setRowCount(0);
-            for (RelatorioService.ItemRelatorio item : relatorioService.servicosMaisVendidos(b.getId(), inicio, fim)) {
+            for (ItemRelatorio item : relatorioService.servicosMaisVendidos(b.getId(), inicio, fim)) {
                 modelServicos.addRow(new Object[]{ item.getNome(), item.getQuantidade(), moedaFormat.format(item.getTotal()) });
             }
 
             DefaultTableModel modelBarbeiros = (DefaultTableModel) tblRankingBarbeiros.getModel();
             modelBarbeiros.setRowCount(0);
-            for (RelatorioService.ItemRelatorio item : relatorioService.rankingBarbeiros(b.getId(), inicio, fim)) {
+            for (ItemRelatorio item : relatorioService.rankingBarbeiros(b.getId(), inicio, fim)) {
                 modelBarbeiros.addRow(new Object[]{ item.getNome(), item.getQuantidade() });
             }
         } catch (java.time.format.DateTimeParseException e) {

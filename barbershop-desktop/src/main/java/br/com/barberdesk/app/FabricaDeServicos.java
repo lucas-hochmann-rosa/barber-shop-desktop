@@ -4,6 +4,8 @@ import br.com.barberdesk.dao.AgendamentoDAO;
 import br.com.barberdesk.dao.BarbeariaDAO;
 import br.com.barberdesk.dao.BarbeiroDAO;
 import br.com.barberdesk.dao.ClienteDAO;
+import br.com.barberdesk.dao.RelatorioDAO;
+import br.com.barberdesk.dao.SchemaInitializer;
 import br.com.barberdesk.dao.ServicoDAO;
 import br.com.barberdesk.dao.UsuarioDAO;
 import br.com.barberdesk.service.AgendaService;
@@ -32,6 +34,7 @@ public class FabricaDeServicos {
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final RelatorioDAO relatorioDAO = new RelatorioDAO();
 
     public AgendaService criarAgendaService() {
         return new AgendaService(agendamentoDAO, clienteDAO);
@@ -49,17 +52,11 @@ public class FabricaDeServicos {
         return new SetupService(barbeariaDAO, usuarioDAO, servicoDAO, barbeiroDAO);
     }
 
-    /**
-     * Ainda sem dependências injetadas — RelatorioService acessa o banco
-     * direto (ver Fase 2 do roteiro de refatoração). Exposto aqui mesmo
-     * assim pra centralizar a composição num único lugar.
-     */
     public RelatorioService criarRelatorioService() {
-        return new RelatorioService();
+        return new RelatorioService(relatorioDAO);
     }
 
-    /** Idem: DatabaseInitService ainda acessa o banco direto (Fase 2). */
     public DatabaseInitService criarDatabaseInitService() {
-        return new DatabaseInitService();
+        return new DatabaseInitService(new SchemaInitializer());
     }
 }
