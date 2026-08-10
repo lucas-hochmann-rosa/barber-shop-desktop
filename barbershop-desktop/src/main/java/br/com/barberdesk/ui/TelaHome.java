@@ -481,7 +481,8 @@ public class TelaHome extends javax.swing.JFrame {
             // Recarrega do banco para evitar inconsistências caso o AppContext esteja desatualizado
             Barbearia b = barbeariaDAO.buscarPorId(ctx.getId());
             if (b == null) b = ctx;
-            AppContext.getInstance().setBarbeariaAtual(b);
+            // Reconstrói a sessão inteira (Session é imutável) mantendo o mesmo usuário logado
+            AppContext.getInstance().setSessaoAtual(new Session(AppContext.getInstance().getUsuarioLogado(), b));
 
             txtNomeB.setText(b.getNome() != null ? b.getNome() : "");
             txtCEPB.setText(b.getCep() != null ? b.getCep() : "");

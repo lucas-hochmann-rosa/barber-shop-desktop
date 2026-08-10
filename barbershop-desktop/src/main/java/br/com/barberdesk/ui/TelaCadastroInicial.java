@@ -492,8 +492,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
                     .criarCadastroInicial(b, login, senha, servicosTemporarios, barbeirosTemporarios);
 
             Usuario u = new UsuarioDAO().buscarPorLogin(login);
-            AppContext.getInstance().setBarbeariaAtual(b);
-            AppContext.getInstance().setUsuarioLogado(u);
+            AppContext.getInstance().setSessaoAtual(new Session(u, b));
 
             JOptionPane.showMessageDialog(this, "Barbearia criada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             new TelaHome().setVisible(true);

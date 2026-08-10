@@ -118,9 +118,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 return;
             }
 
-            // Persistir contexto da sessão (usuário + barbearia) para que as telas carreguem o banco ao reiniciar
-            AppContext.getInstance().setUsuarioLogado(session.getUsuario());
-            AppContext.getInstance().setBarbeariaAtual(session.getBarbearia());
+            // Persistir a sessão pra que as demais telas saibam quem está logado e em qual barbearia
+            AppContext.getInstance().setSessaoAtual(session);
 
             new TelaHome().setVisible(true);
             this.dispose();
