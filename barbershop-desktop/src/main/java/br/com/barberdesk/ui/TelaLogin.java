@@ -3,6 +3,7 @@ package br.com.barberdesk.ui;
 import br.com.barberdesk.model.Session;
 import br.com.barberdesk.service.SessionService;
 import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.ui.support.UIUtil;
 import javax.swing.JOptionPane;
 
@@ -21,7 +22,7 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
         UIUtil.aplicarIcone(this);
-        this.sessionService = new SessionService();
+        this.sessionService = new FabricaDeServicos().criarSessionService();
         setLocationRelativeTo(null);
     }
 

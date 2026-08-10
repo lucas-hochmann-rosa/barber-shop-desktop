@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.AgendamentoRepository;
 import br.com.barberdesk.model.Agendamento;
 import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.StatusAgendamento;
@@ -17,7 +18,7 @@ import java.util.List;
  * de forma que o histórico continue legível mesmo que o serviço ou o barbeiro
  * originais sejam depois renomeados ou removidos.
  */
-public class AgendamentoDAO {
+public class AgendamentoDAO implements AgendamentoRepository {
 
     /**
      * Insere um novo agendamento, validando antes que não haja conflito de horário

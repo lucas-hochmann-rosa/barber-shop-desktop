@@ -1,6 +1,6 @@
 package br.com.barberdesk.service;
 
-import br.com.barberdesk.dao.BarbeariaDAO;
+import br.com.barberdesk.dao.repository.BarbeariaRepository;
 import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.Session;
 import br.com.barberdesk.model.Usuario;
@@ -12,8 +12,13 @@ import java.sql.SQLException;
  * tenha usuário + barbearia válidos.
  */
 public class SessionService {
-    private final AuthService authService = new AuthService();
-    private final BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
+    private final AuthService authService;
+    private final BarbeariaRepository barbeariaRepository;
+
+    public SessionService(AuthService authService, BarbeariaRepository barbeariaRepository) {
+        this.authService = authService;
+        this.barbeariaRepository = barbeariaRepository;
+    }
 
     /**
      * Autentica o usuário e monta a sessão com a barbearia vinculada a ele.
@@ -35,12 +40,12 @@ public class SessionService {
 
         Barbearia b = null;
         if (usuario.getBarbeariaId() > 0) {
-            b = barbeariaDAO.buscarPorId(usuario.getBarbeariaId());
+            b = barbeariaRepository.buscarPorId(usuario.getBarbeariaId());
         }
 
         // Fallback: caso o usuário esteja sem vínculo por algum dado antigo/inconsistente
         if (b == null) {
-            b = barbeariaDAO.buscarPrimeira();
+            b = barbeariaRepository.buscarPrimeira();
         }
 
         if (b == null) {

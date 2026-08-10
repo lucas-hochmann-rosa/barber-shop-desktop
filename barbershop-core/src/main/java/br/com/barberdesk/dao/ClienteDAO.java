@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.ClienteRepository;
 import br.com.barberdesk.model.Cliente;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
  * tela de cadastro de cliente dedicada — o cliente é criado/atualizado
  * implicitamente ao agendar um horário.
  */
-public class ClienteDAO {
+public class ClienteDAO implements ClienteRepository {
 
     /**
      * Cria o cliente se ainda não existir (por barbearia+contato) ou atualiza o

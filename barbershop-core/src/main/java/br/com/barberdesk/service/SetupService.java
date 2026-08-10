@@ -1,6 +1,9 @@
 package br.com.barberdesk.service;
 
-import br.com.barberdesk.dao.*;
+import br.com.barberdesk.dao.repository.BarbeariaRepository;
+import br.com.barberdesk.dao.repository.BarbeiroRepository;
+import br.com.barberdesk.dao.repository.ServicoRepository;
+import br.com.barberdesk.dao.repository.UsuarioRepository;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.util.HashUtil;
 import java.sql.SQLException;
@@ -12,10 +15,18 @@ import java.util.List;
  * execução do sistema.
  */
 public class SetupService {
-    private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    private ServicoDAO servicoDAO = new ServicoDAO();
-    private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
+    private final BarbeariaRepository barbeariaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final ServicoRepository servicoRepository;
+    private final BarbeiroRepository barbeiroRepository;
+
+    public SetupService(BarbeariaRepository barbeariaRepository, UsuarioRepository usuarioRepository,
+                         ServicoRepository servicoRepository, BarbeiroRepository barbeiroRepository) {
+        this.barbeariaRepository = barbeariaRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.servicoRepository = servicoRepository;
+        this.barbeiroRepository = barbeiroRepository;
+    }
 
     /**
      * Verifica se já existe alguma barbearia cadastrada no banco.
@@ -23,7 +34,7 @@ public class SetupService {
      * @return {@code true} se já houver uma barbearia cadastrada; {@code false} caso contrário
      */
     public boolean existeBarbearia() throws SQLException {
-        return barbeariaDAO.buscarPrimeira() != null;
+        return barbeariaRepository.buscarPrimeira() != null;
     }
 
     /**
@@ -33,7 +44,7 @@ public class SetupService {
      * @return a barbearia cadastrada, ou {@code null} se nenhuma existir
      */
     public Barbearia obterBarbearia() throws SQLException {
-        return barbeariaDAO.buscarPrimeira();
+        return barbeariaRepository.buscarPrimeira();
     }
 
     /**
@@ -49,22 +60,22 @@ public class SetupService {
      */
     public int criarCadastroInicial(Barbearia barbearia, String login, String senha,
                                     List<Servico> servicos, List<Barbeiro> barbeiros) throws SQLException {
-        int barbeariaId = barbeariaDAO.inserir(barbearia);
+        int barbeariaId = barbeariaRepository.inserir(barbearia);
         barbearia.setId(barbeariaId);
 
         String salt = HashUtil.gerarSalt();
         Usuario usuario = new Usuario(barbeariaId, login, HashUtil.hashComSalt(senha, salt));
         usuario.setSalt(salt);
-        usuarioDAO.inserir(usuario);
+        usuarioRepository.inserir(usuario);
 
         for (Servico servico : servicos) {
             servico.setBarbeariaId(barbeariaId);
-            servicoDAO.inserir(servico);
+            servicoRepository.inserir(servico);
         }
 
         for (Barbeiro barbeiro : barbeiros) {
             barbeiro.setBarbeariaId(barbeariaId);
-            barbeiroDAO.inserir(barbeiro);
+            barbeiroRepository.inserir(barbeiro);
         }
 
         return barbeariaId;

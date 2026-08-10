@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.UsuarioRepository;
 import br.com.barberdesk.model.Usuario;
 import java.sql.*;
 
@@ -9,7 +10,7 @@ import java.sql.*;
  * e o salt usado no cálculo desse hash — a senha em texto puro nunca é
  * persistida.
  */
-public class UsuarioDAO {
+public class UsuarioDAO implements UsuarioRepository {
     /**
      * Busca um usuário pelo login, usado na autenticação.
      *

@@ -2,8 +2,8 @@ package br.com.barberdesk.ui;
 
 import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
-import br.com.barberdesk.service.SetupService;
 import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.ui.support.UIUtil;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -488,7 +488,8 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
             LocalDate dataFundacao = LocalDate.parse(dataStr, dtf);
 
             Barbearia b = new Barbearia(nome, cep, dataFundacao, cultura);
-            new SetupService().criarCadastroInicial(b, login, senha, servicosTemporarios, barbeirosTemporarios);
+            new FabricaDeServicos().criarSetupService()
+                    .criarCadastroInicial(b, login, senha, servicosTemporarios, barbeirosTemporarios);
 
             Usuario u = new UsuarioDAO().buscarPorLogin(login);
             AppContext.getInstance().setBarbeariaAtual(b);

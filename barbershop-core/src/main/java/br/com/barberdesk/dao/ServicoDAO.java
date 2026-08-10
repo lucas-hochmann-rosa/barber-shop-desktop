@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.ServicoRepository;
 import br.com.barberdesk.model.Servico;
 import java.math.BigDecimal;
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.List;
  * uma barbearia (nome, preço, imagem e duração), incluindo checagem de nome
  * duplicado.
  */
-public class ServicoDAO {
+public class ServicoDAO implements ServicoRepository {
     /**
      * Busca um serviço pelo ID.
      *

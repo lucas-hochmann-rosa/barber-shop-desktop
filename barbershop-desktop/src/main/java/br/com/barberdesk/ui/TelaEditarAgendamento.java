@@ -11,6 +11,7 @@ import br.com.barberdesk.model.Servico;
 import br.com.barberdesk.model.StatusAgendamento;
 import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.ui.support.UIUtil;
 
@@ -35,7 +36,7 @@ public class TelaEditarAgendamento extends JFrame {
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
-    private final AgendaService agendaService = new AgendaService();
+    private final AgendaService agendaService = new FabricaDeServicos().criarAgendaService();
 
     private JTextField txtCliente;
     private JTextField txtContato;

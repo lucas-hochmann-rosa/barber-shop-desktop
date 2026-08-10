@@ -1,6 +1,6 @@
 package br.com.barberdesk.service;
 
-import br.com.barberdesk.dao.UsuarioDAO;
+import br.com.barberdesk.dao.repository.UsuarioRepository;
 import br.com.barberdesk.model.Usuario;
 import br.com.barberdesk.util.HashUtil;
 import java.sql.SQLException;
@@ -11,7 +11,11 @@ import java.sql.SQLException;
  * SHA-256 sem salt, para o esquema atual (PBKDF2 com salt por usuário).
  */
 public class AuthService {
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final UsuarioRepository usuarioRepository;
+
+    public AuthService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     /**
      * Valida as credenciais informadas contra o usuário cadastrado.
@@ -29,7 +33,7 @@ public class AuthService {
      * @throws SQLException em caso de falha de acesso ao banco de dados
      */
     public Usuario autenticar(String login, String senha) throws SQLException {
-        Usuario usuario = usuarioDAO.buscarPorLogin(login);
+        Usuario usuario = usuarioRepository.buscarPorLogin(login);
         if (usuario == null) return null;
 
         if (usuario.getSalt() != null && !usuario.getSalt().isEmpty()) {
@@ -44,7 +48,7 @@ public class AuthService {
             String novoSalt = HashUtil.gerarSalt();
             usuario.setSalt(novoSalt);
             usuario.setSenhaHash(HashUtil.hashComSalt(senha, novoSalt));
-            usuarioDAO.atualizar(usuario);
+            usuarioRepository.atualizar(usuario);
             return usuario;
         }
 

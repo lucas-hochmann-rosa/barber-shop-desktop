@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.BarbeariaRepository;
 import br.com.barberdesk.model.Barbearia;
 import java.sql.*;
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
  * de funcionamento). Como o sistema é de barbearia única por instalação, o uso
  * típico é via {@link #buscarPrimeira()}.
  */
-public class BarbeariaDAO {
+public class BarbeariaDAO implements BarbeariaRepository {
     /**
      * Retorna a primeira (e normalmente única) barbearia cadastrada.
      *

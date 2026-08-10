@@ -5,6 +5,7 @@ import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.service.RelatorioService;
 import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.ui.support.UIUtil;
 import org.slf4j.Logger;
@@ -61,8 +62,9 @@ public class TelaHome extends javax.swing.JFrame {
     private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
     private ClienteDAO clienteDAO = new ClienteDAO();
-    private final AgendaService agendaService = new AgendaService();
-    private final RelatorioService relatorioService = new RelatorioService();
+    private final FabricaDeServicos fabricaDeServicos = new FabricaDeServicos();
+    private final AgendaService agendaService = fabricaDeServicos.criarAgendaService();
+    private final RelatorioService relatorioService = fabricaDeServicos.criarRelatorioService();
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     // Listas de apoio para seleção nas tabelas de gerenciamento

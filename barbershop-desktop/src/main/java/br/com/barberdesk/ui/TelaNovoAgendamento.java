@@ -4,6 +4,7 @@ import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.app.AppContext;
+import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.util.DateTimeUtil;
 import br.com.barberdesk.ui.support.UIUtil;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
     private ServicoDAO servicoDAO = new ServicoDAO();
     private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
     private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private final AgendaService agendaService = new AgendaService();
+    private final AgendaService agendaService = new FabricaDeServicos().criarAgendaService();
     private List<Servico> servicosLista;
     private List<Barbeiro> barbeirosLista;
     /** Callback opcional pra atualizar a Home assim que o agendamento é salvo, sem precisar trocar de tela. */

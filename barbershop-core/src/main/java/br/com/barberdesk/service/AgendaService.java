@@ -1,7 +1,7 @@
 package br.com.barberdesk.service;
 
-import br.com.barberdesk.dao.AgendamentoDAO;
-import br.com.barberdesk.dao.ClienteDAO;
+import br.com.barberdesk.dao.repository.AgendamentoRepository;
+import br.com.barberdesk.dao.repository.ClienteRepository;
 import br.com.barberdesk.model.Agendamento;
 import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.StatusAgendamento;
@@ -18,8 +18,13 @@ import java.time.LocalTime;
 public class AgendaService {
     private static final Logger logger = LoggerFactory.getLogger(AgendaService.class);
 
-    private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private final ClienteDAO clienteDAO = new ClienteDAO();
+    private final AgendamentoRepository agendamentoRepository;
+    private final ClienteRepository clienteRepository;
+
+    public AgendaService(AgendamentoRepository agendamentoRepository, ClienteRepository clienteRepository) {
+        this.agendamentoRepository = agendamentoRepository;
+        this.clienteRepository = clienteRepository;
+    }
 
     /**
      * Cria o agendamento e garante que o cliente entra no diretório — as duas
@@ -30,9 +35,9 @@ public class AgendaService {
      * registrar o cliente não desfaz o agendamento — ele já foi persistido.
      */
     public int criarAgendamento(Agendamento agendamento) throws SQLException {
-        int id = agendamentoDAO.inserir(agendamento);
+        int id = agendamentoRepository.inserir(agendamento);
         try {
-            clienteDAO.registrar(agendamento.getBarbeariaId(), agendamento.getClienteNome(), agendamento.getContato());
+            clienteRepository.registrar(agendamento.getBarbeariaId(), agendamento.getClienteNome(), agendamento.getContato());
         } catch (SQLException e) {
             logger.warn("Agendamento {} criado, mas não foi possível registrar o cliente no diretório", id, e);
         }
@@ -86,12 +91,12 @@ public class AgendaService {
     // cancelar). Se o agendamento não existir mais (ex.: excluído em paralelo),
     // simplesmente não faz nada em vez de lançar exceção.
     private void alterarStatus(int id, StatusAgendamento novoStatus, String motivoCancelamento) throws SQLException {
-        Agendamento agendamento = agendamentoDAO.buscarPorId(id);
+        Agendamento agendamento = agendamentoRepository.buscarPorId(id);
         if (agendamento == null) return;
         agendamento.setStatus(novoStatus);
         if (motivoCancelamento != null) {
             agendamento.setMotivoCancelamento(motivoCancelamento);
         }
-        agendamentoDAO.atualizar(agendamento);
+        agendamentoRepository.atualizar(agendamento);
     }
 }

@@ -38,12 +38,14 @@ public class Main {
             try {
                 FlatLightLaf.setup();
 
+                FabricaDeServicos fabrica = new FabricaDeServicos();
+
                 // Testar conexão + garantir schema
                 ConexaoMySQL.getConexao().close();
-                new DatabaseInitService().ensureSchema();
+                fabrica.criarDatabaseInitService().ensureSchema();
 
                 // Verificar se existe barbearia
-                SetupService setupService = new SetupService();
+                SetupService setupService = fabrica.criarSetupService();
                 if (setupService.existeBarbearia()) {
                     // Abrir login
                     TelaLogin telaLogin = new TelaLogin();

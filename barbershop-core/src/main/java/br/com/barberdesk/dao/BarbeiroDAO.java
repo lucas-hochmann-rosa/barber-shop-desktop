@@ -1,5 +1,6 @@
 package br.com.barberdesk.dao;
 
+import br.com.barberdesk.dao.repository.BarbeiroRepository;
 import br.com.barberdesk.model.Barbeiro;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
  * Acesso a dados da tabela {@code barbeiros}: CRUD dos profissionais cadastrados
  * em cada barbearia, incluindo checagem de nome duplicado.
  */
-public class BarbeiroDAO {
+public class BarbeiroDAO implements BarbeiroRepository {
     /**
      * Busca um barbeiro pelo ID.
      *
