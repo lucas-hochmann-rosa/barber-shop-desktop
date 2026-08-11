@@ -124,7 +124,6 @@ Details for each step below.
 ```text
 barber-shop-desktop/
 ├── pom.xml                             # Parent (aggregator) module: centralized versions, no code
-├── nbactions.xml                       # NetBeans IDE run configuration
 ├── docker-compose.yml                  # Pre-configured local MySQL, matching the project's defaults
 ├── README.md / README.en.md
 ├── LICENSE
@@ -150,6 +149,7 @@ barber-shop-desktop/
 │
 └── barbershop-desktop/                 # Swing application - depends on barbershop-core
     ├── pom.xml                         # Builds the shaded executable jar (maven-shade-plugin)
+    ├── nbactions.xml                   # NetBeans run/debug/profile configuration
     └── src/main/
         ├── java/br/com/barberdesk/
         │   ├── app/
@@ -267,8 +267,8 @@ Or override via environment variables:
 
 ### Option 1: NetBeans (recommended for this project)
 
-- Open the Maven project in NetBeans.
-- Run the main class `br.com.barberdesk.app.Main`.
+- Open the project root as a Maven project (File → Open Project). NetBeans picks up both modules, `barbershop-core` and `barbershop-desktop`.
+- Right-click **BarberDesk Desktop** → **Run** (the main class is `br.com.barberdesk.app.Main`). Debug and Profile work from the same menu.
 
 ### Option 2: Maven + JAR
 
