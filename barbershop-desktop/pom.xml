@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <name>BarberDesk Desktop</name>
-    <description>Interface Swing do BarberDesk — depende de barbershop-core para as regras de negócio.</description>
+    <description>Interface Swing do BarberDesk - depende de barbershop-core para as regras de negócio.</description>
 
     <properties>
         <exec.mainClass>br.com.barberdesk.app.Main</exec.mainClass>

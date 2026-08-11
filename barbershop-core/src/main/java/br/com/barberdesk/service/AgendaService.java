@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Centraliza as transições de status de um agendamento (iniciar, concluir,
- * cancelar) — antes duplicadas em TelaHome e TelaEditarAgendamento.
+ * cancelar) - antes duplicadas em TelaHome e TelaEditarAgendamento.
  */
 public class AgendaService {
     private static final Logger logger = LoggerFactory.getLogger(AgendaService.class);
@@ -28,12 +28,12 @@ public class AgendaService {
     }
 
     /**
-     * Cria o agendamento e garante que o cliente entra no diretório — as duas
+     * Cria o agendamento e garante que o cliente entra no diretório - as duas
      * coisas sempre andam juntas, então ficam num só método em vez de a UI
      * ter que lembrar de chamar as duas (era esse o caso antes: só
      * TelaNovoAgendamento registrava o cliente, então qualquer outro caminho
      * de criação de agendamento não passaria pelo diretório). Falha ao
-     * registrar o cliente não desfaz o agendamento — ele já foi persistido.
+     * registrar o cliente não desfaz o agendamento - ele já foi persistido.
      */
     public int criarAgendamento(Agendamento agendamento) throws SQLException {
         int id = agendamentoRepository.inserir(agendamento);
@@ -83,7 +83,7 @@ public class AgendaService {
         return agendamentoRepository.listarPendentesPorBarbearia(barbeariaId);
     }
 
-    /** Lista todos os agendamentos de uma barbearia, independente do status — usado no histórico. */
+    /** Lista todos os agendamentos de uma barbearia, independente do status - usado no histórico. */
     public List<Agendamento> listarPorBarbearia(int barbeariaId) throws SQLException {
         return agendamentoRepository.listarPorBarbearia(barbeariaId);
     }
@@ -104,7 +104,7 @@ public class AgendaService {
 
     /**
      * Verifica se o barbeiro já tem um agendamento que sobrepõe o intervalo
-     * informado — usado pela UI como checagem antecipada, antes de tentar
+     * informado - usado pela UI como checagem antecipada, antes de tentar
      * criar o agendamento, pra mostrar um erro específico de conflito em vez
      * de deixar a exceção genérica do repositório estourar.
      */

@@ -6,7 +6,7 @@ import br.com.barberdesk.model.Usuario;
 
 /**
  * Guarda a sessão ativa (usuário logado + barbearia atual) durante a
- * execução da aplicação desktop — é o único lugar onde o resto da UI
+ * execução da aplicação desktop - é o único lugar onde o resto da UI
  * descobre quem está logado e qual é a barbearia corrente.
  *
  * Antes existiam dois mecanismos concorrentes pra mesma coisa: este
@@ -14,7 +14,7 @@ import br.com.barberdesk.model.Usuario;
  * separados (podiam ficar dessincronizados entre si, ex.: setar um sem o
  * outro), e {@link Session}, um objeto de domínio imutável que já
  * amarrava os dois juntos, mas só era usado como retorno de
- * {@code SessionService.iniciarSessao} — TelaLogin recebia a Session e
+ * {@code SessionService.iniciarSessao} - TelaLogin recebia a Session e
  * imediatamente a desmontava em duas chamadas separadas pro AppContext.
  * Unificados aqui: AppContext passa a guardar a própria {@link Session}
  * como estado mutável único (um valor por vez, trocado inteiro a cada
@@ -32,7 +32,7 @@ public class AppContext {
 
     /**
      * Retorna a instância única do contexto da aplicação, criando-a na
-     * primeira chamada (lazy initialization). Sem sincronização por design —
+     * primeira chamada (lazy initialization). Sem sincronização por design -
      * ver nota da classe sobre execução single-thread na EDT.
      */
     public static AppContext getInstance() {
@@ -47,7 +47,7 @@ public class AppContext {
         return sessaoAtual;
     }
 
-    /** Substitui a sessão ativa inteira — não há como atualizar só usuário ou só barbearia isoladamente. */
+    /** Substitui a sessão ativa inteira - não há como atualizar só usuário ou só barbearia isoladamente. */
     public void setSessaoAtual(Session sessaoAtual) {
         this.sessaoAtual = sessaoAtual;
     }

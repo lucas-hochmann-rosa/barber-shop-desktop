@@ -28,7 +28,7 @@ public class UIUtil {
      * Ícone do app (src/main/resources/icon.ico), aplicado em toda janela.
      * Carregado uma única vez e reaproveitado. Gera várias resoluções
      * pré-renderizadas (setIconImages) em vez de entregar uma imagem grande
-     * só — o Windows escala uma imagem única com baixa qualidade ao desenhar
+     * só - o Windows escala uma imagem única com baixa qualidade ao desenhar
      * o ícone pequeno da barra de título, o que deixava tudo pixelado.
      */
     public static void aplicarIcone(Window janela) {
@@ -65,7 +65,7 @@ public class UIUtil {
     /**
      * setIconImages no JFrame já cobre a barra de título/Alt-Tab; a barra de
      * tarefas do Windows usa java.awt.Taskbar à parte. Chamada direta, sem
-     * reflection — o projeto compila com --release 17, e java.awt.Taskbar
+     * reflection - o projeto compila com --release 17, e java.awt.Taskbar
      * existe desde o Java 9.
      */
     private static void aplicarIconeNaTaskbar(Image icone) {
@@ -96,7 +96,7 @@ public class UIUtil {
 
     /**
      * Um campo mascarado mostra os caracteres de preenchimento (ex.:
-     * "__/__/____") mesmo sem o usuário ter digitado nada — getText() não
+     * "__/__/____") mesmo sem o usuário ter digitado nada - getText() não
      * fica "" nesse caso, só cheio de placeholder. Considera vazio quando não
      * sobra nenhum dígito de verdade.
      */
@@ -107,7 +107,7 @@ public class UIUtil {
 
     /**
      * "Contato" do agendamento nem sempre é telefone (pode ser @ do Instagram,
-     * por exemplo — ver OrigemContato). Considera número válido só quando sobram
+     * por exemplo - ver OrigemContato). Considera número válido só quando sobram
      * pelo menos 8 dígitos depois de remover tudo que não é dígito.
      */
     public static boolean pareceNumeroDeTelefone(String contato) {
@@ -167,7 +167,7 @@ public class UIUtil {
 
     /**
      * Mostra a imagem de um barbeiro/serviço a partir do Base64 gravado no
-     * banco (ver ImageStorageUtil) — não depende de um arquivo existir no
+     * banco (ver ImageStorageUtil) - não depende de um arquivo existir no
      * disco, então sobrevive a troca de máquina/pasta.
      */
     public static void exibirMiniatura(JLabel label, String base64, int width, int height) {

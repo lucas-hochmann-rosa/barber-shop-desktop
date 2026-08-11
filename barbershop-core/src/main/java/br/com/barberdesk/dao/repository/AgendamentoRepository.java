@@ -10,7 +10,7 @@ import java.util.List;
  * Contrato de persistência de {@link Agendamento} consumido por
  * {@link br.com.barberdesk.service.AgendaService}, que agora é o único
  * ponto de acesso da UI a esses dados (Fase 4 do roteiro de
- * refatoração — antes a UI chamava {@link br.com.barberdesk.dao.AgendamentoDAO}
+ * refatoração - antes a UI chamava {@link br.com.barberdesk.dao.AgendamentoDAO}
  * direto).
  */
 public interface AgendamentoRepository {

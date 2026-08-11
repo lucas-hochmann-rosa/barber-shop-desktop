@@ -16,7 +16,7 @@ import javax.swing.table.TableRowSorter;
 
 /**
  * Controla a aba "Clientes": listagem e filtro textual. Extraído de
- * {@code TelaHome} (SRP — Fase 5).
+ * {@code TelaHome} (SRP - Fase 5).
  */
 public class ClienteController {
 

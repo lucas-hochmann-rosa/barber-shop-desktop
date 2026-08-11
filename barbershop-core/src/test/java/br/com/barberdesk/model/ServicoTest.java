@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ServicoTest {
 
-    /** equals()/hashCode() comparam só o id — o resto do objeto pode divergir. */
+    /** equals()/hashCode() comparam só o id - o resto do objeto pode divergir. */
     @Test
     void servicosComMesmoIdSaoIguaisMesmoComOutrosCamposDiferentes() {
         Servico a = new Servico(1, 10, "Corte", new BigDecimal("30.00"), null, 30);
@@ -29,7 +29,7 @@ class ServicoTest {
         assertNotEquals(a, b);
     }
 
-    /** toString() devolve o nome do serviço — usado pelo JComboBox default renderer. */
+    /** toString() devolve o nome do serviço - usado pelo JComboBox default renderer. */
     @Test
     void toStringRetornaONome() {
         Servico s = new Servico(1, 10, "Barba", new BigDecimal("20.00"), null, 20);

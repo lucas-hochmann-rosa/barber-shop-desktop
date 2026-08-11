@@ -223,7 +223,7 @@ public class TelaEditarAgendamento extends JFrame {
         StatusAgendamento st = atual.getStatus();
         String texto = "Status: " + (st != null ? st.name() : "-");
         if (st == StatusAgendamento.CANCELADO && atual.getMotivoCancelamento() != null && !atual.getMotivoCancelamento().isEmpty()) {
-            texto += " — Motivo: " + atual.getMotivoCancelamento();
+            texto += " - Motivo: " + atual.getMotivoCancelamento();
         }
         lblStatus.setText(texto);
 
@@ -243,7 +243,7 @@ public class TelaEditarAgendamento extends JFrame {
     /** Pede o motivo (opcional) e cancela o agendamento via AgendaService; fecha a tela ao concluir. */
     private void cancelarAgendamento() {
         String motivo = JOptionPane.showInputDialog(this, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
-        if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
+        if (motivo == null) return; // usuário fechou o diálogo sem confirmar - não cancela
         try {
             agendaService.cancelarAgendamento(atual.getId(), motivo.trim());
             atual.setStatus(StatusAgendamento.CANCELADO);
@@ -258,7 +258,7 @@ public class TelaEditarAgendamento extends JFrame {
 
     /**
      * Valida os campos, checa horário de funcionamento e grava as
-     * alterações — inclusive atualizando o snapshot de nome de
+     * alterações - inclusive atualizando o snapshot de nome de
      * serviço/barbeiro se algum dos dois foi trocado.
      */
     private void salvar() {
@@ -314,7 +314,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
-    /** Exclui o agendamento após confirmação — remoção definitiva, sem soft-delete. */
+    /** Exclui o agendamento após confirmação - remoção definitiva, sem soft-delete. */
     private void excluir() {
         int opt = JOptionPane.showConfirmDialog(this, "Excluir este agendamento?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;

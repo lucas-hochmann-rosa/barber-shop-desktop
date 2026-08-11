@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  * e conflito de agenda antes de persistir via
  * {@link AgendaService#criarAgendamento}, que também registra o cliente
  * no diretório automaticamente.
- * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
+ * Gerada com GUI Builder do NetBeans - não editar o método initComponents().
  */
 public class TelaNovoAgendamento extends javax.swing.JFrame {
 
@@ -53,7 +53,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         this.onAgendamentoSalvo = onAgendamentoSalvo;
     }
 
-    /** Variante usada ao agendar a partir do card de um serviço específico na Home — já vem pré-selecionado. */
+    /** Variante usada ao agendar a partir do card de um serviço específico na Home - já vem pré-selecionado. */
     public TelaNovoAgendamento(Servico s) {
         this();
         cbServico.setSelectedItem(s);

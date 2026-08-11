@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS barbeiros (
 
 -- Diretório de clientes, populado automaticamente a partir dos agendamentos
 -- (não há tela dedicada de cadastro). agendamentos continua guardando
--- cliente_nome/contato como texto livre — esta tabela é só um índice de
+-- cliente_nome/contato como texto livre - esta tabela é só um índice de
 -- consulta/busca por cima disso, não uma FK obrigatória.
 CREATE TABLE IF NOT EXISTS clientes (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,6 +77,6 @@ CREATE TABLE IF NOT EXISTS agendamentos (
 -- completa: a checagem de sobreposição real (considerando a duração de cada
 -- serviço) fica em AgendamentoDAO.verificarConflito, pois um índice único não
 -- expressa "intervalo de tempo". Sem DROP antes: este script só roda numa
--- instalação nova, com agendamentos recém-criada — o índice não existe ainda
+-- instalação nova, com agendamentos recém-criada - o índice não existe ainda
 -- (e "DROP INDEX ... IF EXISTS" nem é sintaxe válida no MySQL).
 CREATE UNIQUE INDEX ux_barbeiro_horario ON agendamentos (barbeiro_id, data_hora);

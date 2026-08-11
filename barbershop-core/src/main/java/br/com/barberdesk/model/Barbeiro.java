@@ -61,7 +61,7 @@ public class Barbeiro {
 
     /**
      * Alias legado para {@link #getImagemBase64()}, mantido para compatibilidade com telas
-     * que ainda referenciam a foto como "caminho" — na prática retorna a mesma string Base64.
+     * que ainda referenciam a foto como "caminho" - na prática retorna a mesma string Base64.
      */
     public String getFotoCaminho() {
         return imagemBase64;

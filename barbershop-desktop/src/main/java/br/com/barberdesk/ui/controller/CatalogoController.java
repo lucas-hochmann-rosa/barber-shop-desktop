@@ -31,7 +31,7 @@ import javax.swing.table.TableRowSorter;
 /**
  * Controla o catálogo da barbearia: o grid de cartões de serviço exibido na
  * Home e as abas "Serviços"/"Barbeiros" de gerenciamento (CRUD) em "Minha
- * Barbearia". Extraído de {@code TelaHome} (SRP — Fase 5).
+ * Barbearia". Extraído de {@code TelaHome} (SRP - Fase 5).
  */
 public class CatalogoController {
 
@@ -48,7 +48,7 @@ public class CatalogoController {
 
     /**
      * @param onAgendarServico callback disparado ao clicar em "Agendar" num cartão do
-     *                         grid de serviços — quem monta a tela decide como abrir o
+     *                         grid de serviços - quem monta a tela decide como abrir o
      *                         fluxo de novo agendamento (acoplamento com a agenda)
      */
     public CatalogoController(Component parent, JPanel pnlServicosGrid, JTable tblGerenciarServicos,

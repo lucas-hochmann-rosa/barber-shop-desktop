@@ -62,7 +62,7 @@ public class ConexaoMySQL {
      * Empresta uma conexão do pool HikariCP para uso pelos DAOs.
      *
      * Conexão emprestada do pool (HikariCP). O contrato pro resto do código não
-     * muda: continua sendo usada em try-with-resources — close() agora devolve
+     * muda: continua sendo usada em try-with-resources - close() agora devolve
      * a conexão pro pool em vez de fechar de verdade a conexão física.
      *
      * @return uma conexão ativa, pronta para uso

@@ -30,15 +30,15 @@ import java.util.List;
  * banco, schema/migrações, autenticação, criação e cancelamento de
  * agendamento (com detecção de conflito) e geração de relatório.
  * <p>
- * Não é um teste JUnit — os testes em {@code src/test} usam repositórios em
+ * Não é um teste JUnit - os testes em {@code src/test} usam repositórios em
  * memória e rodam a cada {@code mvn test}, sem tocar num banco de verdade.
  * Este é um smoke test operacional, pensado para ser executado manualmente
  * depois de um deploy ou de uma migração de schema, quando "compilou e os
  * testes passaram" não é garantia suficiente de que o sistema funciona
  * contra o banco real.
  * <p>
- * Cria seus próprios dados de verificação — uma barbearia isolada, com nome
- * prefixado e sufixo único — e remove tudo ao final, com sucesso ou falha,
+ * Cria seus próprios dados de verificação - uma barbearia isolada, com nome
+ * prefixado e sufixo único - e remove tudo ao final, com sucesso ou falha,
  * para não deixar resíduo na base.
  * <p>
  * Uso: {@code mvn -pl barbershop-desktop exec:java -Dexec.mainClass=br.com.barberdesk.app.VerificacaoSistema}
@@ -56,7 +56,7 @@ public class VerificacaoSistema {
 
     public static void main(String[] args) {
         // Terminais Windows nem sempre usam UTF-8 como codepage padrão, o que
-        // corrompe os acentos do relatório — força UTF-8 na saída, independente
+        // corrompe os acentos do relatório - força UTF-8 na saída, independente
         // de como o processo foi iniciado.
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         System.exit(new VerificacaoSistema().executar());
@@ -64,7 +64,7 @@ public class VerificacaoSistema {
 
     /** @return código de saída do processo: 0 se todas as checagens passaram, 1 caso alguma tenha falhado. */
     public int executar() {
-        System.out.println("=== BarberDesk — Verificação do Sistema ===");
+        System.out.println("=== BarberDesk - Verificação do Sistema ===");
         System.out.println();
 
         FabricaDeServicos fabrica = new FabricaDeServicos();
@@ -97,7 +97,7 @@ public class VerificacaoSistema {
                 barbeariaRef[0] = barbearia;
                 usuarioRef[0] = usuario;
 
-                // inserir() não devolve o objeto com o id preenchido — busca de volta via CatalogoService.
+                // inserir() não devolve o objeto com o id preenchido - busca de volta via CatalogoService.
                 CatalogoService catalogoService = fabrica.criarCatalogoService();
                 servicoRef[0] = catalogoService.listarServicos(barbearia.getId()).get(0);
                 barbeiroRef[0] = catalogoService.listarBarbeiros(barbearia.getId()).get(0);
@@ -168,7 +168,7 @@ public class VerificacaoSistema {
             System.out.println("[OK]    " + nome);
         } catch (Exception e) {
             falhas++;
-            System.out.println("[FALHA] " + nome + " — " + e.getMessage());
+            System.out.println("[FALHA] " + nome + " - " + e.getMessage());
         }
     }
 
@@ -176,7 +176,7 @@ public class VerificacaoSistema {
      * Remove todos os dados criados pela verificação, na ordem que respeita
      * as chaves estrangeiras (agendamentos/clientes/serviços/barbeiros antes
      * da barbearia, usuário por último). Roda mesmo se alguma checagem
-     * falhou no meio do caminho, para nunca deixar resíduo na base — por
+     * falhou no meio do caminho, para nunca deixar resíduo na base - por
      * isso usa SQL direto: nem todo repositório tem um método de exclusão
      * (barbearia e usuário nunca são removidos pelo fluxo normal do app).
      */

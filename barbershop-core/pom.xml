@@ -15,7 +15,7 @@
 
     <name>BarberDesk Core</name>
     <description>
-        Regras de negócio da barbearia (model, dao, service, util de domínio) —
+        Regras de negócio da barbearia (model, dao, service, util de domínio) -
         sem nenhuma dependência de Swing, pra poder ser reaproveitado por um
         front-end web numa etapa futura.
     </description>

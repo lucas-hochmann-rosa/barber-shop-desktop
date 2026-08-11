@@ -119,7 +119,7 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 
 ## 🏗️ Arquitetura
 
-Projeto **multi-módulo Maven**, dividido para que as regras de negócio (`barbershop-core`) não dependam da interface Swing e possam ser reaproveitadas por uma futura camada Web — ver [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md) para o detalhamento completo dessa separação (princípios SOLID aplicados, *code smells* eliminados, *design patterns* usados).
+Projeto **multi-módulo Maven**, dividido para que as regras de negócio (`barbershop-core`) não dependam da interface Swing e possam ser reaproveitadas por uma futura camada Web.
 
 ```text
 barber-shop-desktop/
@@ -129,10 +129,9 @@ barber-shop-desktop/
 ├── README.md / README.en.md
 ├── LICENSE
 ├── docs/
-│   ├── RELATORIO-ETAPA-6.md            # SOLID, code smells, design patterns, prontidão pra Web
 │   └── screenshots/                    # Prints do sistema usados no README
 │
-├── barbershop-core/                    # Regras de negócio — sem qualquer dependência de Swing
+├── barbershop-core/                    # Regras de negócio - sem qualquer dependência de Swing
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/br/com/barberdesk/
@@ -149,7 +148,7 @@ barber-shop-desktop/
 │           └── service/                # Testes de service com repositórios fake em memória
 │               └── fake/               # Test doubles das interfaces de repositório
 │
-└── barbershop-desktop/                 # Aplicação Swing — depende de barbershop-core
+└── barbershop-desktop/                 # Aplicação Swing - depende de barbershop-core
     ├── pom.xml                         # Gera o jar executável sombreado (maven-shade-plugin)
     └── src/main/
         ├── java/br/com/barberdesk/
@@ -168,8 +167,8 @@ barber-shop-desktop/
 ### Organização
 
 - **`app/Main.java`**: ponto de entrada e decisão entre cadastro inicial e login.
-- **`app/FabricaDeServicos.java`**: único ponto do sistema que instancia DAOs concretos e os injeta nos services via construtor — nenhuma outra classe do módulo desktop deveria instanciar um DAO diretamente.
-- **`app/VerificacaoSistema.java`**: utilitário de linha de comando (`main()`) que valida, contra um MySQL real, que conexão, schema, autenticação, agendamento e relatórios continuam funcionando de ponta a ponta — ver [Verificação do Sistema](#-verificação-do-sistema).
+- **`app/FabricaDeServicos.java`**: único ponto do sistema que instancia DAOs concretos e os injeta nos services via construtor - nenhuma outra classe do módulo desktop deveria instanciar um DAO diretamente.
+- **`app/VerificacaoSistema.java`**: utilitário de linha de comando (`main()`) que valida, contra um MySQL real, que conexão, schema, autenticação, agendamento e relatórios continuam funcionando de ponta a ponta - ver [Verificação do Sistema](#-verificação-do-sistema).
 - **`service/DatabaseInitService.java`** (delega para `dao/SchemaInitializer.java`): criação de schema e migrações automáticas.
 - **`service/AgendaService.java`**: transições de status do agendamento, conflito de horário e validação de horário de funcionamento.
 - **`service/RelatorioService.java`** (delega para `dao/RelatorioDAO.java`): agregações para a tela de Relatórios.
@@ -305,7 +304,7 @@ Gera `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar` já com tod
    @echo off
    start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, aponte-o para `barbershop-desktop/src/main/resources/icon.ico` (já vem pronto no repositório — Windows não aceita `.png` como ícone de atalho).
+   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, aponte-o para `barbershop-desktop/src/main/resources/icon.ico` (já vem pronto no repositório - Windows não aceita `.png` como ícone de atalho).
 
 ### 🐧 Linux
 
@@ -424,7 +423,7 @@ mvn test
 Cobre:
 
 - Lógica pura de `model`/`util` (hash de senha, formatação/parse de data, `equals()`/`hashCode()`).
-- **Services de negócio** (`AgendaService`, `AuthService`, `RelatorioService`) usando **repositórios *fake* em memória** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) — sem tocar em banco real, cobrindo transições de status do agendamento, detecção de conflito de horário, validação de horário de funcionamento e autenticação (incluindo o upgrade silencioso de contas com hash legado).
+- **Services de negócio** (`AgendaService`, `AuthService`, `RelatorioService`) usando **repositórios *fake* em memória** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) - sem tocar em banco real, cobrindo transições de status do agendamento, detecção de conflito de horário, validação de horário de funcionamento e autenticação (incluindo o upgrade silencioso de contas com hash legado).
 
 Não roda contra um banco de verdade nem contra a GUI. Para isso, ver [Verificação do Sistema](#-verificação-do-sistema) (automatizada) e o fluxo manual sugerido abaixo:
 
@@ -442,7 +441,7 @@ Não roda contra um banco de verdade nem contra a GUI. Para isso, ver [Verifica�
 
 ## ✅ Verificação do Sistema
 
-Além dos testes JUnit (que usam repositórios em memória), o projeto tem um smoke test operacional que roda contra um **MySQL real** — útil para validar rapidamente, depois de um deploy ou de uma migração de schema, que o sistema continua funcionando de ponta a ponta:
+Além dos testes JUnit (que usam repositórios em memória), o projeto tem um smoke test operacional que roda contra um **MySQL real** - útil para validar rapidamente, depois de um deploy ou de uma migração de schema, que o sistema continua funcionando de ponta a ponta:
 
 ```bash
 docker compose up -d
@@ -450,10 +449,10 @@ mvn clean package
 java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
 ```
 
-Ele conecta no banco, garante o schema, faz um cadastro inicial de verificação, testa autenticação (senha certa e errada), cria um agendamento, confirma a detecção de conflito de horário, cancela o agendamento e gera um relatório — imprimindo `[OK]`/`[FALHA]` para cada checagem:
+Ele conecta no banco, garante o schema, faz um cadastro inicial de verificação, testa autenticação (senha certa e errada), cria um agendamento, confirma a detecção de conflito de horário, cancela o agendamento e gera um relatório - imprimindo `[OK]`/`[FALHA]` para cada checagem:
 
 ```
-=== BarberDesk — Verificação do Sistema ===
+=== BarberDesk - Verificação do Sistema ===
 
 [OK]    Conexão com o banco de dados
 [OK]    Schema do banco (migrações)
@@ -468,7 +467,7 @@ Ele conecta no banco, garante o schema, faz um cadastro inicial de verificação
 9 checagem(ns), 0 falha(s).
 ```
 
-Sai com código `0` se tudo passou, ou `1` se alguma checagem falhou (útil para plugar num pipeline de CI/CD). Todos os dados de verificação criados (barbearia, usuário, serviço, barbeiro, agendamento) são removidos ao final, com sucesso ou falha — não deixa resíduo no banco.
+Sai com código `0` se tudo passou, ou `1` se alguma checagem falhou (útil para plugar num pipeline de CI/CD). Todos os dados de verificação criados (barbearia, usuário, serviço, barbeiro, agendamento) são removidos ao final, com sucesso ou falha - não deixa resíduo no banco.
 
 ---
 
@@ -499,7 +498,7 @@ Prints das telas principais, para referência visual rápida do sistema:
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 
 - **Testes de integração automatizados dos DAOs** contra um MySQL real (ex.: Testcontainers, plugado no `mvn test`) - hoje a cobertura contra banco real é o smoke test manual `VerificacaoSistema` (ver [Verificação do Sistema](#-verificação-do-sistema)), não algo que roda sozinho em CI a cada build.
-- **Camada Web**: `barbershop-core` já não depende de Swing (ver [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md)), então está pronto para ser consumido por um novo módulo Web (ex.: Spring Boot) reaproveitando os mesmos services - esse novo módulo ainda não existe.
+- **Camada Web**: `barbershop-core` já não depende de Swing, então está pronto para ser consumido por um novo módulo Web (ex.: Spring Boot) reaproveitando os mesmos services - esse novo módulo ainda não existe.
 - **Papéis de usuário**: hoje só existe um admin por barbearia; um barbeiro logado ver só a própria agenda exigiria repensar a relação entre `Usuario` e `Barbeiro`, que hoje não existe.
 - **Flyway** no lugar das migrações manuais (`SchemaInitializer`) - adiado por não dar pra validar contra um banco de verdade neste momento.
 - **Instalador nativo** via `jpackage`.

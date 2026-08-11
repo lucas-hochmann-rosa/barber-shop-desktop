@@ -119,7 +119,7 @@ Details for each step below.
 
 ## 🏗️ Architecture
 
-**Multi-module Maven** project, split so the business rules (`barbershop-core`) don't depend on the Swing UI and can be reused by a future Web layer — see [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md) (Portuguese) for the full breakdown of that separation (SOLID principles applied, code smells eliminated, design patterns used).
+**Multi-module Maven** project, split so the business rules (`barbershop-core`) don't depend on the Swing UI and can be reused by a future Web layer.
 
 ```text
 barber-shop-desktop/
@@ -129,10 +129,9 @@ barber-shop-desktop/
 ├── README.md / README.en.md
 ├── LICENSE
 ├── docs/
-│   ├── RELATORIO-ETAPA-6.md            # SOLID, code smells, design patterns, Web readiness (PT-BR)
 │   └── screenshots/                    # Screenshots used in the README
 │
-├── barbershop-core/                    # Business rules — zero dependency on Swing
+├── barbershop-core/                    # Business rules - zero dependency on Swing
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/br/com/barberdesk/
@@ -149,7 +148,7 @@ barber-shop-desktop/
 │           └── service/                # Service tests using in-memory fake repositories
 │               └── fake/               # Test doubles of the repository interfaces
 │
-└── barbershop-desktop/                 # Swing application — depends on barbershop-core
+└── barbershop-desktop/                 # Swing application - depends on barbershop-core
     ├── pom.xml                         # Builds the shaded executable jar (maven-shade-plugin)
     └── src/main/
         ├── java/br/com/barberdesk/
@@ -168,8 +167,8 @@ barber-shop-desktop/
 ### Organization
 
 - **`app/Main.java`**: entry point, decides between initial setup and login.
-- **`app/FabricaDeServicos.java`**: the only place in the system that instantiates concrete DAOs and injects them into services via constructor — no other class in the desktop module should instantiate a DAO directly.
-- **`app/VerificacaoSistema.java`**: command-line utility (`main()`) that validates, against a real MySQL, that the connection, schema, authentication, scheduling and reports still work end to end — see [System Verification](#-system-verification).
+- **`app/FabricaDeServicos.java`**: the only place in the system that instantiates concrete DAOs and injects them into services via constructor - no other class in the desktop module should instantiate a DAO directly.
+- **`app/VerificacaoSistema.java`**: command-line utility (`main()`) that validates, against a real MySQL, that the connection, schema, authentication, scheduling and reports still work end to end - see [System Verification](#-system-verification).
 - **`service/DatabaseInitService.java`** (delegates to `dao/SchemaInitializer.java`): schema creation and automatic migrations.
 - **`service/AgendaService.java`**: appointment status transitions, time-conflict detection and business-hours validation.
 - **`service/RelatorioService.java`** (delegates to `dao/RelatorioDAO.java`): aggregations for the Reports screen.
@@ -305,7 +304,7 @@ Produces `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar` with al
    @echo off
    start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, point it to `barbershop-desktop/src/main/resources/icon.ico` (already included in the repo — Windows shortcuts don't accept `.png` directly).
+   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, point it to `barbershop-desktop/src/main/resources/icon.ico` (already included in the repo - Windows shortcuts don't accept `.png` directly).
 
 ### 🐧 Linux
 
@@ -424,7 +423,7 @@ mvn test
 Covers:
 
 - Pure `model`/`util` logic (password hashing, date parsing/formatting, `equals()`/`hashCode()`).
-- **Business services** (`AgendaService`, `AuthService`, `RelatorioService`) using **in-memory fake repositories** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) — no real database involved, covering appointment status transitions, time-conflict detection, business-hours validation and authentication (including the silent upgrade of legacy-hash accounts).
+- **Business services** (`AgendaService`, `AuthService`, `RelatorioService`) using **in-memory fake repositories** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) - no real database involved, covering appointment status transitions, time-conflict detection, business-hours validation and authentication (including the silent upgrade of legacy-hash accounts).
 
 Doesn't run against a real database or the GUI. For that, see [System Verification](#-system-verification) (automated) and the suggested manual flow below:
 
@@ -442,7 +441,7 @@ Doesn't run against a real database or the GUI. For that, see [System Verificati
 
 ## ✅ System Verification
 
-Besides the JUnit tests (which use in-memory repositories), the project has an operational smoke test that runs against a **real MySQL** — useful to quickly confirm, after a deploy or a schema migration, that the system still works end to end:
+Besides the JUnit tests (which use in-memory repositories), the project has an operational smoke test that runs against a **real MySQL** - useful to quickly confirm, after a deploy or a schema migration, that the system still works end to end:
 
 ```bash
 docker compose up -d
@@ -450,10 +449,10 @@ mvn clean package
 java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
 ```
 
-It connects to the database, ensures the schema, runs a verification initial setup, tests authentication (correct and incorrect password), creates an appointment, confirms time-conflict detection, cancels the appointment and generates a report — printing `[OK]`/`[FALHA]` (`[OK]`/`[FAILED]`) for each check:
+It connects to the database, ensures the schema, runs a verification initial setup, tests authentication (correct and incorrect password), creates an appointment, confirms time-conflict detection, cancels the appointment and generates a report - printing `[OK]`/`[FALHA]` (`[OK]`/`[FAILED]`) for each check:
 
 ```
-=== BarberDesk — Verificação do Sistema ===
+=== BarberDesk - Verificação do Sistema ===
 
 [OK]    Conexão com o banco de dados
 [OK]    Schema do banco (migrações)
@@ -468,7 +467,7 @@ It connects to the database, ensures the schema, runs a verification initial set
 9 checagem(ns), 0 falha(s).
 ```
 
-Exits with code `0` if everything passed, or `1` if any check failed (handy for wiring into a CI/CD pipeline). All verification data created (barbershop, user, service, barber, appointment) is removed at the end, whether it succeeds or fails — no leftovers in the database.
+Exits with code `0` if everything passed, or `1` if any check failed (handy for wiring into a CI/CD pipeline). All verification data created (barbershop, user, service, barber, appointment) is removed at the end, whether it succeeds or fails - no leftovers in the database.
 
 ---
 
@@ -499,7 +498,7 @@ Screenshots of the main screens, for a quick visual reference:
 Known items, tracked deliberately as next steps rather than oversights:
 
 - **Automated DAO integration tests** against a real MySQL (e.g. Testcontainers, wired into `mvn test`) - today, real-database coverage comes from the manual smoke test `VerificacaoSistema` (see [System Verification](#-system-verification)), not something that runs on its own in CI on every build.
-- **Web layer**: `barbershop-core` no longer depends on Swing (see [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md), Portuguese), so it's ready to be consumed by a new Web module (e.g. Spring Boot) reusing the same services - that new module doesn't exist yet.
+- **Web layer**: `barbershop-core` no longer depends on Swing, so it's ready to be consumed by a new Web module (e.g. Spring Boot) reusing the same services - that new module doesn't exist yet.
 - **User roles**: currently a single admin per barbershop; having a logged-in barber see only their own schedule would require rethinking the relationship between `Usuario` and `Barbeiro`, which doesn't exist today.
 - **Flyway** instead of the manual migrations (`SchemaInitializer`) - deferred since it can't be validated against a real database in this environment.
 - **Native installer** via `jpackage`.

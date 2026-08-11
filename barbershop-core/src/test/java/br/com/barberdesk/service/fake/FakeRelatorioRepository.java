@@ -13,7 +13,7 @@ import java.util.List;
  * {@link br.com.barberdesk.service.RelatorioService}. As agregações reais
  * são SQL puro em {@link br.com.barberdesk.dao.RelatorioDAO}, então este
  * fake apenas devolve valores pré-configurados e registra os parâmetros
- * recebidos — o objetivo do teste é confirmar que o service repassa
+ * recebidos - o objetivo do teste é confirmar que o service repassa
  * corretamente os parâmetros e devolve o resultado do repositório, não
  * reimplementar a agregação.
  */

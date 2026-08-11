@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * primeira tela exibida quando já existe uma barbearia cadastrada (ver
  * {@link br.com.barberdesk.app.Main}); caso contrário, o app abre direto
  * em {@link TelaCadastroInicial}.
- * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
+ * Gerada com GUI Builder do NetBeans - não editar o método initComponents().
  */
 public class TelaLogin extends javax.swing.JFrame {
 

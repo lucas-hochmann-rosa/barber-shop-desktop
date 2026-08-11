@@ -12,7 +12,7 @@ import java.util.List;
  * Orquestra os relatórios agregados sobre agendamentos concluídos,
  * delegando as consultas em si para {@link RelatorioRepository}. Faturamento
  * é calculado pelo preço ATUAL do serviço (servicos.preco), não pelo preço
- * no momento do agendamento — não existe snapshot de preço, só de
+ * no momento do agendamento - não existe snapshot de preço, só de
  * nome/duração (ver {@link br.com.barberdesk.dao.AgendamentoDAO}). Se o
  * preço de um serviço mudar, relatórios de períodos passados passam a
  * refletir o preço novo. Limitação conhecida, documentada no README

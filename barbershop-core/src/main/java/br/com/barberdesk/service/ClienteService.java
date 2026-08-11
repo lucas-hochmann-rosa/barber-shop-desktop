@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Consulta do diretório de clientes de uma barbearia (aba "Clientes" em
  * "Minha Barbearia"). O registro em si acontece automaticamente ao criar
- * um agendamento — ver {@link AgendaService#criarAgendamento} — não há
+ * um agendamento - ver {@link AgendaService#criarAgendamento} - não há
  * cadastro manual de cliente, então este service só expõe leitura.
  */
 public class ClienteService {

@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Controla a aba "Dados Gerais" de "Minha Barbearia": exibição e edição do
  * nome, CEP, cultura/valores e horário de funcionamento. Extraído de
- * {@code TelaHome} (SRP — Fase 5).
+ * {@code TelaHome} (SRP - Fase 5).
  */
 public class BarbeariaController {
 

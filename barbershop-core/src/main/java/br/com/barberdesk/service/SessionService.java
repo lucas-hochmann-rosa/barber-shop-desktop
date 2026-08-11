@@ -25,7 +25,7 @@ public class SessionService {
      *
      * Se o usuário não tiver uma barbearia vinculada (dado antigo/inconsistente),
      * recorre à primeira barbearia cadastrada no banco como fallback, em vez de
-     * falhar — cenário raro, mas evita travar o login por causa de um vínculo
+     * falhar - cenário raro, mas evita travar o login por causa de um vínculo
      * ausente.
      *
      * @param login login do usuário

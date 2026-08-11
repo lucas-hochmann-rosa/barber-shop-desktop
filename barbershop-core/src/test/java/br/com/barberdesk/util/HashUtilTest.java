@@ -45,7 +45,7 @@ class HashUtilTest {
         assertEquals(32, salt1.length()); // 16 bytes em hex = 32 caracteres
     }
 
-    /** O hash legado (contas antigas, sem salt) também é determinístico — SHA-256 puro. */
+    /** O hash legado (contas antigas, sem salt) também é determinístico - SHA-256 puro. */
     @Test
     void hashSHA256EhDeterministicoESemSalt() {
         String hash1 = HashUtil.hashSHA256("minhaSenha123");

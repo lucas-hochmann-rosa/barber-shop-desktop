@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Acesso a dados da tabela {@code clientes}: registro automático (upsert) e
  * listagem dos clientes de uma barbearia. Não há CRUD completo porque não existe
- * tela de cadastro de cliente dedicada — o cliente é criado/atualizado
+ * tela de cadastro de cliente dedicada - o cliente é criado/atualizado
  * implicitamente ao agendar um horário.
  */
 public class ClienteDAO implements ClienteRepository {
@@ -17,7 +17,7 @@ public class ClienteDAO implements ClienteRepository {
     /**
      * Cria o cliente se ainda não existir (por barbearia+contato) ou atualiza o
      * nome se ele mudou desde a última vez. Chamado automaticamente ao criar um
-     * agendamento — não existe tela de cadastro de cliente dedicada.
+     * agendamento - não existe tela de cadastro de cliente dedicada.
      *
      * Implementado como upsert ({@code INSERT ... ON DUPLICATE KEY UPDATE}) em vez
      * de um INSERT simples: a combinação barbearia+contato é a chave natural do

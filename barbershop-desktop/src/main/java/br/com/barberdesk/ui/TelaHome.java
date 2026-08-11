@@ -20,16 +20,16 @@ import javax.swing.event.DocumentListener;
  * ({@code pnlSideMenu}) que troca os cartões de um {@link java.awt.CardLayout}
  * ({@code pnlCards}) entre quatro áreas:
  * <ul>
- *   <li><b>Home</b> — grid de serviços para agendamento rápido e tabela de
+ *   <li><b>Home</b> - grid de serviços para agendamento rápido e tabela de
  *       agendamentos pendentes, com menu de contexto (botão direito) para
  *       iniciar, concluir ou cancelar um atendimento;</li>
- *   <li><b>Minha Barbearia</b> — abas para editar os dados gerais da
+ *   <li><b>Minha Barbearia</b> - abas para editar os dados gerais da
  *       barbearia (nome, CEP, cultura/valores, horário de funcionamento) e
  *       gerenciar (cadastrar/editar/excluir) serviços, barbeiros e a
  *       listagem de clientes;</li>
- *   <li><b>Histórico</b> — todos os agendamentos já registrados (qualquer
+ *   <li><b>Histórico</b> - todos os agendamentos já registrados (qualquer
  *       status), com busca textual;</li>
- *   <li><b>Relatórios</b> — faturamento total, serviços mais vendidos e
+ *   <li><b>Relatórios</b> - faturamento total, serviços mais vendidos e
  *       ranking de barbeiros num intervalo de datas.</li>
  * </ul>
  * A tela não implementa regras de negócio nem acessa o banco diretamente:
@@ -528,7 +528,7 @@ public class TelaHome extends javax.swing.JFrame {
         pnlRelatorios.add(btnGerarRelatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 73, 100, 30));
 
         lblFaturamentoTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblFaturamentoTotal.setText("Faturamento no período: —");
+        lblFaturamentoTotal.setText("Faturamento no período: -");
         pnlRelatorios.add(lblFaturamentoTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 400, -1));
 
         jLabel20.setText("Serviços mais vendidos");

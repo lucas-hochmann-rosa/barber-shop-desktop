@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * Controla a aba "Home": tabela de agendamentos pendentes, menu de contexto
  * (editar/iniciar/terminar/cancelar) e abertura de {@link TelaNovoAgendamento}.
  * Extraído de {@code TelaHome} para isolar a orquestração da agenda do
- * restante da tela (SRP — Fase 5).
+ * restante da tela (SRP - Fase 5).
  */
 public class AgendaController {
 
@@ -172,7 +172,7 @@ public class AgendaController {
 
     private void cancelarAgendamento(int id) {
         String motivo = JOptionPane.showInputDialog(parent, "Motivo do cancelamento (opcional):", "Cancelar Agendamento", JOptionPane.QUESTION_MESSAGE);
-        if (motivo == null) return; // usuário fechou o diálogo sem confirmar — não cancela
+        if (motivo == null) return; // usuário fechou o diálogo sem confirmar - não cancela
         try {
             agendaService.cancelarAgendamento(id, motivo.trim());
             carregarAgendamentos();

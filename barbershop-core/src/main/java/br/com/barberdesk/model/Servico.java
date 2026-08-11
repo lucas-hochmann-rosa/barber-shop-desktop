@@ -34,7 +34,7 @@ public class Servico {
     }
 
     /**
-     * Construtor completo, incluindo a duração — usado ao carregar um serviço já
+     * Construtor completo, incluindo a duração - usado ao carregar um serviço já
      * existente do banco (os demais construtores mantêm a duração padrão de 30 min).
      */
     public Servico(int id, int barbeariaId, String nome, BigDecimal preco, String imagemBase64, int duracaoMinutos) {
@@ -92,7 +92,7 @@ public class Servico {
 
     /**
      * Alias legado para {@link #getImagemBase64()}, mantido para compatibilidade com telas
-     * que ainda referenciam a foto como "caminho" — na prática retorna a mesma string Base64.
+     * que ainda referenciam a foto como "caminho" - na prática retorna a mesma string Base64.
      */
     public String getFotoCaminho() {
         return imagemBase64;

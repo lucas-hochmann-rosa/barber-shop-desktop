@@ -14,14 +14,14 @@ import java.security.spec.InvalidKeySpecException;
  * (120.000 iterações, chave de 256 bits), usado para toda senha nova. O
  * método {@link #hashSHA256(String)} (SHA-256 puro, sem salt) é mantido
  * apenas para compatibilidade com contas antigas criadas antes da migração
- * para PBKDF2 — não deve ser usado para senhas novas.
+ * para PBKDF2 - não deve ser usado para senhas novas.
  */
 public class HashUtil {
 
     private static final int PBKDF2_ITERACOES = 120_000;
     private static final int PBKDF2_TAMANHO_CHAVE_BITS = 256;
 
-    /** Salt aleatório de 16 bytes, em hexadecimal — um por usuário. */
+    /** Salt aleatório de 16 bytes, em hexadecimal - um por usuário. */
     public static String gerarSalt() {
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
@@ -41,7 +41,7 @@ public class HashUtil {
     }
 
     /**
-     * SHA-256 sem salt — mantido só para autenticar contas criadas antes da
+     * SHA-256 sem salt - mantido só para autenticar contas criadas antes da
      * migração para hash com salt (ver AuthService.autenticar, que faz upgrade
      * silencioso pra PBKDF2 no primeiro login bem-sucedido). Não usar para
      * senha nova.

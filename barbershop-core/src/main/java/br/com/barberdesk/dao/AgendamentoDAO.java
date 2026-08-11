@@ -175,7 +175,7 @@ public class AgendamentoDAO implements AgendamentoRepository {
         return listarPorBarbearia(barbeariaId);
     }
 
-    // Duração máxima aceita para um serviço (ver DialogServico) — usada só para
+    // Duração máxima aceita para um serviço (ver DialogServico) - usada só para
     // dimensionar a janela de busca abaixo, largura o bastante para conter
     // qualquer agendamento existente que possa se sobrepor ao novo.
     private static final int DURACAO_MAXIMA_MINUTOS = 480;
@@ -198,7 +198,7 @@ public class AgendamentoDAO implements AgendamentoRepository {
      * @param barbeiroId      barbeiro a checar; se <= 0, não há conflito possível
      * @param dataHora        início do novo agendamento
      * @param duracaoMinutos  duração do novo agendamento (usa 30 min se <= 0)
-     * @param excluirId       ID de agendamento a ignorar na busca (0 para nenhum) —
+     * @param excluirId       ID de agendamento a ignorar na busca (0 para nenhum) -
      *                        usado ao editar um agendamento existente, para que ele
      *                        não conflite consigo mesmo
      * @return {@code true} se houver sobreposição de horário com outro agendamento
@@ -242,7 +242,7 @@ public class AgendamentoDAO implements AgendamentoRepository {
 
     /**
      * Overload de conveniência para checagem antes de existir um Agendamento
-     * montado (ex.: pré-validação na tela de novo agendamento) — não há id
+     * montado (ex.: pré-validação na tela de novo agendamento) - não há id
      * ainda para excluir da busca.
      */
     public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int duracaoMinutos) throws SQLException {

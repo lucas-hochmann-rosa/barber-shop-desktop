@@ -24,7 +24,7 @@ public class AuthService {
      * diretamente com PBKDF2. Se a conta é antiga (sem salt), a senha é
      * validada pelo hash SHA-256 legado e, em caso de sucesso, a conta é
      * migrada nesse mesmo login: gera-se um salt novo, recalcula-se o hash
-     * com PBKDF2 e grava-se no banco — sem exigir troca de senha do usuário.
+     * com PBKDF2 e grava-se no banco - sem exigir troca de senha do usuário.
      *
      * @param login login do usuário
      * @param senha senha em texto puro informada no formulário de login
@@ -43,7 +43,7 @@ public class AuthService {
 
         // Conta criada antes da migração pra hash com salt: valida pelo SHA-256
         // legado e, se bater, faz upgrade silencioso pra PBKDF2 com salt nesse
-        // mesmo login — não exige que o usuário troque a senha.
+        // mesmo login - não exige que o usuário troque a senha.
         if (HashUtil.hashSHA256(senha).equals(usuario.getSenhaHash())) {
             String novoSalt = HashUtil.gerarSalt();
             usuario.setSalt(novoSalt);

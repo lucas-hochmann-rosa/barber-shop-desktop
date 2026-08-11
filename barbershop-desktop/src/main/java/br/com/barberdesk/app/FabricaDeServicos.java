@@ -21,7 +21,7 @@ import br.com.barberdesk.service.SetupService;
 /**
  * Único ponto de montagem do grafo de objetos da aplicação: instancia os
  * DAOs concretos e injeta nos services, via construtor. Nenhuma outra
- * classe do módulo desktop deveria instanciar um DAO diretamente — quem
+ * classe do módulo desktop deveria instanciar um DAO diretamente - quem
  * precisa de acesso a dados pede um service já pronto daqui.
  *
  * Os DAOs em si são sem estado (cada método abre/fecha sua própria conexão

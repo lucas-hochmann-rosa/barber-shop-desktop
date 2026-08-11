@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * barbearia, os serviços/barbeiros iniciais (mantidos em memória até
  * salvar) e o usuário administrador, e delega a persistência para
  * {@link br.com.barberdesk.service.SetupService#criarCadastroInicial}.
- * Gerada com GUI Builder do NetBeans — não editar o método initComponents().
+ * Gerada com GUI Builder do NetBeans - não editar o método initComponents().
  */
 public class TelaCadastroInicial extends javax.swing.JFrame {
 
@@ -461,7 +461,7 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
 
     /**
      * Valida os campos obrigatórios (inclusive pelo menos um serviço e um
-     * barbeiro já adicionados) e persiste tudo de uma vez via SetupService —
+     * barbeiro já adicionados) e persiste tudo de uma vez via SetupService -
      * barbearia, serviços, barbeiros e usuário administrador nascem juntos
      * na mesma transação lógica de cadastro inicial.
      */

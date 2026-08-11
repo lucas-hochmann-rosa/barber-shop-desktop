@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 /**
  * Consulta e manutenção dos dados gerais de uma barbearia já cadastrada
- * (aba "Minha Barbearia" — nome, CEP, cultura/valores, horário de
+ * (aba "Minha Barbearia" - nome, CEP, cultura/valores, horário de
  * funcionamento). O cadastro inicial da barbearia é responsabilidade de
  * {@link SetupService}; este service cobre a edição posterior.
  */

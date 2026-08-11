@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Colore a linha pelo status do agendamento e, quando ainda está AGENDADO,
- * destaca os que começam em até 30 minutos — RF11 (classificação visual por
+ * destaca os que começam em até 30 minutos - RF11 (classificação visual por
  * status/proximidade). Compartilhado entre as tabelas de agendamentos
  * pendentes e de histórico, cada uma com sua própria origem de dados.
  */

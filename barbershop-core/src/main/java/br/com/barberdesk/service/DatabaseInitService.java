@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Garante que o schema do banco exista e esteja migrado antes da aplicação
- * começar a usar o banco — evita o cenário "abro o sistema e ele parece
+ * começar a usar o banco - evita o cenário "abro o sistema e ele parece
  * vazio" porque o banco não foi importado na máquina do avaliador.
  *
  * A execução em si (DDL/DML de infraestrutura: criar tabelas, aplicar

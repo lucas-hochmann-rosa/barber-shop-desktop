@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Consultas agregadas sobre agendamentos concluídos, usadas pela tela de
  * Relatórios. Faturamento é calculado pelo preço ATUAL do serviço
- * (servicos.preco), não pelo preço no momento do agendamento — não existe
+ * (servicos.preco), não pelo preço no momento do agendamento - não existe
  * snapshot de preço, só de nome/duração (ver {@link AgendamentoDAO}). Se o
  * preço de um serviço mudar, relatórios de períodos passados passam a
  * refletir o preço novo. Limitação conhecida, documentada no README

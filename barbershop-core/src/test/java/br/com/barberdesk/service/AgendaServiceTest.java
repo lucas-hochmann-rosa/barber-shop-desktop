@@ -116,7 +116,7 @@ class AgendaServiceTest {
     void verificarConflitoNaoDetectaHorariosConsecutivos() {
         agendamentoRepository.inserir(novoAgendamento(5, LocalDateTime.of(2026, 8, 20, 10, 0), 30, StatusAgendamento.AGENDADO));
 
-        // Novo agendamento começa exatamente quando o anterior termina — sem sobreposição.
+        // Novo agendamento começa exatamente quando o anterior termina - sem sobreposição.
         boolean conflito = agendamentoRepository.verificarConflito(5, LocalDateTime.of(2026, 8, 20, 10, 30), 30);
 
         assertFalse(conflito);

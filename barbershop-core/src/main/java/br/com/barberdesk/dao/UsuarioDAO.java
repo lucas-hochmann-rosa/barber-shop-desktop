@@ -7,7 +7,7 @@ import java.sql.*;
 /**
  * Acesso a dados da tabela {@code usuarios}: consulta e manutenção das contas de
  * acesso ao sistema, vinculadas a uma barbearia. Armazena apenas o hash da senha
- * e o salt usado no cálculo desse hash — a senha em texto puro nunca é
+ * e o salt usado no cálculo desse hash - a senha em texto puro nunca é
  * persistida.
  */
 public class UsuarioDAO implements UsuarioRepository {
@@ -51,7 +51,7 @@ public class UsuarioDAO implements UsuarioRepository {
 
     /**
      * Insere um novo usuário. Espera que {@code senhaHash} e {@code salt} já
-     * tenham sido calculados pela camada de serviço antes de chegar aqui — este
+     * tenham sido calculados pela camada de serviço antes de chegar aqui - este
      * DAO não faz hashing de senha.
      *
      * @return o ID gerado, ou -1 se não foi possível obtê-lo

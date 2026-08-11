@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Cria e migra o schema do banco (DDL/DML de infraestrutura) — sem regra de
+ * Cria e migra o schema do banco (DDL/DML de infraestrutura) - sem regra de
  * negócio nenhuma, só a mecânica de garantir que as tabelas existam e
  * estejam na versão mais recente. Usado por
  * {@link br.com.barberdesk.service.DatabaseInitService}, que expõe o ponto
@@ -25,7 +25,7 @@ public class SchemaInitializer {
      * Primeiro verifica se a tabela base ("barbearias") já existe; se não
      * existir, executa o script de criação completo (db/schema.sql). Em
      * seguida, sempre executa as migrações (independente de o schema ser
-     * novo ou já existente) — elas são idempotentes, então rodar de novo em
+     * novo ou já existente) - elas são idempotentes, então rodar de novo em
      * um banco já migrado não tem efeito colateral.
      *
      * @throws SQLException em caso de falha de acesso ao banco de dados
@@ -67,7 +67,7 @@ public class SchemaInitializer {
     // linhas vazias), separa os comandos por ";" seguido de quebra de linha e
     // executa cada um. O split é simples de propósito: não interpreta SQL de
     // verdade, então só funciona para scripts sem ";" dentro de strings/valores
-    // — suficiente para o schema.sql deste projeto.
+    // - suficiente para o schema.sql deste projeto.
     private void executarScript(String resourcePath) throws SQLException {
         InputStream in = SchemaInitializer.class.getClassLoader().getResourceAsStream(resourcePath);
         if (in == null) {
@@ -104,7 +104,7 @@ public class SchemaInitializer {
      * V2: permitir excluir barbeiros/serviços mesmo que já tenham sido usados em agendamentos,
      *     mantendo um "snapshot" de nomes dentro de agendamentos. Sem isso, excluir um serviço ou
      *     barbeiro quebraria o histórico (FK) ou faria agendamentos antigos "perderem" o nome
-     *     exibido — por isso o nome é copiado para a linha do agendamento no momento da criação,
+     *     exibido - por isso o nome é copiado para a linha do agendamento no momento da criação,
      *     em vez de depender só do JOIN com a tabela viva.
      *
      * V3: duração por serviço, para que o conflito de horário considere o tempo
@@ -194,7 +194,7 @@ public class SchemaInitializer {
     }
 
     /**
-     * V7: diretório de clientes (ver ClienteDAO) — tabela nova, então
+     * V7: diretório de clientes (ver ClienteDAO) - tabela nova, então
      * CREATE TABLE IF NOT EXISTS já é idempotente por si só.
      */
     private void aplicarMigracaoClientes(Connection conn) throws SQLException {
@@ -216,7 +216,7 @@ public class SchemaInitializer {
 
     /**
      * V8: fotos de barbeiro/serviço passam a ser guardadas em Base64 direto no
-     * banco em vez de um caminho de arquivo (ver ImageStorageUtil) — não
+     * banco em vez de um caminho de arquivo (ver ImageStorageUtil) - não
      * depende mais de um arquivo existir no disco em algum lugar. Caminhos
      * antigos gravados em imagem_path não são migrados automaticamente (não
      * dá pra converter um caminho de arquivo em Base64 sem o arquivo estar

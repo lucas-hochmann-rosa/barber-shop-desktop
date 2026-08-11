@@ -9,7 +9,7 @@ import java.util.List;
  * Contrato de persistência de {@link Barbeiro} consumido por
  * {@link br.com.barberdesk.service.SetupService} (cadastro inicial) e
  * {@link br.com.barberdesk.service.CatalogoService} (manutenção do
- * catálogo em "Minha Barbearia" — Fase 4 do roteiro de refatoração,
+ * catálogo em "Minha Barbearia" - Fase 4 do roteiro de refatoração,
  * antes a UI chamava {@link br.com.barberdesk.dao.BarbeiroDAO} direto).
  */
 public interface BarbeiroRepository {

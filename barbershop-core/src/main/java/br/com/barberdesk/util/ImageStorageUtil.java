@@ -10,7 +10,7 @@ import java.util.Base64;
 
 /**
  * Converte a imagem escolhida pelo usuário (foto de barbeiro/serviço) para
- * Base64, gravado direto no banco — evita depender de um caminho de arquivo
+ * Base64, gravado direto no banco - evita depender de um caminho de arquivo
  * que pode não existir mais depois (pasta movida, imagem apagada, banco
  * restaurado em outra máquina). Redimensiona antes de codificar para não
  * inflar o banco com fotos de câmera em resolução alta.

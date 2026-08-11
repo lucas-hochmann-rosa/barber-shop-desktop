@@ -13,14 +13,14 @@ import javax.imageio.ImageIO;
  * Leitor mínimo do formato .ico do Windows.
  *
  * O javax.imageio padrão do Java não tem suporte nativo a esse formato
- * (nenhum ImageReader registrado pra "ico") — em vez de puxar uma
+ * (nenhum ImageReader registrado pra "ico") - em vez de puxar uma
  * dependência externa só pra isso, este decodificador entende o
  * suficiente do formato pra extrair os frames.
  *
  * Cada frame dentro de um .ico é ou (a) um PNG completo embutido (comum
  * em frames grandes, 256x256, gerados por ferramentas modernas), ou
  * (b) um bitmap DIB cru, de baixo pra cima, com 32 bits por pixel (BGRA)
- * seguido de uma máscara AND — só o caso (b) com 32bpp é suportado aqui,
+ * seguido de uma máscara AND - só o caso (b) com 32bpp é suportado aqui,
  * que cobre o que as ferramentas de conversão de ícone mais comuns geram.
  */
 public final class IcoDecoder {

@@ -19,7 +19,7 @@ import javax.swing.table.TableRowSorter;
 
 /**
  * Controla a aba "Histórico": tabela com todos os agendamentos da barbearia
- * (qualquer status) e filtro textual. Extraído de {@code TelaHome} (SRP —
+ * (qualquer status) e filtro textual. Extraído de {@code TelaHome} (SRP -
  * Fase 5).
  */
 public class HistoricoController {

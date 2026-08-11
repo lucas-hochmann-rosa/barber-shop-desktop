@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Controla a aba "Relatórios": faturamento total, serviços mais vendidos e
  * ranking de barbeiros num intervalo de datas. Extraído de {@code TelaHome}
- * (SRP — Fase 5).
+ * (SRP - Fase 5).
  */
 public class RelatorioController {
 
@@ -67,7 +67,7 @@ public class RelatorioController {
      * <p>
      * Observação: o faturamento é calculado com o preço ATUAL de cada
      * serviço, não com um snapshot do preço no momento do agendamento (não
-     * existe esse histórico — só de nome/duração). Se o preço de um serviço
+     * existe esse histórico - só de nome/duração). Se o preço de um serviço
      * for alterado, relatórios de períodos passados passam a refletir o
      * preço novo retroativamente; é uma limitação conhecida, já documentada
      * no javadoc de {@link RelatorioService}.

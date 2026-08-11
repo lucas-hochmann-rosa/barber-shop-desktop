@@ -11,7 +11,7 @@ import java.util.List;
  * Contrato das agregações usadas por
  * {@link br.com.barberdesk.service.RelatorioService}. As consultas em si
  * (SQL de agregação sobre agendamentos concluídos) vivem na implementação
- * concreta ({@link br.com.barberdesk.dao.RelatorioDAO}) — o service só
+ * concreta ({@link br.com.barberdesk.dao.RelatorioDAO}) - o service só
  * conhece este contrato.
  */
 public interface RelatorioRepository {

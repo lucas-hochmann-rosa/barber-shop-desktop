@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class BarbeiroTest {
 
-    /** equals()/hashCode() comparam só o id — o resto do objeto pode divergir. */
+    /** equals()/hashCode() comparam só o id - o resto do objeto pode divergir. */
     @Test
     void barbeirosComMesmoIdSaoIguaisMesmoComOutrosCamposDiferentes() {
         Barbeiro a = new Barbeiro(1, 10, "João", null);
