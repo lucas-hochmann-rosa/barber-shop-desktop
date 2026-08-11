@@ -1,6 +1,5 @@
 package br.com.barberdesk.ui;
 
-import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.app.AppContext;
 import br.com.barberdesk.app.FabricaDeServicos;
@@ -488,10 +487,9 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
             LocalDate dataFundacao = LocalDate.parse(dataStr, dtf);
 
             Barbearia b = new Barbearia(nome, cep, dataFundacao, cultura);
-            new FabricaDeServicos().criarSetupService()
+            Usuario u = new FabricaDeServicos().criarSetupService()
                     .criarCadastroInicial(b, login, senha, servicosTemporarios, barbeirosTemporarios);
 
-            Usuario u = new UsuarioDAO().buscarPorLogin(login);
             AppContext.getInstance().setSessaoAtual(new Session(u, b));
 
             JOptionPane.showMessageDialog(this, "Barbearia criada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);

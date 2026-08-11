@@ -1,8 +1,10 @@
 package br.com.barberdesk.ui;
 
-import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.AgendaService;
+import br.com.barberdesk.service.BarbeariaService;
+import br.com.barberdesk.service.CatalogoService;
+import br.com.barberdesk.service.ClienteService;
 import br.com.barberdesk.service.RelatorioService;
 import br.com.barberdesk.app.AppContext;
 import br.com.barberdesk.app.FabricaDeServicos;
@@ -47,24 +49,22 @@ import javax.swing.table.TableRowSorter;
  *   <li><b>Relatórios</b> — faturamento total, serviços mais vendidos e
  *       ranking de barbeiros num intervalo de datas.</li>
  * </ul>
- * A tela não implementa regras de negócio diretamente: delega para os
- * serviços de domínio ({@link AgendaService}, {@link RelatorioService}) e
- * para os DAOs, mantendo aqui apenas a orquestração de UI (carregar/atualizar
- * tabelas, validar entrada de formulário e reagir a eventos dos componentes
- * gerados pelo NetBeans GUI Builder).
+ * A tela não implementa regras de negócio nem acessa o banco diretamente:
+ * delega tudo para os services de domínio (via {@link FabricaDeServicos}),
+ * mantendo aqui apenas a orquestração de UI (carregar/atualizar tabelas,
+ * validar entrada de formulário e reagir a eventos dos componentes gerados
+ * pelo NetBeans GUI Builder).
  */
 public class TelaHome extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(TelaHome.class);
 
-    private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private ServicoDAO servicoDAO = new ServicoDAO();
-    private BarbeariaDAO barbeariaDAO = new BarbeariaDAO();
-    private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
-    private ClienteDAO clienteDAO = new ClienteDAO();
     private final FabricaDeServicos fabricaDeServicos = new FabricaDeServicos();
     private final AgendaService agendaService = fabricaDeServicos.criarAgendaService();
     private final RelatorioService relatorioService = fabricaDeServicos.criarRelatorioService();
+    private final CatalogoService catalogoService = fabricaDeServicos.criarCatalogoService();
+    private final ClienteService clienteService = fabricaDeServicos.criarClienteService();
+    private final BarbeariaService barbeariaService = fabricaDeServicos.criarBarbeariaService();
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     // Listas de apoio para seleção nas tabelas de gerenciamento
@@ -188,7 +188,7 @@ public class TelaHome extends javax.swing.JFrame {
 
         int id = (int) tblAgendamentos.getModel().getValueAt(row, 0);
         try {
-            Agendamento a = agendamentoDAO.buscarPorId(id);
+            Agendamento a = agendaService.buscarPorId(id);
             JPopupMenu menu = new JPopupMenu();
 
             JMenuItem itemEditar = new JMenuItem("Editar Agendamento");
@@ -294,7 +294,7 @@ public class TelaHome extends javax.swing.JFrame {
 
             DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
             model.setRowCount(0);
-            for (Cliente c : clienteDAO.listarPorBarbearia(b.getId())) {
+            for (Cliente c : clienteService.listarPorBarbearia(b.getId())) {
                 model.addRow(new Object[]{ c.getNome(), c.getContato() });
             }
         } catch (SQLException e) {
@@ -332,7 +332,7 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
 
-            servicosGerenciarLista = servicoDAO.listarPorBarbearia(b.getId());
+            servicosGerenciarLista = catalogoService.listarServicos(b.getId());
             DefaultTableModel model = (DefaultTableModel) tblGerenciarServicos.getModel();
             model.setRowCount(0);
             for (Servico s : servicosGerenciarLista) {
@@ -360,7 +360,7 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
 
-            barbeirosGerenciarLista = barbeiroDAO.listarPorBarbearia(b.getId());
+            barbeirosGerenciarLista = catalogoService.listarBarbeiros(b.getId());
             DefaultTableModel model = (DefaultTableModel) tblGerenciarBarbeiros.getModel();
             model.setRowCount(0);
             for (Barbeiro barb : barbeirosGerenciarLista) {
@@ -392,7 +392,7 @@ public class TelaHome extends javax.swing.JFrame {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
-            List<Agendamento> lista = agendamentoDAO.listarPendentesPorBarbearia(b.getId());
+            List<Agendamento> lista = agendaService.listarPendentesPorBarbearia(b.getId());
             agendamentosPendentesAtuais = lista;
             DefaultTableModel model = (DefaultTableModel) tblAgendamentos.getModel();
             model.setRowCount(0);
@@ -426,7 +426,7 @@ public class TelaHome extends javax.swing.JFrame {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
-            List<Servico> servicos = servicoDAO.listarPorBarbearia(b.getId());
+            List<Servico> servicos = catalogoService.listarServicos(b.getId());
             pnlServicosGrid.removeAll();
             for (Servico s : servicos) {
                 JPanel card = new JPanel();
@@ -479,7 +479,7 @@ public class TelaHome extends javax.swing.JFrame {
             if (ctx == null) return;
 
             // Recarrega do banco para evitar inconsistências caso o AppContext esteja desatualizado
-            Barbearia b = barbeariaDAO.buscarPorId(ctx.getId());
+            Barbearia b = barbeariaService.buscarPorId(ctx.getId());
             if (b == null) b = ctx;
             // Reconstrói a sessão inteira (Session é imutável) mantendo o mesmo usuário logado
             AppContext.getInstance().setSessaoAtual(new Session(AppContext.getInstance().getUsuarioLogado(), b));
@@ -507,7 +507,7 @@ public class TelaHome extends javax.swing.JFrame {
         try {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) return;
-            List<Agendamento> lista = agendamentoDAO.listarPorBarbearia(b.getId());
+            List<Agendamento> lista = agendaService.listarPorBarbearia(b.getId());
             agendamentosHistoricoAtuais = lista;
             DefaultTableModel model = (DefaultTableModel) tblHistorico.getModel();
             model.setRowCount(0);
@@ -1184,7 +1184,7 @@ public class TelaHome extends javax.swing.JFrame {
             b.setCulturaValores(txtCulturaB.getText());
             b.setHorarioAbertura(abertura);
             b.setHorarioFechamento(fechamento);
-            barbeariaDAO.atualizar(b);
+            barbeariaService.atualizar(b);
             JOptionPane.showMessageDialog(this, "Dados atualizados!");
         } catch (SQLException e) {
             logger.error("Erro ao salvar dados da barbearia", e);
@@ -1216,13 +1216,13 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) throw new IllegalStateException("Sessão inválida: barbearia não definida.");
 
-            if (servicoDAO.existePorNome(b.getId(), s.getNome(), 0)) {
+            if (catalogoService.existeServicoComNome(b.getId(), s.getNome(), 0)) {
                 JOptionPane.showMessageDialog(this, "Já existe um serviço com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             s.setBarbeariaId(b.getId());
-            servicoDAO.inserir(s);
+            catalogoService.salvarNovoServico(s);
 
             carregarTabelaServicos();
             carregarGridServicos();
@@ -1258,12 +1258,12 @@ public class TelaHome extends javax.swing.JFrame {
             if (!dlg.isSalvo()) return;
 
             Servico editado = dlg.getServico();
-            if (servicoDAO.existePorNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
+            if (catalogoService.existeServicoComNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
                 JOptionPane.showMessageDialog(this, "Já existe um serviço com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            servicoDAO.atualizar(editado);
+            catalogoService.atualizarServico(editado);
             carregarTabelaServicos();
             carregarGridServicos();
         } catch (Exception e) {
@@ -1293,7 +1293,7 @@ public class TelaHome extends javax.swing.JFrame {
         if (ok != JOptionPane.YES_OPTION) return;
 
         try {
-            servicoDAO.deletar(s.getId());
+            catalogoService.excluirServico(s.getId());
             carregarTabelaServicos();
             carregarGridServicos();
         } catch (Exception e) {
@@ -1320,13 +1320,13 @@ public class TelaHome extends javax.swing.JFrame {
             Barbearia b = AppContext.getInstance().getBarbeariaAtual();
             if (b == null) throw new IllegalStateException("Sessão inválida: barbearia não definida.");
 
-            if (barbeiroDAO.existePorNome(b.getId(), barb.getNome(), 0)) {
+            if (catalogoService.existeBarbeiroComNome(b.getId(), barb.getNome(), 0)) {
                 JOptionPane.showMessageDialog(this, "Já existe um barbeiro com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             barb.setBarbeariaId(b.getId());
-            barbeiroDAO.inserir(barb);
+            catalogoService.salvarNovoBarbeiro(barb);
 
             carregarTabelaBarbeiros();
         } catch (Exception e) {
@@ -1360,12 +1360,12 @@ public class TelaHome extends javax.swing.JFrame {
             if (!dlg.isSalvo()) return;
 
             Barbeiro editado = dlg.getBarbeiro();
-            if (barbeiroDAO.existePorNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
+            if (catalogoService.existeBarbeiroComNome(editado.getBarbeariaId(), editado.getNome(), editado.getId())) {
                 JOptionPane.showMessageDialog(this, "Já existe um barbeiro com esse nome.", "Validação", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            barbeiroDAO.atualizar(editado);
+            catalogoService.atualizarBarbeiro(editado);
             carregarTabelaBarbeiros();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -1393,7 +1393,7 @@ public class TelaHome extends javax.swing.JFrame {
         if (ok != JOptionPane.YES_OPTION) return;
 
         try {
-            barbeiroDAO.deletar(barb.getId());
+            catalogoService.excluirBarbeiro(barb.getId());
             carregarTabelaBarbeiros();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,

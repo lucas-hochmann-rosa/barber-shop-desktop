@@ -7,8 +7,9 @@ import java.sql.SQLException;
 /**
  * Contrato de persistência de {@link Barbearia} consumido por
  * {@link br.com.barberdesk.service.SessionService} (resolver a barbearia
- * do usuário logado) e {@link br.com.barberdesk.service.SetupService}
- * (cadastro inicial).
+ * do usuário logado), {@link br.com.barberdesk.service.SetupService}
+ * (cadastro inicial) e {@link br.com.barberdesk.service.BarbeariaService}
+ * (manutenção dos dados gerais em "Minha Barbearia").
  */
 public interface BarbeariaRepository {
 
@@ -20,4 +21,7 @@ public interface BarbeariaRepository {
 
     /** Insere uma nova barbearia e devolve o id gerado. */
     int inserir(Barbearia barbearia) throws SQLException;
+
+    /** Atualiza os dados de uma barbearia existente. */
+    void atualizar(Barbearia barbearia) throws SQLException;
 }

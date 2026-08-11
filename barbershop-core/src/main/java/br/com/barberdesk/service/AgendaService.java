@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Centraliza as transições de status de um agendamento (iniciar, concluir,
@@ -70,6 +71,45 @@ public class AgendaService {
      */
     public void cancelarAgendamento(int id, String motivo) throws SQLException {
         alterarStatus(id, StatusAgendamento.CANCELADO, motivo);
+    }
+
+    /** Busca um agendamento pelo id, ou {@code null} se não existir. */
+    public Agendamento buscarPorId(int id) throws SQLException {
+        return agendamentoRepository.buscarPorId(id);
+    }
+
+    /** Lista os agendamentos ainda pendentes (AGENDADO/EM_ATENDIMENTO) de uma barbearia. */
+    public List<Agendamento> listarPendentesPorBarbearia(int barbeariaId) throws SQLException {
+        return agendamentoRepository.listarPendentesPorBarbearia(barbeariaId);
+    }
+
+    /** Lista todos os agendamentos de uma barbearia, independente do status — usado no histórico. */
+    public List<Agendamento> listarPorBarbearia(int barbeariaId) throws SQLException {
+        return agendamentoRepository.listarPorBarbearia(barbeariaId);
+    }
+
+    /**
+     * Atualiza um agendamento existente com os dados editados pelo usuário
+     * (cliente, contato, data/hora, serviço, barbeiro, origem). A checagem
+     * de conflito de horário acontece dentro do próprio repositório.
+     */
+    public void atualizar(Agendamento agendamento) throws SQLException {
+        agendamentoRepository.atualizar(agendamento);
+    }
+
+    /** Remove definitivamente um agendamento pelo id. */
+    public void deletar(int id) throws SQLException {
+        agendamentoRepository.deletar(id);
+    }
+
+    /**
+     * Verifica se o barbeiro já tem um agendamento que sobrepõe o intervalo
+     * informado — usado pela UI como checagem antecipada, antes de tentar
+     * criar o agendamento, pra mostrar um erro específico de conflito em vez
+     * de deixar a exceção genérica do repositório estourar.
+     */
+    public boolean verificarConflito(int barbeiroId, LocalDateTime dataHora, int duracaoMinutos) throws SQLException {
+        return agendamentoRepository.verificarConflito(barbeiroId, dataHora, duracaoMinutos);
     }
 
     /**

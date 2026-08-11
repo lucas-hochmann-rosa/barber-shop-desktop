@@ -1,13 +1,17 @@
 package br.com.barberdesk.dao.repository;
 
+import br.com.barberdesk.model.Cliente;
+
 import java.sql.SQLException;
+import java.util.List;
 
 /**
- * Contrato de persistência de {@link br.com.barberdesk.model.Cliente}
- * consumido por {@link br.com.barberdesk.service.AgendaService}. Só
- * declara {@code registrar} — é o único método que o service usa; a
- * listagem do diretório de clientes é consumida direto da UI (ver
- * {@link br.com.barberdesk.dao.ClienteDAO#listarPorBarbearia}).
+ * Contrato de persistência de {@link Cliente} consumido por
+ * {@link br.com.barberdesk.service.AgendaService} (registro automático ao
+ * criar agendamento) e {@link br.com.barberdesk.service.ClienteService}
+ * (listagem do diretório na aba "Clientes" — Fase 4 do roteiro de
+ * refatoração, antes a UI chamava {@link br.com.barberdesk.dao.ClienteDAO}
+ * direto).
  */
 public interface ClienteRepository {
 
@@ -16,4 +20,7 @@ public interface ClienteRepository {
      * agendamento — contato é a chave de dedupe dentro da barbearia.
      */
     void registrar(int barbeariaId, String nome, String contato) throws SQLException;
+
+    /** Lista o diretório de clientes de uma barbearia. */
+    List<Cliente> listarPorBarbearia(int barbeariaId) throws SQLException;
 }

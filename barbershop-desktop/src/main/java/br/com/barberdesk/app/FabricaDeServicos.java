@@ -10,6 +10,9 @@ import br.com.barberdesk.dao.ServicoDAO;
 import br.com.barberdesk.dao.UsuarioDAO;
 import br.com.barberdesk.service.AgendaService;
 import br.com.barberdesk.service.AuthService;
+import br.com.barberdesk.service.BarbeariaService;
+import br.com.barberdesk.service.CatalogoService;
+import br.com.barberdesk.service.ClienteService;
 import br.com.barberdesk.service.DatabaseInitService;
 import br.com.barberdesk.service.RelatorioService;
 import br.com.barberdesk.service.SessionService;
@@ -58,5 +61,17 @@ public class FabricaDeServicos {
 
     public DatabaseInitService criarDatabaseInitService() {
         return new DatabaseInitService(new SchemaInitializer());
+    }
+
+    public CatalogoService criarCatalogoService() {
+        return new CatalogoService(servicoDAO, barbeiroDAO);
+    }
+
+    public ClienteService criarClienteService() {
+        return new ClienteService(clienteDAO);
+    }
+
+    public BarbeariaService criarBarbeariaService() {
+        return new BarbeariaService(barbeariaDAO);
     }
 }

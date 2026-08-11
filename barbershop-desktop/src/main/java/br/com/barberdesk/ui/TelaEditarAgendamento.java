@@ -1,8 +1,5 @@
 package br.com.barberdesk.ui;
 
-import br.com.barberdesk.dao.AgendamentoDAO;
-import br.com.barberdesk.dao.BarbeiroDAO;
-import br.com.barberdesk.dao.ServicoDAO;
 import br.com.barberdesk.model.Agendamento;
 import br.com.barberdesk.model.Barbearia;
 import br.com.barberdesk.model.Barbeiro;
@@ -10,6 +7,7 @@ import br.com.barberdesk.model.OrigemContato;
 import br.com.barberdesk.model.Servico;
 import br.com.barberdesk.model.StatusAgendamento;
 import br.com.barberdesk.service.AgendaService;
+import br.com.barberdesk.service.CatalogoService;
 import br.com.barberdesk.app.AppContext;
 import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.util.DateTimeUtil;
@@ -33,10 +31,9 @@ public class TelaEditarAgendamento extends JFrame {
 
     private final int agendamentoId;
 
-    private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private final ServicoDAO servicoDAO = new ServicoDAO();
-    private final BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
-    private final AgendaService agendaService = new FabricaDeServicos().criarAgendaService();
+    private final FabricaDeServicos fabricaDeServicos = new FabricaDeServicos();
+    private final AgendaService agendaService = fabricaDeServicos.criarAgendaService();
+    private final CatalogoService catalogoService = fabricaDeServicos.criarCatalogoService();
 
     private JTextField txtCliente;
     private JTextField txtContato;
@@ -156,17 +153,17 @@ public class TelaEditarAgendamento extends JFrame {
         try {
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
 
-            List<Servico> servicos = servicoDAO.listarPorBarbearia(bId);
+            List<Servico> servicos = catalogoService.listarServicos(bId);
             DefaultComboBoxModel<Servico> modelS = new DefaultComboBoxModel<>();
             for (Servico s : servicos) modelS.addElement(s);
             cbServico.setModel(modelS);
 
-            List<Barbeiro> barbeiros = barbeiroDAO.listarPorBarbearia(bId);
+            List<Barbeiro> barbeiros = catalogoService.listarBarbeiros(bId);
             DefaultComboBoxModel<Barbeiro> modelB = new DefaultComboBoxModel<>();
             for (Barbeiro b : barbeiros) modelB.addElement(b);
             cbBarbeiro.setModel(modelB);
 
-            atual = agendamentoDAO.buscarPorId(agendamentoId);
+            atual = agendaService.buscarPorId(agendamentoId);
             if (atual == null) {
                 JOptionPane.showMessageDialog(this, "Agendamento não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
                 dispose();
@@ -306,7 +303,7 @@ public class TelaEditarAgendamento extends JFrame {
             atual.setDuracaoMinutos(servico.getDuracaoMinutos());
             atual.setOrigemContato(origem);
 
-            agendamentoDAO.atualizar(atual);
+            agendaService.atualizar(atual);
             JOptionPane.showMessageDialog(this, "Agendamento atualizado.");
             dispose();
 
@@ -322,7 +319,7 @@ public class TelaEditarAgendamento extends JFrame {
         int opt = JOptionPane.showConfirmDialog(this, "Excluir este agendamento?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;
         try {
-            agendamentoDAO.deletar(agendamentoId);
+            agendaService.deletar(agendamentoId);
             JOptionPane.showMessageDialog(this, "Agendamento excluído.");
             dispose();
         } catch (SQLException e) {

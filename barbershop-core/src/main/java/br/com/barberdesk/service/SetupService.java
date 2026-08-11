@@ -56,9 +56,10 @@ public class SetupService {
      * @param senha     senha em texto puro do usuário administrador (armazenada com salt + hash)
      * @param servicos  serviços iniciais a cadastrar, vinculados à barbearia criada
      * @param barbeiros barbeiros iniciais a cadastrar, vinculados à barbearia criada
-     * @return o id gerado para a barbearia recém-criada
+     * @return o usuário administrador recém-criado, com o id gerado — a UI usa isso pra montar a
+     *         sessão sem precisar buscar o usuário de novo no banco
      */
-    public int criarCadastroInicial(Barbearia barbearia, String login, String senha,
+    public Usuario criarCadastroInicial(Barbearia barbearia, String login, String senha,
                                     List<Servico> servicos, List<Barbeiro> barbeiros) throws SQLException {
         int barbeariaId = barbeariaRepository.inserir(barbearia);
         barbearia.setId(barbeariaId);
@@ -66,7 +67,8 @@ public class SetupService {
         String salt = HashUtil.gerarSalt();
         Usuario usuario = new Usuario(barbeariaId, login, HashUtil.hashComSalt(senha, salt));
         usuario.setSalt(salt);
-        usuarioRepository.inserir(usuario);
+        int usuarioId = usuarioRepository.inserir(usuario);
+        usuario.setId(usuarioId);
 
         for (Servico servico : servicos) {
             servico.setBarbeariaId(barbeariaId);
@@ -78,6 +80,6 @@ public class SetupService {
             barbeiroRepository.inserir(barbeiro);
         }
 
-        return barbeariaId;
+        return usuario;
     }
 }

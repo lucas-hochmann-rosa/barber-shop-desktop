@@ -1,8 +1,8 @@
 package br.com.barberdesk.ui;
 
-import br.com.barberdesk.dao.*;
 import br.com.barberdesk.model.*;
 import br.com.barberdesk.service.AgendaService;
+import br.com.barberdesk.service.CatalogoService;
 import br.com.barberdesk.app.AppContext;
 import br.com.barberdesk.app.FabricaDeServicos;
 import br.com.barberdesk.util.DateTimeUtil;
@@ -27,10 +27,9 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(TelaNovoAgendamento.class);
 
-    private ServicoDAO servicoDAO = new ServicoDAO();
-    private BarbeiroDAO barbeiroDAO = new BarbeiroDAO();
-    private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    private final AgendaService agendaService = new FabricaDeServicos().criarAgendaService();
+    private final FabricaDeServicos fabricaDeServicos = new FabricaDeServicos();
+    private final CatalogoService catalogoService = fabricaDeServicos.criarCatalogoService();
+    private final AgendaService agendaService = fabricaDeServicos.criarAgendaService();
     private List<Servico> servicosLista;
     private List<Barbeiro> barbeirosLista;
     /** Callback opcional pra atualizar a Home assim que o agendamento é salvo, sem precisar trocar de tela. */
@@ -71,12 +70,12 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
         try {
             int bId = AppContext.getInstance().getBarbeariaAtual().getId();
 
-            servicosLista = servicoDAO.listarPorBarbearia(bId);
+            servicosLista = catalogoService.listarServicos(bId);
             DefaultComboBoxModel<Servico> modelS = new DefaultComboBoxModel<>();
             for (Servico s : servicosLista) modelS.addElement(s);
             cbServico.setModel(modelS);
 
-            barbeirosLista = barbeiroDAO.listarPorBarbearia(bId);
+            barbeirosLista = catalogoService.listarBarbeiros(bId);
             DefaultComboBoxModel<Barbeiro> modelB = new DefaultComboBoxModel<>();
             for (Barbeiro b : barbeirosLista) modelB.addElement(b);
             cbBarbeiro.setModel(modelB);
@@ -215,7 +214,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
                 return;
             }
 
-            if (agendamentoDAO.verificarConflito(barb.getId(), dataHora, serv.getDuracaoMinutos())) {
+            if (agendaService.verificarConflito(barb.getId(), dataHora, serv.getDuracaoMinutos())) {
                 JOptionPane.showMessageDialog(this, "Erro: este barbeiro já possui um agendamento nesse horário!", "Conflito", JOptionPane.ERROR_MESSAGE);
                 return;
             }
