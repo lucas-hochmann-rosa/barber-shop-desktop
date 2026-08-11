@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/LinkedIn-Lucas_Hochmann_Rosa-0A66C2?style=for-the-badge&logo=linkedin">
   </a>
   <a href="#-tech-stack">
-    <img src="https://img.shields.io/badge/Java-8%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+    <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
   </a>
   <a href="#-tech-stack">
     <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
@@ -31,7 +31,7 @@ git clone https://github.com/lucas-hochmann-rosa/barber-shop-desktop.git
 cd barber-shop-desktop
 docker compose up -d          # spins up a pre-configured MySQL (see docker-compose.yml)
 mvn clean package
-java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
 ```
 
 Details for each step below.
@@ -108,6 +108,7 @@ Details for each step below.
 - [Business Rules](#-business-rules-implemented)
 - [Requirements Compliance](#-requirements-compliance-current-state)
 - [Quick Local Testing](#-quick-local-testing)
+- [System Verification](#-system-verification)
 - [Screenshots](#-screenshots)
 - [Roadmap](#-roadmap)
 - [Disclaimer](#-disclaimer)
@@ -118,55 +119,79 @@ Details for each step below.
 
 ## 🏗️ Architecture
 
+**Multi-module Maven** project, split so the business rules (`barbershop-core`) don't depend on the Swing UI and can be reused by a future Web layer — see [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md) (Portuguese) for the full breakdown of that separation (SOLID principles applied, code smells eliminated, design patterns used).
+
 ```text
 barber-shop-desktop/
-├── pom.xml
-├── nbactions.xml                # NetBeans IDE run configuration
-├── docker-compose.yml            # Pre-configured local MySQL, matching the project's defaults
+├── pom.xml                             # Parent (aggregator) module: centralized versions, no code
+├── nbactions.xml                       # NetBeans IDE run configuration
+├── docker-compose.yml                  # Pre-configured local MySQL, matching the project's defaults
 ├── README.md / README.en.md
 ├── LICENSE
 ├── docs/
-│   └── screenshots/               # Screenshots used in the README
-├── src/main/java/br/com/barberdesk/
-│   ├── app/Main.java                # Entry point: decides login vs. initial setup
-│   ├── dao/                          # Data access (MySQL), one class per entity
-│   ├── model/                         # Domain entities (POJOs)
-│   ├── service/                        # Business rules (schedule, reports, initial setup)
-│   ├── ui/                              # Swing screens (NetBeans GUI Builder)
-│   └── util/                             # Helpers (session context, hashing, layout, dates)
-├── src/main/resources/
-│   ├── config.properties                 # Database connection (overridable via env vars)
-│   ├── logback.xml                        # Logging config (console + file)
-│   └── db/schema.sql                      # Initial schema, created automatically on first start
-├── src/test/java/br/com/barberdesk/       # JUnit 5 tests (pure logic: hashing, dates, equals/hashCode)
-└── target/                                 # Generated build artifacts (JAR) - not versioned
+│   ├── RELATORIO-ETAPA-6.md            # SOLID, code smells, design patterns, Web readiness (PT-BR)
+│   └── screenshots/                    # Screenshots used in the README
+│
+├── barbershop-core/                    # Business rules — zero dependency on Swing
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/br/com/barberdesk/
+│       │   ├── model/                  # Domain entities (POJOs)
+│       │   ├── dao/                    # Data access (JDBC/MySQL), one class per entity
+│       │   │   └── repository/         # Interfaces consumed by services (Repository Pattern)
+│       │   ├── service/                # Business rules (schedule, reports, initial setup...)
+│       │   └── util/                   # Pure helpers (hashing, dates, image storage)
+│       ├── main/resources/
+│       │   ├── config.properties       # Database connection (overridable via env vars)
+│       │   └── db/schema.sql           # Initial schema, created automatically on first start
+│       └── test/java/br/com/barberdesk/
+│           ├── model/, util/           # Pure-logic tests (hashing, dates, equals/hashCode)
+│           └── service/                # Service tests using in-memory fake repositories
+│               └── fake/               # Test doubles of the repository interfaces
+│
+└── barbershop-desktop/                 # Swing application — depends on barbershop-core
+    ├── pom.xml                         # Builds the shaded executable jar (maven-shade-plugin)
+    └── src/main/
+        ├── java/br/com/barberdesk/
+        │   ├── app/
+        │   │   ├── Main.java             # Entry point: decides login vs. initial setup
+        │   │   ├── FabricaDeServicos.java # Composition root: wires concrete DAOs → services
+        │   │   └── VerificacaoSistema.java # Operational smoke test against a real MySQL
+        │   ├── ui/                        # Swing screens (NetBeans GUI Builder)
+        │   │   ├── controller/            # Logic for each Home area (schedule, catalog...)
+        │   │   └── support/                # UI helpers (icon, input masks, StatusRowRenderer)
+        └── resources/
+            ├── logback.xml                # Logging config (console + file)
+            └── icon.ico
 ```
 
 ### Organization
 
-- **app/Main.java**: entry point, decides between initial setup and login.
-- **service/DatabaseInitService.java**: schema creation and automatic migrations.
-- **service/AgendaService.java**: appointment status transitions and business-hours validation.
-- **service/RelatorioService.java**: aggregations for the Reports screen.
-- **dao/**: MySQL access layer (CRUD and query rules).
-- **ui/TelaHome.java**: main panel, history, clients, reports and barbershop maintenance.
-- **ui/TelaNovoAgendamento.java** and **ui/TelaEditarAgendamento.java**: appointment operational flow.
+- **`app/Main.java`**: entry point, decides between initial setup and login.
+- **`app/FabricaDeServicos.java`**: the only place in the system that instantiates concrete DAOs and injects them into services via constructor — no other class in the desktop module should instantiate a DAO directly.
+- **`app/VerificacaoSistema.java`**: command-line utility (`main()`) that validates, against a real MySQL, that the connection, schema, authentication, scheduling and reports still work end to end — see [System Verification](#-system-verification).
+- **`service/DatabaseInitService.java`** (delegates to `dao/SchemaInitializer.java`): schema creation and automatic migrations.
+- **`service/AgendaService.java`**: appointment status transitions, time-conflict detection and business-hours validation.
+- **`service/RelatorioService.java`** (delegates to `dao/RelatorioDAO.java`): aggregations for the Reports screen.
+- **`dao/`**: MySQL access layer (CRUD and query rules), each class implementing an interface from `dao/repository/`.
+- **`ui/TelaHome.java`**: builds the window and delegates each area (schedule, catalog, clients, barbershop, history, reports) to the matching controller under `ui/controller/`.
+- **`ui/TelaNovoAgendamento.java`** and **`ui/TelaEditarAgendamento.java`**: appointment operational flow.
 
 ---
 
 ## 🧰 Tech Stack
 
-**Language:** Java (compiled for Java 8; runs on newer JREs too)
+**Language:** Java 17 (compiled and run)
 
-**UI:** Java Swing (Look & Feel [FlatLaf](https://www.formdev.com/flatlaf/)), screens generated by the NetBeans GUI Builder (`AbsoluteLayout`)
+**Build:** Maven, multi-module (`barbershop-core` + `barbershop-desktop`), dependency versions centralized in the root `pom.xml`
 
-**Build:** Maven
+**UI:** Java Swing (Look & Feel [FlatLaf](https://www.formdev.com/flatlaf/) `3.4.1`), screens generated by the NetBeans GUI Builder (`AbsoluteLayout`)
 
-**Database:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), connection pooling via [HikariCP](https://github.com/brettwooldridge/HikariCP)
+**Database:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), connection pooling via [HikariCP](https://github.com/brettwooldridge/HikariCP) `5.1.0`
 
-**Logging:** SLF4J + Logback (console and file)
+**Logging:** SLF4J `2.0.16` + Logback `1.5.16` (console and file)
 
-**Testing:** JUnit 5
+**Testing:** JUnit 5, with in-memory fake repositories for service tests (no real database dependency)
 
 **Local dev:** Docker Compose (MySQL)
 
@@ -183,7 +208,7 @@ barber-shop-desktop/
 
 ## ⚙️ Requirements
 
-- JDK 8+
+- JDK 17+
 - A running, reachable MySQL instance
 - A MySQL user with permission to create/alter tables in the `barberdesk` schema
 - Maven 3.x (optional, if running from the NetBeans IDE)
@@ -213,13 +238,13 @@ Option 2 - your own MySQL: create the database before the first run:
 CREATE DATABASE barberdesk;
 ```
 
-> Either way, tables are created automatically by the system on first start (`src/main/resources/db/schema.sql`).
+> Either way, tables are created automatically by the system on first start (`barbershop-core/src/main/resources/db/schema.sql`).
 
 ---
 
 ## 🔐 Environment Configuration
 
-You can configure the connection in `src/main/resources/config.properties`:
+You can configure the connection in `barbershop-core/src/main/resources/config.properties`:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
@@ -250,7 +275,7 @@ Or override via environment variables:
 
 ```bash
 mvn clean package
-java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
 ```
 
 ---
@@ -265,26 +290,26 @@ This project doesn't produce a native installer (MSI/DEB/RPM) - it's a cross-pla
 mvn clean package
 ```
 
-Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bundled in (`maven-shade-plugin`) - nothing else needed on the classpath to run it.
+Produces `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar` with all dependencies already bundled in (`maven-shade-plugin`) - nothing else needed on the classpath to run it.
 
 ### 🪟 Windows
 
-1. **Java**: check you have JRE/JDK 8+ installed (`java -version` in PowerShell/CMD). If not, download [Eclipse Temurin](https://adoptium.net/) and install it.
+1. **Java**: check you have JRE/JDK 17+ installed (`java -version` in PowerShell/CMD). If not, download [Eclipse Temurin](https://adoptium.net/) and install it.
 2. **Database**: bring it up via Docker Compose (`docker compose up -d`, requires Docker Desktop) or install [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) and create the `barberdesk` database manually.
 3. **Run**:
    ```powershell
-   java -jar target\BarberDesk-1.0-SNAPSHOT.jar
+   java -jar barbershop-desktop\target\barbershop-desktop-1.0-SNAPSHOT.jar
    ```
 4. **Desktop shortcut** (optional): create a `BarberDesk.bat` file next to the `.jar`:
    ```bat
    @echo off
-   start javaw -jar "%~dp0BarberDesk-1.0-SNAPSHOT.jar"
+   start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, point it to `src/main/resources/icon.ico` (already included in the repo — Windows shortcuts don't accept `.png` directly).
+   `javaw` (instead of `java`) avoids opening a console window alongside the app. To change the shortcut's icon, point it to `barbershop-desktop/src/main/resources/icon.ico` (already included in the repo — Windows shortcuts don't accept `.png` directly).
 
 ### 🐧 Linux
 
-1. **Java**: install a JRE/JDK 8+ through your distro's package manager, e.g.:
+1. **Java**: install a JRE/JDK 17+ through your distro's package manager, e.g.:
    ```bash
    sudo apt install openjdk-17-jre   # Debian/Ubuntu
    sudo dnf install java-17-openjdk  # Fedora
@@ -292,13 +317,13 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
 2. **Database**: `docker compose up -d` (requires Docker) or install MySQL locally (`sudo apt install mysql-server`) and create the `barberdesk` database.
 3. **Run**:
    ```bash
-   java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+   java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
    ```
 4. **`.desktop` launcher** (optional, to show up in the application menu):
    ```ini
    [Desktop Entry]
    Name=BarberDesk
-   Exec=java -jar /full/path/to/BarberDesk-1.0-SNAPSHOT.jar
+   Exec=java -jar /full/path/to/barbershop-desktop-1.0-SNAPSHOT.jar
    Icon=/full/path/to/icon.ico
    Type=Application
    Categories=Office;
@@ -390,13 +415,18 @@ Produces `target/BarberDesk-1.0-SNAPSHOT.jar` with all dependencies already bund
 
 ## 🧪 Quick Local Testing
 
-There's an automated test suite (JUnit 5) for the project's pure logic - password hashing, date parsing/formatting, and model `equals()`/`hashCode()`:
+There's an automated test suite (JUnit 5, 40 tests) running from the project root:
 
 ```bash
 mvn test
 ```
 
-It only covers logic that doesn't depend on a database/GUI. Suggested manual flow for the rest:
+Covers:
+
+- Pure `model`/`util` logic (password hashing, date parsing/formatting, `equals()`/`hashCode()`).
+- **Business services** (`AgendaService`, `AuthService`, `RelatorioService`) using **in-memory fake repositories** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) — no real database involved, covering appointment status transitions, time-conflict detection, business-hours validation and authentication (including the silent upgrade of legacy-hash accounts).
+
+Doesn't run against a real database or the GUI. For that, see [System Verification](#-system-verification) (automated) and the suggested manual flow below:
 
 1. Start the app with an empty database and confirm the initial setup screen opens.
 2. Create a barbershop + user + services + barbers.
@@ -408,7 +438,37 @@ It only covers logic that doesn't depend on a database/GUI. Suggested manual flo
 8. Cancel an appointment with a reason and confirm it shows up in the history.
 9. Generate a report for a period with completed appointments.
 
-> DAO integration tests against a real MySQL don't exist yet - see [Roadmap](#-roadmap).
+---
+
+## ✅ System Verification
+
+Besides the JUnit tests (which use in-memory repositories), the project has an operational smoke test that runs against a **real MySQL** — useful to quickly confirm, after a deploy or a schema migration, that the system still works end to end:
+
+```bash
+docker compose up -d
+mvn clean package
+java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+```
+
+It connects to the database, ensures the schema, runs a verification initial setup, tests authentication (correct and incorrect password), creates an appointment, confirms time-conflict detection, cancels the appointment and generates a report — printing `[OK]`/`[FALHA]` (`[OK]`/`[FAILED]`) for each check:
+
+```
+=== BarberDesk — Verificação do Sistema ===
+
+[OK]    Conexão com o banco de dados
+[OK]    Schema do banco (migrações)
+[OK]    Cadastro inicial (barbearia + usuário + serviço + barbeiro)
+[OK]    Autenticação com senha correta
+[OK]    Autenticação com senha incorreta é rejeitada
+[OK]    Criação de agendamento
+[OK]    Conflito de horário é detectado corretamente
+[OK]    Cancelamento de agendamento
+[OK]    Geração de relatório (faturamento/serviços/ranking)
+
+9 checagem(ns), 0 falha(s).
+```
+
+Exits with code `0` if everything passed, or `1` if any check failed (handy for wiring into a CI/CD pipeline). All verification data created (barbershop, user, service, barber, appointment) is removed at the end, whether it succeeds or fails — no leftovers in the database.
 
 ---
 
@@ -438,10 +498,10 @@ Screenshots of the main screens, for a quick visual reference:
 
 Known items, tracked deliberately as next steps rather than oversights:
 
-- **Full UI layer separation**: `TelaHome.java` still mixes a fair amount of data access with GUI-Builder-generated code - status transitions and initial setup were already extracted into services; the rest (service/barber CRUD grids) is left for a dedicated session with visual testing.
-- **DAO integration tests** against a real MySQL (e.g. Testcontainers) - only pure-logic tests exist today.
+- **Automated DAO integration tests** against a real MySQL (e.g. Testcontainers, wired into `mvn test`) - today, real-database coverage comes from the manual smoke test `VerificacaoSistema` (see [System Verification](#-system-verification)), not something that runs on its own in CI on every build.
+- **Web layer**: `barbershop-core` no longer depends on Swing (see [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md), Portuguese), so it's ready to be consumed by a new Web module (e.g. Spring Boot) reusing the same services - that new module doesn't exist yet.
 - **User roles**: currently a single admin per barbershop; having a logged-in barber see only their own schedule would require rethinking the relationship between `Usuario` and `Barbeiro`, which doesn't exist today.
-- **Flyway** instead of the manual migrations - deferred since it can't be validated against a real database in this environment.
+- **Flyway** instead of the manual migrations (`SchemaInitializer`) - deferred since it can't be validated against a real database in this environment.
 - **Native installer** via `jpackage`.
 
 ---

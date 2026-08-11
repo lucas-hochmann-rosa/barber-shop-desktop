@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/LinkedIn-Lucas_Hochmann_Rosa-0A66C2?style=for-the-badge&logo=linkedin">
   </a>
   <a href="#-tecnologias">
-    <img src="https://img.shields.io/badge/Java-8%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+    <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
   </a>
   <a href="#-tecnologias">
     <img src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
@@ -31,7 +31,7 @@ git clone https://github.com/lucas-hochmann-rosa/barber-shop-desktop.git
 cd barber-shop-desktop
 docker compose up -d          # sobe um MySQL já configurado (veja docker-compose.yml)
 mvn clean package
-java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
 ```
 
 Detalhes de cada passo nas seções abaixo.
@@ -108,6 +108,7 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 - [Regras de Negócio](#-regras-de-negócio-implementadas)
 - [Adesão aos Requisitos](#-adesão-aos-requisitos-estado-atual)
 - [Testes Locais Rápidos](#-testes-locais-rápidos)
+- [Verificação do Sistema](#-verificação-do-sistema)
 - [Screenshots](#-screenshots)
 - [Melhorias Futuras](#-melhorias-futuras)
 - [Avisos](#-avisos)
@@ -118,55 +119,79 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 
 ## 🏗️ Arquitetura
 
+Projeto **multi-módulo Maven**, dividido para que as regras de negócio (`barbershop-core`) não dependam da interface Swing e possam ser reaproveitadas por uma futura camada Web — ver [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md) para o detalhamento completo dessa separação (princípios SOLID aplicados, *code smells* eliminados, *design patterns* usados).
+
 ```text
 barber-shop-desktop/
-├── pom.xml
-├── nbactions.xml                # Configuração de execução direta pela IDE NetBeans
-├── docker-compose.yml            # MySQL local já configurado pros defaults do projeto
+├── pom.xml                             # Módulo pai (agregador): versões centralizadas, sem código
+├── nbactions.xml                       # Configuração de execução direta pela IDE NetBeans
+├── docker-compose.yml                  # MySQL local já configurado pros defaults do projeto
 ├── README.md / README.en.md
 ├── LICENSE
 ├── docs/
-│   └── screenshots/               # Prints do sistema usados no README
-├── src/main/java/br/com/barberdesk/
-│   ├── app/Main.java                # Ponto de entrada: decide login vs. cadastro inicial
-│   ├── dao/                          # Acesso a dados (MySQL), uma classe por entidade
-│   ├── model/                         # Entidades de domínio (POJOs)
-│   ├── service/                        # Regras de negócio (agenda, relatórios, setup inicial)
-│   ├── ui/                              # Telas Swing (NetBeans GUI Builder)
-│   └── util/                             # Helpers (contexto de sessão, hash, layout, datas)
-├── src/main/resources/
-│   ├── config.properties                 # Conexão com o banco (sobrescrevível por env vars)
-│   ├── logback.xml                        # Configuração de log (console + arquivo)
-│   └── db/schema.sql                      # Schema inicial, criado automaticamente no 1º start
-├── src/test/java/br/com/barberdesk/       # Testes JUnit 5 (lógica pura: hash, datas, equals/hashCode)
-└── target/                                 # Artefatos gerados de build (JAR) - não versionado
+│   ├── RELATORIO-ETAPA-6.md            # SOLID, code smells, design patterns, prontidão pra Web
+│   └── screenshots/                    # Prints do sistema usados no README
+│
+├── barbershop-core/                    # Regras de negócio — sem qualquer dependência de Swing
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/br/com/barberdesk/
+│       │   ├── model/                  # Entidades de domínio (POJOs)
+│       │   ├── dao/                    # Acesso a dados (JDBC/MySQL), uma classe por entidade
+│       │   │   └── repository/         # Interfaces consumidas pelos services (Repository Pattern)
+│       │   ├── service/                # Regras de negócio (agenda, relatórios, setup inicial...)
+│       │   └── util/                   # Helpers puros (hash, datas, armazenamento de imagem)
+│       ├── main/resources/
+│       │   ├── config.properties       # Conexão com o banco (sobrescrevível por env vars)
+│       │   └── db/schema.sql           # Schema inicial, criado automaticamente no 1º start
+│       └── test/java/br/com/barberdesk/
+│           ├── model/, util/           # Testes de lógica pura (hash, datas, equals/hashCode)
+│           └── service/                # Testes de service com repositórios fake em memória
+│               └── fake/               # Test doubles das interfaces de repositório
+│
+└── barbershop-desktop/                 # Aplicação Swing — depende de barbershop-core
+    ├── pom.xml                         # Gera o jar executável sombreado (maven-shade-plugin)
+    └── src/main/
+        ├── java/br/com/barberdesk/
+        │   ├── app/
+        │   │   ├── Main.java             # Ponto de entrada: decide login vs. cadastro inicial
+        │   │   ├── FabricaDeServicos.java # Composition root: monta DAOs concretos → services
+        │   │   └── VerificacaoSistema.java # Smoke test operacional contra um MySQL real
+        │   ├── ui/                        # Telas Swing (NetBeans GUI Builder)
+        │   │   ├── controller/            # Lógica de cada área da Home (agenda, catálogo...)
+        │   │   └── support/                # Helpers de UI (ícone, máscaras, StatusRowRenderer)
+        └── resources/
+            ├── logback.xml                # Configuração de log (console + arquivo)
+            └── icon.ico
 ```
 
 ### Organização
 
-- **app/Main.java**: ponto de entrada e decisão entre cadastro inicial e login.
-- **service/DatabaseInitService.java**: criação de schema e migrações automáticas.
-- **service/AgendaService.java**: transições de status do agendamento e validação de horário de funcionamento.
-- **service/RelatorioService.java**: agregações para a tela de Relatórios.
-- **dao/**: camada de acesso MySQL (CRUD e regras de consulta).
-- **ui/TelaHome.java**: painel principal, histórico, clientes, relatórios e manutenção da barbearia.
-- **ui/TelaNovoAgendamento.java** e **ui/TelaEditarAgendamento.java**: fluxo operacional da agenda.
+- **`app/Main.java`**: ponto de entrada e decisão entre cadastro inicial e login.
+- **`app/FabricaDeServicos.java`**: único ponto do sistema que instancia DAOs concretos e os injeta nos services via construtor — nenhuma outra classe do módulo desktop deveria instanciar um DAO diretamente.
+- **`app/VerificacaoSistema.java`**: utilitário de linha de comando (`main()`) que valida, contra um MySQL real, que conexão, schema, autenticação, agendamento e relatórios continuam funcionando de ponta a ponta — ver [Verificação do Sistema](#-verificação-do-sistema).
+- **`service/DatabaseInitService.java`** (delega para `dao/SchemaInitializer.java`): criação de schema e migrações automáticas.
+- **`service/AgendaService.java`**: transições de status do agendamento, conflito de horário e validação de horário de funcionamento.
+- **`service/RelatorioService.java`** (delega para `dao/RelatorioDAO.java`): agregações para a tela de Relatórios.
+- **`dao/`**: camada de acesso MySQL (CRUD e regras de consulta), cada classe implementando uma interface de `dao/repository/`.
+- **`ui/TelaHome.java`**: monta a janela e delega cada área (agenda, catálogo, clientes, barbearia, histórico, relatórios) para o controller correspondente em `ui/controller/`.
+- **`ui/TelaNovoAgendamento.java`** e **`ui/TelaEditarAgendamento.java`**: fluxo operacional da agenda.
 
 ---
 
 ## 🛠️ Tecnologias
 
-**Linguagem:** Java (compilação alvo Java 8; execução compatível com JREs mais novas)
+**Linguagem:** Java 17 (compilação e execução)
 
-**Interface:** Java Swing (Look & Feel [FlatLaf](https://www.formdev.com/flatlaf/)), telas geradas pelo NetBeans GUI Builder (`AbsoluteLayout`)
+**Build:** Maven, multi-módulo (`barbershop-core` + `barbershop-desktop`), versões de dependência centralizadas no `pom.xml` raiz
 
-**Build:** Maven
+**Interface:** Java Swing (Look & Feel [FlatLaf](https://www.formdev.com/flatlaf/) `3.4.1`), telas geradas pelo NetBeans GUI Builder (`AbsoluteLayout`)
 
-**Banco de dados:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), pool de conexões [HikariCP](https://github.com/brettwooldridge/HikariCP)
+**Banco de dados:** MySQL 8 + MySQL Connector/J (`mysql-connector-j 8.3.0`), pool de conexões [HikariCP](https://github.com/brettwooldridge/HikariCP) `5.1.0`
 
-**Logging:** SLF4J + Logback (console e arquivo)
+**Logging:** SLF4J `2.0.16` + Logback `1.5.16` (console e arquivo)
 
-**Testes:** JUnit 5
+**Testes:** JUnit 5, com repositórios *fake* em memória para os testes de service (sem dependência de banco real)
 
 **Dev local:** Docker Compose (MySQL)
 
@@ -183,7 +208,7 @@ barber-shop-desktop/
 
 ## ⚙️ Requisitos
 
-- JDK 8+
+- JDK 17+
 - MySQL ativo e acessível
 - Usuário MySQL com permissão para criar/alterar tabelas do schema `barberdesk`
 - Maven 3.x (opcional, caso execute pela IDE NetBeans)
@@ -213,13 +238,13 @@ Opção 2 - MySQL próprio: crie o banco antes da primeira execução:
 CREATE DATABASE barberdesk;
 ```
 
-> Em ambas as opções, as tabelas são criadas automaticamente pelo sistema no primeiro start (`src/main/resources/db/schema.sql`).
+> Em ambas as opções, as tabelas são criadas automaticamente pelo sistema no primeiro start (`barbershop-core/src/main/resources/db/schema.sql`).
 
 ---
 
 ## 🔐 Variáveis de Ambiente
 
-Você pode configurar a conexão em `src/main/resources/config.properties`:
+Você pode configurar a conexão em `barbershop-core/src/main/resources/config.properties`:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
@@ -250,7 +275,7 @@ Ou sobrescrever via variáveis de ambiente:
 
 ```bash
 mvn clean package
-java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
 ```
 
 ---
@@ -265,26 +290,26 @@ O projeto não gera instalador nativo (MSI/DEB/RPM) - é um JAR executável mult
 mvn clean package
 ```
 
-Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutidas (`maven-shade-plugin`) - não precisa de mais nada no classpath pra rodar.
+Gera `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar` já com todas as dependências embutidas (`maven-shade-plugin`) - não precisa de mais nada no classpath pra rodar.
 
 ### 🪟 Windows
 
-1. **Java**: confira se tem JRE/JDK 8+ instalado (`java -version` no PowerShell/CMD). Se não tiver, baixe o [Eclipse Temurin](https://adoptium.net/) e instale.
+1. **Java**: confira se tem JRE/JDK 17+ instalado (`java -version` no PowerShell/CMD). Se não tiver, baixe o [Eclipse Temurin](https://adoptium.net/) e instale.
 2. **Banco de dados**: suba via Docker Compose (`docker compose up -d`, requer Docker Desktop) ou instale o [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) e crie o banco `barberdesk` manualmente.
 3. **Executar**:
    ```powershell
-   java -jar target\BarberDesk-1.0-SNAPSHOT.jar
+   java -jar barbershop-desktop\target\barbershop-desktop-1.0-SNAPSHOT.jar
    ```
 4. **Atalho na área de trabalho** (opcional): crie um arquivo `BarberDesk.bat` ao lado do `.jar`:
    ```bat
    @echo off
-   start javaw -jar "%~dp0BarberDesk-1.0-SNAPSHOT.jar"
+   start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
    ```
-   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, aponte-o para `src/main/resources/icon.ico` (já vem pronto no repositório — Windows não aceita `.png` como ícone de atalho).
+   `javaw` (em vez de `java`) evita abrir uma janela de console junto com a aplicação. Pra trocar o ícone do atalho, aponte-o para `barbershop-desktop/src/main/resources/icon.ico` (já vem pronto no repositório — Windows não aceita `.png` como ícone de atalho).
 
 ### 🐧 Linux
 
-1. **Java**: instale um JRE/JDK 8+ pelo gerenciador de pacotes da distro, por exemplo:
+1. **Java**: instale um JRE/JDK 17+ pelo gerenciador de pacotes da distro, por exemplo:
    ```bash
    sudo apt install openjdk-17-jre   # Debian/Ubuntu
    sudo dnf install java-17-openjdk  # Fedora
@@ -292,13 +317,13 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
 2. **Banco de dados**: `docker compose up -d` (requer Docker) ou instale o MySQL localmente (`sudo apt install mysql-server`) e crie o banco `barberdesk`.
 3. **Executar**:
    ```bash
-   java -jar target/BarberDesk-1.0-SNAPSHOT.jar
+   java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
    ```
 4. **Launcher `.desktop`** (opcional, pra aparecer no menu de aplicativos):
    ```ini
    [Desktop Entry]
    Name=BarberDesk
-   Exec=java -jar /caminho/completo/para/BarberDesk-1.0-SNAPSHOT.jar
+   Exec=java -jar /caminho/completo/para/barbershop-desktop-1.0-SNAPSHOT.jar
    Icon=/caminho/completo/para/icon.ico
    Type=Application
    Categories=Office;
@@ -390,13 +415,18 @@ Gera `target/BarberDesk-1.0-SNAPSHOT.jar` já com todas as dependências embutid
 
 ## 🧪 Testes Locais Rápidos
 
-Há uma suíte de testes automatizados (JUnit 5) para a lógica pura do projeto - hash de senha, formatação/parse de data e `equals()`/`hashCode()` dos models:
+Há uma suíte de testes automatizados (JUnit 5, 40 testes) rodando na raiz do projeto:
 
 ```bash
 mvn test
 ```
 
-Cobre só a lógica que não depende de banco/GUI. Fluxo manual sugerido para o resto:
+Cobre:
+
+- Lógica pura de `model`/`util` (hash de senha, formatação/parse de data, `equals()`/`hashCode()`).
+- **Services de negócio** (`AgendaService`, `AuthService`, `RelatorioService`) usando **repositórios *fake* em memória** (`barbershop-core/src/test/java/br/com/barberdesk/service/fake`) — sem tocar em banco real, cobrindo transições de status do agendamento, detecção de conflito de horário, validação de horário de funcionamento e autenticação (incluindo o upgrade silencioso de contas com hash legado).
+
+Não roda contra um banco de verdade nem contra a GUI. Para isso, ver [Verificação do Sistema](#-verificação-do-sistema) (automatizada) e o fluxo manual sugerido abaixo:
 
 1. Iniciar a aplicação sem dados no banco e validar a abertura do cadastro inicial.
 2. Criar barbearia + usuário + serviços + barbeiros.
@@ -408,7 +438,37 @@ Cobre só a lógica que não depende de banco/GUI. Fluxo manual sugerido para o 
 8. Cancelar um agendamento informando o motivo e conferir que aparece no histórico.
 9. Gerar um relatório para um período com agendamentos concluídos.
 
-> Testes de integração dos DAOs contra um MySQL real ainda não existem - ver [Melhorias Futuras](#-melhorias-futuras).
+---
+
+## ✅ Verificação do Sistema
+
+Além dos testes JUnit (que usam repositórios em memória), o projeto tem um smoke test operacional que roda contra um **MySQL real** — útil para validar rapidamente, depois de um deploy ou de uma migração de schema, que o sistema continua funcionando de ponta a ponta:
+
+```bash
+docker compose up -d
+mvn clean package
+java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+```
+
+Ele conecta no banco, garante o schema, faz um cadastro inicial de verificação, testa autenticação (senha certa e errada), cria um agendamento, confirma a detecção de conflito de horário, cancela o agendamento e gera um relatório — imprimindo `[OK]`/`[FALHA]` para cada checagem:
+
+```
+=== BarberDesk — Verificação do Sistema ===
+
+[OK]    Conexão com o banco de dados
+[OK]    Schema do banco (migrações)
+[OK]    Cadastro inicial (barbearia + usuário + serviço + barbeiro)
+[OK]    Autenticação com senha correta
+[OK]    Autenticação com senha incorreta é rejeitada
+[OK]    Criação de agendamento
+[OK]    Conflito de horário é detectado corretamente
+[OK]    Cancelamento de agendamento
+[OK]    Geração de relatório (faturamento/serviços/ranking)
+
+9 checagem(ns), 0 falha(s).
+```
+
+Sai com código `0` se tudo passou, ou `1` se alguma checagem falhou (útil para plugar num pipeline de CI/CD). Todos os dados de verificação criados (barbearia, usuário, serviço, barbeiro, agendamento) são removidos ao final, com sucesso ou falha — não deixa resíduo no banco.
 
 ---
 
@@ -438,10 +498,10 @@ Prints das telas principais, para referência visual rápida do sistema:
 
 Itens conhecidos e documentados conscientemente como próximos passos, não como descuido:
 
-- **Separação completa de camadas na UI**: `TelaHome.java` ainda concentra bastante código de acesso a dados junto com o código gerado pelo GUI Builder - as transições de status e o cadastro inicial já foram extraídos para services, o resto (grids e CRUDs de serviço/barbeiro) fica para uma sessão dedicada com teste visual.
-- **Testes de integração dos DAOs** contra um MySQL real (ex.: Testcontainers) - hoje só há testes de lógica pura.
+- **Testes de integração automatizados dos DAOs** contra um MySQL real (ex.: Testcontainers, plugado no `mvn test`) - hoje a cobertura contra banco real é o smoke test manual `VerificacaoSistema` (ver [Verificação do Sistema](#-verificação-do-sistema)), não algo que roda sozinho em CI a cada build.
+- **Camada Web**: `barbershop-core` já não depende de Swing (ver [`docs/RELATORIO-ETAPA-6.md`](docs/RELATORIO-ETAPA-6.md)), então está pronto para ser consumido por um novo módulo Web (ex.: Spring Boot) reaproveitando os mesmos services - esse novo módulo ainda não existe.
 - **Papéis de usuário**: hoje só existe um admin por barbearia; um barbeiro logado ver só a própria agenda exigiria repensar a relação entre `Usuario` e `Barbeiro`, que hoje não existe.
-- **Flyway** no lugar das migrações manuais - adiado por não dar pra validar contra um banco de verdade neste momento.
+- **Flyway** no lugar das migrações manuais (`SchemaInitializer`) - adiado por não dar pra validar contra um banco de verdade neste momento.
 - **Instalador nativo** via `jpackage`.
 
 ---
