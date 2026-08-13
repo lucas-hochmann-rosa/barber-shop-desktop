@@ -370,3 +370,186 @@
         justify-content: space-between;
     }
 }
+
+/* ---------------------------------------------------------------------------
+   06 - Relatórios (relatorios.html)
+   --------------------------------------------------------------------------- */
+
+.barra-periodo {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: var(--e-4);
+    align-items: end;
+    max-width: 760px;
+}
+
+.faturamento-total {
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--verde-cadeira);
+    margin-bottom: var(--e-5);
+}
+
+/* Gráfico de barras verticais, só com CSS.
+   Sem gap entre as colunas para a linha de base ficar contínua; o
+   espaçamento vem do padding de cada coluna. */
+.grafico-barras {
+    display: flex;
+    align-items: stretch;
+    height: 210px;
+}
+
+.grafico-barras__coluna {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-inline: 4px;
+}
+
+/* Área onde a barra cresce: o percentual da altura é relativo a ela */
+.grafico-barras__area {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-bottom: 2px solid var(--neblina);
+}
+
+.grafico-barras__barra {
+    width: 100%;
+    max-width: 54px;
+    background: var(--verde-cadeira);
+    border-radius: 3px 3px 0 0;
+    transition: height .3s ease;
+}
+
+.grafico-barras__coluna:hover .grafico-barras__barra {
+    background: var(--verde-claro);
+}
+
+.grafico-barras__valor {
+    font-size: 11px;
+    color: var(--fumaca);
+    text-align: center;
+    margin-bottom: var(--e-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.grafico-barras__rotulo {
+    padding-top: var(--e-2);
+    font-size: 11px;
+    color: var(--fumaca);
+    text-align: center;
+}
+
+/* Barras horizontais dos serviços mais vendidos */
+.barras-horizontais {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+}
+
+.barra-horizontal {
+    display: grid;
+    grid-template-columns: 150px 1fr 40px;
+    align-items: center;
+    gap: var(--e-3);
+}
+
+.barra-horizontal__nome {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barra-horizontal__trilho {
+    height: 14px;
+    background: var(--porcelana);
+    border: 1px solid var(--neblina);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.barra-horizontal__preenchimento {
+    display: block;
+    height: 100%;
+    background: var(--latao);
+    border-radius: 7px;
+    transition: width .3s ease;
+}
+
+.barra-horizontal__numero {
+    text-align: right;
+    font-size: 14px;
+    color: var(--tinta);
+}
+
+/* Pódio do ranking */
+.podio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--e-4);
+}
+
+.podio__lugar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--e-2);
+    padding: var(--e-4);
+    background: var(--porcelana);
+    border: var(--borda);
+    border-radius: var(--canto);
+    text-align: center;
+}
+
+.podio__posicao {
+    align-self: flex-start;
+    font-family: var(--fonte-titulo);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--latao);
+    letter-spacing: .06em;
+}
+
+.podio__foto {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+}
+
+.podio__nome {
+    font-family: var(--fonte-titulo);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--verde-cadeira);
+}
+
+.podio__numero {
+    font-family: var(--fonte-titulo);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--tinta);
+}
+
+@media (max-width: 700px) {
+    .barra-periodo {
+        grid-template-columns: 1fr;
+    }
+
+    .podio {
+        grid-template-columns: 1fr;
+    }
+
+    .barra-horizontal {
+        grid-template-columns: 110px 1fr 36px;
+    }
+}

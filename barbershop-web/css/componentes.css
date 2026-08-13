@@ -471,13 +471,16 @@
     border: 1px solid var(--neblina);
 }
 
-/* Blocos de agendamento, posicionados proporcionalmente pelo horário */
+/* Blocos de agendamento, posicionados proporcionalmente pelo horário.
+   Ficam propositalmente estreitos: quando dois atendimentos são próximos,
+   os blocos se encostam, e essa aglomeração é informação — mostra que a
+   agenda está apertada naquele trecho do dia. */
 .regua__bloco {
     position: absolute;
-    top: 14px;
-    width: 36px;
-    height: 36px;
-    margin-left: -18px;
+    top: 16px;
+    width: 28px;
+    height: 32px;
+    margin-left: -14px;
     border-radius: var(--canto);
     border: 2px solid var(--branco);
     cursor: pointer;
@@ -490,8 +493,12 @@
     z-index: 4;
 }
 
-/* Balão com cliente, serviço e horário */
+/* Balão com cliente, serviço e horário.
+   Fica em display:none (e não visibility:hidden) porque, escondido, ele
+   continuaria ocupando espaço e faria a página estourar para a direita
+   em telas estreitas. */
 .regua__balao {
+    display: none;
     position: absolute;
     bottom: calc(100% + 10px);
     left: 50%;
@@ -507,16 +514,12 @@
     line-height: 1.35;
     text-align: left;
     box-shadow: var(--sombra-flutuante);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .15s ease;
     pointer-events: none;
 }
 
 .regua__bloco:hover .regua__balao,
 .regua__bloco:focus-visible .regua__balao {
-    opacity: 1;
-    visibility: visible;
+    display: block;
 }
 
 .regua__balao::after {

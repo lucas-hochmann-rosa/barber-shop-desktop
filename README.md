@@ -109,6 +109,7 @@ O **BarberDesk** é uma aplicação desktop (Java Swing) para uso local/rede int
 - [Adesão aos Requisitos](#-adesão-aos-requisitos-estado-atual)
 - [Testes Locais Rápidos](#-testes-locais-rápidos)
 - [Verificação do Sistema](#-verificação-do-sistema)
+- [Versão Web](#-versão-web)
 - [Screenshots](#-screenshots)
 - [Melhorias Futuras](#-melhorias-futuras)
 - [Avisos](#-avisos)
@@ -147,21 +148,27 @@ barber-shop-desktop/
 │           └── service/                # Testes de service com repositórios fake em memória
 │               └── fake/               # Test doubles das interfaces de repositório
 │
-└── barbershop-desktop/                 # Aplicação Swing - depende de barbershop-core
-    ├── pom.xml                         # Gera o jar executável sombreado (maven-shade-plugin)
-    ├── nbactions.xml                   # Configuração de run/debug/profile pela IDE NetBeans
-    └── src/main/
-        ├── java/br/com/barberdesk/
-        │   ├── app/
-        │   │   ├── Main.java             # Ponto de entrada: decide login vs. cadastro inicial
-        │   │   ├── FabricaDeServicos.java # Composition root: monta DAOs concretos → services
-        │   │   └── VerificacaoSistema.java # Smoke test operacional contra um MySQL real
-        │   ├── ui/                        # Telas Swing (NetBeans GUI Builder)
-        │   │   ├── controller/            # Lógica de cada área da Home (agenda, catálogo...)
-        │   │   └── support/                # Helpers de UI (ícone, máscaras, StatusRowRenderer)
-        └── resources/
-            ├── logback.xml                # Configuração de log (console + arquivo)
-            └── icon.ico
+├── barbershop-desktop/                 # Aplicação Swing - depende de barbershop-core
+│   ├── pom.xml                         # Gera o jar executável sombreado (maven-shade-plugin)
+│   ├── nbactions.xml                   # Configuração de run/debug/profile pela IDE NetBeans
+│   └── src/main/
+│       ├── java/br/com/barberdesk/
+│       │   ├── app/
+│       │   │   ├── Main.java             # Ponto de entrada: decide login vs. cadastro inicial
+│       │   │   ├── FabricaDeServicos.java # Composition root: monta DAOs concretos → services
+│       │   │   └── VerificacaoSistema.java # Smoke test operacional contra um MySQL real
+│       │   ├── ui/                        # Telas Swing (NetBeans GUI Builder)
+│       │   │   ├── controller/            # Lógica de cada área da Home (agenda, catálogo...)
+│       │   │   └── support/                # Helpers de UI (ícone, máscaras, StatusRowRenderer)
+│       └── resources/
+│           ├── logback.xml                # Configuração de log (console + arquivo)
+│           └── icon.ico
+│
+└── barbershop-web/                     # Front-end web (HTML, CSS e JS puros, sem back-end)
+    ├── README.md                       # Documentação própria do módulo
+    ├── index.html, agenda.html, ...    # Uma página por tela
+    ├── css/, js/, img/
+    └── teste-classificacao.html        # Confere a regra RF11 contra os casos do teste JUnit
 ```
 
 ### Organização
@@ -175,6 +182,7 @@ barber-shop-desktop/
 - **`dao/`**: camada de acesso MySQL (CRUD e regras de consulta), cada classe implementando uma interface de `dao/repository/`.
 - **`ui/TelaHome.java`**: monta a janela e delega cada área (agenda, catálogo, clientes, barbearia, histórico, relatórios) para o controller correspondente em `ui/controller/`.
 - **`ui/TelaNovoAgendamento.java`** e **`ui/TelaEditarAgendamento.java`**: fluxo operacional da agenda.
+- **`barbershop-web/`**: versão web da interface, em HTML/CSS/JS puros, ainda sem back-end — ver [Versão Web](#-versão-web).
 
 ---
 
@@ -468,6 +476,25 @@ Ele conecta no banco, garante o schema, faz um cadastro inicial de verificação
 ```
 
 Sai com código `0` se tudo passou, ou `1` se alguma checagem falhou (útil para plugar num pipeline de CI/CD). Todos os dados de verificação criados (barbearia, usuário, serviço, barbeiro, agendamento) são removidos ao final, com sucesso ou falha - não deixa resíduo no banco.
+
+---
+
+## 🌐 Versão Web
+
+A pasta [`barbershop-web/`](barbershop-web/) traz o front-end da versão web do sistema, feito com **HTML, CSS e JavaScript puros** — sem framework, sem build e ainda sem back-end, com dados de exemplo num arquivo `.js`. São seis telas espelhando as do desktop (entrar, agenda, agendamento, minha barbearia, histórico e relatórios).
+
+```bash
+cd barbershop-web
+python -m http.server 8000   # e abra http://localhost:8000
+```
+
+Acesso de demonstração: usuário `lucas`, senha `1234`.
+
+O destaque é a **régua do dia** na tela de agenda: uma faixa do expediente (08h–20h) com os agendamentos posicionados pelo horário, um marcador que acompanha a hora atual e cada bloco colorido pela classificação do RF11.
+
+Essa classificação é a **mesma regra do desktop**: `js/classificacao.js` é a tradução de `ClassificadorAgenda`, e a página `teste-classificacao.html` roda no navegador os mesmos 12 casos do teste JUnit da Etapa 7 para comprovar que os dois lados classificam igual.
+
+Detalhes de estrutura, paleta, acessibilidade e limitações em [`barbershop-web/README.md`](barbershop-web/README.md).
 
 ---
 

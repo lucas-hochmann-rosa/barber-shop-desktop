@@ -109,6 +109,7 @@ Details for each step below.
 - [Requirements Compliance](#-requirements-compliance-current-state)
 - [Quick Local Testing](#-quick-local-testing)
 - [System Verification](#-system-verification)
+- [Web Version](#-web-version)
 - [Screenshots](#-screenshots)
 - [Roadmap](#-roadmap)
 - [Disclaimer](#-disclaimer)
@@ -147,21 +148,27 @@ barber-shop-desktop/
 │           └── service/                # Service tests using in-memory fake repositories
 │               └── fake/               # Test doubles of the repository interfaces
 │
-└── barbershop-desktop/                 # Swing application - depends on barbershop-core
-    ├── pom.xml                         # Builds the shaded executable jar (maven-shade-plugin)
-    ├── nbactions.xml                   # NetBeans run/debug/profile configuration
-    └── src/main/
-        ├── java/br/com/barberdesk/
-        │   ├── app/
-        │   │   ├── Main.java             # Entry point: decides login vs. initial setup
-        │   │   ├── FabricaDeServicos.java # Composition root: wires concrete DAOs → services
-        │   │   └── VerificacaoSistema.java # Operational smoke test against a real MySQL
-        │   ├── ui/                        # Swing screens (NetBeans GUI Builder)
-        │   │   ├── controller/            # Logic for each Home area (schedule, catalog...)
-        │   │   └── support/                # UI helpers (icon, input masks, StatusRowRenderer)
-        └── resources/
-            ├── logback.xml                # Logging config (console + file)
-            └── icon.ico
+├── barbershop-desktop/                 # Swing application - depends on barbershop-core
+│   ├── pom.xml                         # Builds the shaded executable jar (maven-shade-plugin)
+│   ├── nbactions.xml                   # NetBeans run/debug/profile configuration
+│   └── src/main/
+│       ├── java/br/com/barberdesk/
+│       │   ├── app/
+│       │   │   ├── Main.java             # Entry point: decides login vs. initial setup
+│       │   │   ├── FabricaDeServicos.java # Composition root: wires concrete DAOs → services
+│       │   │   └── VerificacaoSistema.java # Operational smoke test against a real MySQL
+│       │   ├── ui/                        # Swing screens (NetBeans GUI Builder)
+│       │   │   ├── controller/            # Logic for each Home area (schedule, catalog...)
+│       │   │   └── support/                # UI helpers (icon, input masks, StatusRowRenderer)
+│       └── resources/
+│           ├── logback.xml                # Logging config (console + file)
+│           └── icon.ico
+│
+└── barbershop-web/                     # Web front-end (plain HTML, CSS and JS, no back-end)
+    ├── README.md                       # The module's own documentation (Portuguese)
+    ├── index.html, agenda.html, ...    # One page per screen
+    ├── css/, js/, img/
+    └── teste-classificacao.html        # Checks the RF11 rule against the JUnit test cases
 ```
 
 ### Organization
@@ -175,6 +182,7 @@ barber-shop-desktop/
 - **`dao/`**: MySQL access layer (CRUD and query rules), each class implementing an interface from `dao/repository/`.
 - **`ui/TelaHome.java`**: builds the window and delegates each area (schedule, catalog, clients, barbershop, history, reports) to the matching controller under `ui/controller/`.
 - **`ui/TelaNovoAgendamento.java`** and **`ui/TelaEditarAgendamento.java`**: appointment operational flow.
+- **`barbershop-web/`**: the web version of the UI, in plain HTML/CSS/JS, still without a back-end - see [Web Version](#-web-version).
 
 ---
 
@@ -468,6 +476,25 @@ It connects to the database, ensures the schema, runs a verification initial set
 ```
 
 Exits with code `0` if everything passed, or `1` if any check failed (handy for wiring into a CI/CD pipeline). All verification data created (barbershop, user, service, barber, appointment) is removed at the end, whether it succeeds or fails - no leftovers in the database.
+
+---
+
+## 🌐 Web Version
+
+The [`barbershop-web/`](barbershop-web/) folder holds the front-end of the web version, built with **plain HTML, CSS and JavaScript** - no framework, no build step and no back-end yet, with sample data in a `.js` file. Six screens mirroring the desktop ones (login, schedule, appointment, my barbershop, history and reports).
+
+```bash
+cd barbershop-web
+python -m http.server 8000   # then open http://localhost:8000
+```
+
+Demo credentials: user `lucas`, password `1234`.
+
+The centerpiece is the **day ruler** on the schedule screen: a band covering business hours (8am-8pm) with appointments placed by time, a marker tracking the current hour and each block colored by its RF11 classification.
+
+That classification is the **same rule as the desktop's**: `js/classificacao.js` is a port of `ClassificadorAgenda`, and `teste-classificacao.html` runs, in the browser, the same 12 cases from the Etapa 7 JUnit test to prove both sides classify identically.
+
+Structure, palette, accessibility notes and known limitations are documented in [`barbershop-web/README.md`](barbershop-web/README.md) (Portuguese).
 
 ---
 
