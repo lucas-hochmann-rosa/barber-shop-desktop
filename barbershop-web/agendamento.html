@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Novo agendamento &middot; BarberDesk</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/paginas.css">
+</head>
+<body>
+
+    <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="aplicacao">
+
+        <header class="barra-lateral" id="barraLateral">
+            <div class="barra-lateral__marca">
+                <img class="barra-lateral__logo" src="img/logo.svg" width="40" height="40" alt="">
+                <div>
+                    <div class="barra-lateral__nome">BarberDesk</div>
+                    <div class="barra-lateral__barbearia">Barbearia do Lucas</div>
+                </div>
+            </div>
+
+            <nav class="barra-lateral__nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a class="barra-lateral__link" href="agenda.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</a></li>
+                    <li><a class="barra-lateral__link" href="agendamento.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M12 11v7M8.5 14.5h7"/></svg>Novo agendamento</a></li>
+                    <li><a class="barra-lateral__link" href="barbearia.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 9 6 3h12l2 6"/><path d="M10 21v-6h4v6"/></svg>Minha barbearia</a></li>
+                    <li><a class="barra-lateral__link" href="historico.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Histórico</a></li>
+                    <li><a class="barra-lateral__link" href="relatorios.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><rect x="6" y="11" width="3.5" height="7"/><rect x="13" y="6" width="3.5" height="12"/></svg>Relatórios</a></li>
+                </ul>
+            </nav>
+
+            <div class="barra-lateral__rodape">
+                <a class="barra-lateral__sair" href="index.html" data-sair>Sair</a>
+            </div>
+        </header>
+
+        <div class="conteudo">
+
+            <div class="topo">
+                <button class="topo__menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="barraLateral" aria-label="Abrir menu">
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                </button>
+                <h1 class="topo__titulo" id="tituloPagina">Novo agendamento</h1>
+                <span class="topo__data" data-data-hoje></span>
+                <span class="topo__avatar" title="Lucas Rosa">LR</span>
+            </div>
+
+            <main class="pagina" id="conteudo">
+
+                <p id="avisoForm" class="aviso" role="status" aria-live="polite" hidden></p>
+
+                <div class="grade-duas-colunas">
+
+                    <!-- ============ FORMULÁRIO ============ -->
+                    <section class="cartao" aria-labelledby="tituloForm">
+                        <h2 id="tituloForm" class="apenas-leitor-tela">Dados do agendamento</h2>
+
+                        <form id="formAgendamento" class="formulario-agendamento" novalidate>
+
+                            <div class="campo">
+                                <label class="campo__rotulo" for="clienteNome">
+                                    Nome do cliente <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                </label>
+                                <input class="campo__entrada" type="text" id="clienteNome" name="clienteNome"
+                                       required aria-required="true" aria-describedby="clienteNome-erro">
+                                <span class="campo__erro" id="clienteNome-erro" aria-live="polite"></span>
+                            </div>
+
+                            <div class="linha-campos">
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="contato">
+                                        Contato <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                    </label>
+                                    <input class="campo__entrada" type="tel" id="contato" name="contato"
+                                           placeholder="(51) 99999-1234" required aria-required="true"
+                                           aria-describedby="contato-erro">
+                                    <span class="campo__erro" id="contato-erro" aria-live="polite"></span>
+                                </div>
+
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="origemContato">Origem do contato</label>
+                                    <select class="campo__selecao" id="origemContato" name="origemContato"></select>
+                                    <span class="campo__erro" id="origemContato-erro" aria-live="polite"></span>
+                                </div>
+                            </div>
+
+                            <div class="linha-campos">
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="data">
+                                        Data <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                    </label>
+                                    <input class="campo__entrada" type="date" id="data" name="data"
+                                           required aria-required="true" aria-describedby="data-erro">
+                                    <span class="campo__erro" id="data-erro" aria-live="polite"></span>
+                                </div>
+
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="hora">
+                                        Hora <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                    </label>
+                                    <input class="campo__entrada" type="time" id="hora" name="hora" step="300"
+                                           required aria-required="true" aria-describedby="hora-erro">
+                                    <span class="campo__erro" id="hora-erro" aria-live="polite"></span>
+                                </div>
+                            </div>
+
+                            <div class="linha-campos">
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="servico">
+                                        Serviço <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                    </label>
+                                    <select class="campo__selecao" id="servico" name="servico"
+                                            required aria-required="true" aria-describedby="servico-erro"></select>
+                                    <span class="campo__erro" id="servico-erro" aria-live="polite"></span>
+                                </div>
+
+                                <div class="campo">
+                                    <label class="campo__rotulo" for="barbeiro">
+                                        Barbeiro <span class="campo__obrigatorio" aria-hidden="true">*</span>
+                                    </label>
+                                    <select class="campo__selecao" id="barbeiro" name="barbeiro"
+                                            required aria-required="true" aria-describedby="barbeiro-erro"></select>
+                                    <span class="campo__erro" id="barbeiro-erro" aria-live="polite"></span>
+                                </div>
+                            </div>
+
+                            <div class="campo">
+                                <label class="campo__rotulo" for="observacoes">Observações</label>
+                                <textarea class="campo__area" id="observacoes" name="observacoes"></textarea>
+                            </div>
+
+                            <div class="formulario-agendamento__acoes">
+                                <button class="botao botao--primario" type="submit">Salvar agendamento</button>
+                                <a class="botao botao--secundario" href="agenda.html">Cancelar</a>
+                                <button class="botao botao--perigo" type="button" id="botaoExcluir" hidden>Excluir</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- ============ PAINEL DE APOIO ============ -->
+                    <div class="coluna-apoio">
+
+                        <section class="cartao cartao--tracejado" aria-labelledby="tituloConflito">
+                            <h2 id="tituloConflito" class="cartao__titulo">Verificação de conflito</h2>
+
+                            <p class="texto-pequeno texto-secundario">
+                                Confere se o barbeiro escolhido já tem outro atendimento que se
+                                sobreponha a este horário, considerando a duração do serviço (RF10),
+                                e se o horário cabe no expediente da barbearia.
+                            </p>
+
+                            <p id="painelConflito" class="aviso aviso--neutro" role="status" aria-live="polite">
+                                Escolha barbeiro, data e hora para conferir a disponibilidade.
+                            </p>
+                        </section>
+
+                        <section class="cartao" aria-labelledby="tituloResumo">
+                            <h2 id="tituloResumo" class="cartao__titulo">Resumo</h2>
+
+                            <dl class="resumo">
+                                <div class="resumo__linha"><dt>Serviço</dt><dd id="resumoServico">—</dd></div>
+                                <div class="resumo__linha"><dt>Duração</dt><dd id="resumoDuracao" class="mono">—</dd></div>
+                                <div class="resumo__linha"><dt>Barbeiro</dt><dd id="resumoBarbeiro">—</dd></div>
+                                <div class="resumo__linha"><dt>Quando</dt><dd id="resumoQuando" class="mono">—</dd></div>
+                            </dl>
+
+                            <div class="resumo__total">
+                                <span>Total</span>
+                                <strong class="valor" id="resumoTotal">R$ 0,00</strong>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/classificacao.js"></script>
+    <script src="js/dados.js"></script>
+    <script src="js/validacao.js"></script>
+    <script src="js/agendamento.js"></script>
+</body>
+</html>

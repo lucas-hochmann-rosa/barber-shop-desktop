@@ -175,3 +175,78 @@
 .cartao-servico__duracao {
     padding: 0 var(--e-4) var(--e-4);
 }
+
+/* ---------------------------------------------------------------------------
+   03 - Novo agendamento (agendamento.html)
+   --------------------------------------------------------------------------- */
+
+.formulario-agendamento {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+}
+
+.formulario-agendamento__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+    margin-top: var(--e-3);
+    padding-top: var(--e-4);
+    border-top: 1px solid var(--porcelana);
+}
+
+/* O botão de excluir fica separado dos demais, à direita */
+#botaoExcluir {
+    margin-left: auto;
+}
+
+.coluna-apoio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+}
+
+.resumo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+    margin: 0;
+}
+
+.resumo__linha {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-3);
+}
+
+.resumo__linha dt {
+    font-size: 14px;
+    color: var(--fumaca);
+}
+
+.resumo__linha dd {
+    margin: 0;
+    text-align: right;
+}
+
+.resumo__total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: var(--e-4);
+    padding-top: var(--e-3);
+    border-top: var(--borda);
+    font-family: var(--fonte-titulo);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--verde-cadeira);
+}
+
+.resumo__total strong {
+    font-family: var(--fonte-mono);
+    font-size: 21px;
+    letter-spacing: 0;
+}
