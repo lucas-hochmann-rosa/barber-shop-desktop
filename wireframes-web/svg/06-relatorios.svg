@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="992" viewBox="0 0 1440 992">
+<rect width="1440" height="992" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">06 — Relatórios</text>
+<text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Faturamento, serviços mais vendidos e ranking (RF09)</text>
+<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERDESK WEB</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Baixa fidelidade · 1440px</text>
+<line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
+<rect x="0" y="92" width="230" height="900" rx="0" fill="#EDEFF1"/>
+<line x1="230" y1="92" x2="230" y2="992" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="24" y="118" width="44" height="44" rx="8" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.5"/>
+<text x="46" y="146" font-family="DejaVu Sans, Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0.5">LOGO</text>
+<text x="82" y="138" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">BarberDesk</text>
+<text x="82" y="155" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Barbearia do Lucas</text>
+<rect x="28" y="210" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
+<text x="56" y="224" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Agenda</text>
+<rect x="28" y="256" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
+<text x="56" y="270" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Novo agendamento</text>
+<rect x="28" y="302" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
+<text x="56" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Minha barbearia</text>
+<rect x="28" y="348" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
+<text x="56" y="362" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Histórico</text>
+<rect x="14" y="382" width="202" height="40" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.4"/>
+<rect x="14" y="382" width="4" height="40" rx="2" fill="#33383D"/>
+<rect x="28" y="394" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
+<text x="56" y="408" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Relatórios</text>
+<line x1="14" y1="436" x2="216" y2="436" stroke="#8E959C" stroke-width="1"/>
+<text x="28" y="462" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Sair</text>
+<text x="28" y="968" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#7E8790" text-anchor="start" letter-spacing="0">▸ Menu recolhível em telas pequenas</text>
+<rect x="230" y="92" width="1210" height="78" rx="0" fill="#FFFFFF"/>
+<line x1="230" y1="170" x2="1440" y2="170" stroke="#8E959C" stroke-width="1.5"/>
+<text x="266" y="140" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Relatórios</text>
+<rect x="1210" y="112" width="130" height="38" rx="19" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<text x="1275" y="136" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="normal" fill="#6B7278" text-anchor="middle" letter-spacing="0">13/08/2026</text>
+<circle cx="1384" cy="131" r="19" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.4"/>
+<text x="1384" y="136" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0">LR</text>
+<rect x="266" y="200" width="1138" height="96" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<text x="290" y="226" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#6B7278" text-anchor="start" letter-spacing="0">Período de</text>
+<rect x="290" y="234" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="454" y="243" width="22" height="22" rx="3" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<rect x="303" y="251" width="100" height="8" rx="4" fill="#C6CBD0"/>
+<text x="510" y="226" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#6B7278" text-anchor="start" letter-spacing="0">até</text>
+<rect x="510" y="234" width="200" height="42" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="674" y="243" width="22" height="22" rx="3" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<rect x="523" y="251" width="100" height="8" rx="4" fill="#C6CBD0"/>
+<rect x="1254" y="234" width="126" height="42" rx="21" fill="#DCDFE2" stroke="#8E959C" stroke-width="1.6"/>
+<text x="1317" y="260" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="bold" fill="#33383D" text-anchor="middle" letter-spacing="0">Gerar</text>
+<rect x="266" y="332" width="523.48" height="300" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<text x="290" y="372" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Faturamento no período</text>
+<text x="290" y="424" font-family="DejaVu Sans, Arial, sans-serif" font-size="30" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">R$ 0.000,00</text>
+<rect x="290" y="542" width="67.58" height="40" rx="4" fill="#C6CBD0"/>
+<rect x="371.58" y="516" width="67.58" height="66" rx="4" fill="#C6CBD0"/>
+<rect x="453.16" y="530" width="67.58" height="52" rx="4" fill="#C6CBD0"/>
+<rect x="534.74" y="494" width="67.58" height="88" rx="4" fill="#C6CBD0"/>
+<rect x="616.32" y="508" width="67.58" height="74" rx="4" fill="#C6CBD0"/>
+<rect x="697.9" y="482" width="67.58" height="100" rx="4" fill="#C6CBD0"/>
+<line x1="290" y1="584" x2="765.48" y2="584" stroke="#8E959C" stroke-width="1.4"/>
+<text x="290" y="610" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Gráfico de barras em CSS puro</text>
+<rect x="813.48" y="332" width="590.52" height="300" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<text x="837.48" y="372" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Serviços mais vendidos</text>
+<rect x="837.48" y="406" width="129.914" height="10" rx="5" fill="#C6CBD0"/>
+<rect x="991.015" y="403" width="307.07" height="14" rx="7" fill="#C6CBD0"/>
+<text x="1380" y="414" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="0">00</text>
+<rect x="837.48" y="450" width="129.914" height="10" rx="5" fill="#C6CBD0"/>
+<rect x="991.015" y="447" width="245.656" height="14" rx="7" fill="#C6CBD0"/>
+<text x="1380" y="458" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="0">00</text>
+<rect x="837.48" y="494" width="129.914" height="10" rx="5" fill="#C6CBD0"/>
+<rect x="991.015" y="491" width="190.384" height="14" rx="7" fill="#C6CBD0"/>
+<text x="1380" y="502" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="0">00</text>
+<rect x="837.48" y="538" width="129.914" height="10" rx="5" fill="#C6CBD0"/>
+<rect x="991.015" y="535" width="138.182" height="14" rx="7" fill="#C6CBD0"/>
+<text x="1380" y="546" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="0">00</text>
+<rect x="837.48" y="582" width="129.914" height="10" rx="5" fill="#C6CBD0"/>
+<rect x="991.015" y="579" width="92.1211" height="14" rx="7" fill="#C6CBD0"/>
+<text x="1380" y="590" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="0">00</text>
+<rect x="266" y="662" width="1138" height="260" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<text x="290" y="702" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Ranking de barbeiros</text>
+<rect x="290" y="726" width="350" height="160" rx="10" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<circle cx="465" cy="774" r="26" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.4"/>
+<text x="465" y="779" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="normal" fill="#6B7278" text-anchor="middle" letter-spacing="0">Foto</text>
+<rect x="420" y="814" width="90" height="10" rx="5" fill="#C6CBD0"/>
+<text x="465" y="854" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0">00 atendimentos</text>
+<text x="310" y="754" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#6B7278" text-anchor="start" letter-spacing="0">1º</text>
+<rect x="660" y="726" width="350" height="160" rx="10" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<circle cx="835" cy="774" r="26" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.4"/>
+<text x="835" y="779" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="normal" fill="#6B7278" text-anchor="middle" letter-spacing="0">Foto</text>
+<rect x="790" y="814" width="90" height="10" rx="5" fill="#C6CBD0"/>
+<text x="835" y="854" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0">00 atendimentos</text>
+<text x="680" y="754" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#6B7278" text-anchor="start" letter-spacing="0">2º</text>
+<rect x="1030" y="726" width="350" height="160" rx="10" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<circle cx="1205" cy="774" r="26" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.4"/>
+<text x="1205" y="779" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="normal" fill="#6B7278" text-anchor="middle" letter-spacing="0">Foto</text>
+<rect x="1160" y="814" width="90" height="10" rx="5" fill="#C6CBD0"/>
+<text x="1205" y="854" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0">00 atendimentos</text>
+<text x="1050" y="754" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#6B7278" text-anchor="start" letter-spacing="0">3º</text>
+<text x="266" y="948" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#7E8790" text-anchor="start" letter-spacing="0">▸ Dados de exemplo em arquivo JavaScript; back-end será ligado na próxima etapa</text>
+</svg>

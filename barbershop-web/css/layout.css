@@ -1,0 +1,309 @@
+/* ===========================================================================
+   layout.css - barra lateral, topo e grade das páginas
+   =========================================================================== */
+
+.aplicacao {
+    display: grid;
+    grid-template-columns: var(--largura-barra) 1fr;
+    min-height: 100vh;
+}
+
+/* --- Barra lateral -------------------------------------------------------- */
+
+.barra-lateral {
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    background: var(--verde-cadeira);
+    color: var(--porcelana);
+    padding: var(--e-5) 0;
+}
+
+.barra-lateral__marca {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: 0 var(--e-4) var(--e-5);
+}
+
+.barra-lateral__logo {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+}
+
+.barra-lateral__nome {
+    font-family: var(--fonte-titulo);
+    font-size: 21px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--branco);
+    line-height: 1.1;
+}
+
+.barra-lateral__barbearia {
+    font-size: 13px;
+    color: rgba(242, 245, 243, .68);
+    line-height: 1.3;
+}
+
+.barra-lateral__nav {
+    padding: 0 var(--e-3);
+}
+
+.barra-lateral__link {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-3);
+    margin-bottom: var(--e-1);
+    border-radius: var(--canto);
+    color: rgba(242, 245, 243, .82);
+    font-size: 15px;
+    border-left: 3px solid transparent;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.barra-lateral__link:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--branco);
+    text-decoration: none;
+}
+
+.barra-lateral__link[aria-current="page"] {
+    background: var(--verde-claro);
+    border-left-color: var(--latao);
+    color: var(--branco);
+    font-weight: 600;
+}
+
+.barra-lateral__icone {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+}
+
+.barra-lateral__rodape {
+    margin-top: auto;
+    padding: var(--e-4) var(--e-3) 0;
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    margin-inline: var(--e-3);
+}
+
+.barra-lateral__sair {
+    display: block;
+    padding: var(--e-2) var(--e-3);
+    color: rgba(242, 245, 243, .72);
+    font-size: 14px;
+    border-radius: var(--canto);
+}
+
+.barra-lateral__sair:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--branco);
+    text-decoration: none;
+}
+
+/* --- Topo ----------------------------------------------------------------- */
+
+.topo {
+    display: flex;
+    align-items: center;
+    gap: var(--e-4);
+    min-height: var(--altura-topo);
+    padding: var(--e-3) var(--e-6);
+    background: var(--branco);
+    border-bottom: var(--borda);
+}
+
+.topo__titulo {
+    margin-right: auto;
+    font-size: 26px;
+}
+
+.topo__data {
+    padding: var(--e-2) var(--e-4);
+    border: var(--borda);
+    border-radius: 999px;
+    font-family: var(--fonte-mono);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--fumaca);
+    white-space: nowrap;
+}
+
+.topo__avatar {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--verde-cadeira);
+    color: var(--branco);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .06em;
+}
+
+/* Botão que abre a barra lateral em telas pequenas */
+.topo__menu {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: var(--borda);
+    border-radius: var(--canto);
+    color: var(--verde-cadeira);
+}
+
+.topo__menu svg {
+    margin: 0 auto;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    fill: none;
+}
+
+/* --- Conteúdo ------------------------------------------------------------- */
+
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pagina {
+    flex: 1;
+    padding: var(--e-5) var(--e-6) var(--e-7);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-5);
+}
+
+/* Cabeçalho de seção: título à esquerda, ação à direita */
+.secao__cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    margin-bottom: var(--e-3);
+}
+
+/* Grades reutilizadas pelas páginas */
+.grade-resumo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--e-4);
+}
+
+.grade-cartoes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--e-4);
+}
+
+/* Duas colunas: formulário/relatório à esquerda, painel de apoio à direita */
+.grade-duas-colunas {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--e-5);
+    align-items: start;
+}
+
+.grade-meio-a-meio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--e-5);
+    align-items: start;
+}
+
+/* --- Véu que escurece o fundo quando o menu abre no celular --------------- */
+
+.veu-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 18;
+    background: rgba(20, 32, 30, .45);
+}
+
+.veu-menu.esta-visivel {
+    display: block;
+}
+
+/* --- Responsivo ----------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+    .grade-resumo,
+    .grade-cartoes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grade-duas-colunas,
+    .grade-meio-a-meio {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 860px) {
+    .aplicacao {
+        grid-template-columns: 1fr;
+    }
+
+    /* A barra lateral vira gaveta deslizante */
+    .barra-lateral {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: var(--largura-barra);
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+    }
+
+    .barra-lateral.esta-aberta {
+        transform: translateX(0);
+    }
+
+    .topo__menu {
+        display: block;
+    }
+
+    .topo {
+        padding-inline: var(--e-4);
+    }
+
+    .topo__titulo {
+        font-size: 21px;
+    }
+
+    .pagina {
+        padding: var(--e-4) var(--e-4) var(--e-6);
+    }
+}
+
+@media (max-width: 560px) {
+    .grade-resumo,
+    .grade-cartoes {
+        grid-template-columns: 1fr;
+    }
+
+    .topo__data {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .pagina {
+        padding: var(--e-3) var(--e-3) var(--e-5);
+    }
+
+    .topo {
+        padding-inline: var(--e-3);
+    }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Corte masculino">
+  <title>Corte masculino</title>
+  <rect width="320" height="180" fill="#E8EFEC"/>
+  <g opacity=".16" fill="none" stroke="#14483F" stroke-width="1.5">
+    <path d="M0 45h320M0 90h320M0 135h320"/>
+    <path d="M53 0v45M107 0v45M160 0v45M213 0v45M267 0v45"/>
+    <path d="M27 45v45M80 45v45M133 45v45M187 45v45M240 45v45M293 45v45"/>
+    <path d="M53 90v45M107 90v45M160 90v45M213 90v45M267 90v45"/>
+    <path d="M27 135v45M80 135v45M133 135v45M187 135v45M240 135v45M293 135v45"/>
+  </g>
+  <g transform="translate(160 80)" stroke="#14483F" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-34 -34 L22 32"/>
+    <path d="M34 -34 L-22 32"/>
+    <circle cx="-30" cy="42" r="13"/>
+    <circle cx="30" cy="42" r="13"/>
+  </g>
+</svg>

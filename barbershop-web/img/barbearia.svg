@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 900" width="640" height="900"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="tituloBarbearia">
+  <title id="tituloBarbearia">Salão de barbearia com espelho, cadeira e poste</title>
+
+  <defs>
+    <!-- Azulejo metro branco da parede -->
+    <pattern id="azulejo" width="80" height="44" patternUnits="userSpaceOnUse">
+      <rect width="80" height="44" fill="#F2F5F3"/>
+      <rect width="78" height="20" x="1" y="1" fill="#FFFFFF"/>
+      <rect width="38" height="20" x="-19" y="23" fill="#FFFFFF"/>
+      <rect width="38" height="20" x="21" y="23" fill="#FFFFFF"/>
+      <rect width="38" height="20" x="61" y="23" fill="#FFFFFF"/>
+    </pattern>
+    <clipPath id="recorteEspelho">
+      <rect x="150" y="120" width="340" height="250" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <!-- Parede e piso -->
+  <rect width="640" height="900" fill="url(#azulejo)"/>
+  <rect y="640" width="640" height="260" fill="#14483F"/>
+  <rect y="628" width="640" height="14" fill="#0F3830"/>
+
+  <!-- Piso xadrez -->
+  <g opacity=".22">
+    <rect x="0"   y="660" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="160" y="660" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="320" y="660" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="480" y="660" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="80"  y="720" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="240" y="720" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="400" y="720" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="560" y="720" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="0"   y="780" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="160" y="780" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="320" y="780" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="480" y="780" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="80"  y="840" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="240" y="840" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="400" y="840" width="80" height="60" fill="#F2F5F3"/>
+    <rect x="560" y="840" width="80" height="60" fill="#F2F5F3"/>
+  </g>
+
+  <!-- Espelho com moldura de latão -->
+  <rect x="142" y="112" width="356" height="266" rx="16" fill="#C8912F"/>
+  <rect x="150" y="120" width="340" height="250" rx="12" fill="#DCE3E0"/>
+  <g clip-path="url(#recorteEspelho)">
+    <rect x="150" y="120" width="340" height="250" fill="#E7EDEA"/>
+    <path d="M150 370 L330 120 L430 120 L250 370 Z" fill="#FFFFFF" opacity=".55"/>
+    <path d="M330 370 L470 120 L520 120 L380 370 Z" fill="#FFFFFF" opacity=".35"/>
+  </g>
+
+  <!-- Bancada -->
+  <rect x="120" y="400" width="400" height="18" rx="4" fill="#8A3324"/>
+  <rect x="120" y="418" width="400" height="10" rx="3" fill="#6E281C"/>
+
+  <!-- Frascos sobre a bancada -->
+  <rect x="168" y="360" width="26" height="40" rx="5" fill="#14483F"/>
+  <rect x="174" y="350" width="14" height="12" rx="3" fill="#C8912F"/>
+  <rect x="212" y="372" width="20" height="28" rx="4" fill="#2E7D6B"/>
+  <rect x="216" y="364" width="12" height="10" rx="3" fill="#C8912F"/>
+  <rect x="430" y="366" width="24" height="34" rx="5" fill="#8A3324"/>
+  <rect x="436" y="357" width="12" height="11" rx="3" fill="#C8912F"/>
+
+  <!-- Tesoura pendurada -->
+  <g transform="translate(556 150)" stroke="#14483F" stroke-width="7" fill="none" stroke-linecap="round">
+    <path d="M0 0 L34 62"/>
+    <path d="M34 0 L0 62"/>
+    <circle cx="-4" cy="76" r="11"/>
+    <circle cx="38" cy="76" r="11"/>
+  </g>
+
+  <!-- Cadeira de barbeiro -->
+  <g>
+    <!-- base -->
+    <rect x="236" y="836" width="168" height="18" rx="9" fill="#14201E"/>
+    <rect x="296" y="720" width="48" height="120" fill="#6B7A76"/>
+    <rect x="304" y="720" width="14" height="120" fill="#8B9A96"/>
+    <!-- assento -->
+    <rect x="212" y="672" width="216" height="56" rx="14" fill="#8A3324"/>
+    <rect x="212" y="672" width="216" height="16" rx="8" fill="#A03D2C"/>
+    <!-- encosto -->
+    <rect x="236" y="470" width="168" height="210" rx="22" fill="#8A3324"/>
+    <rect x="248" y="484" width="144" height="182" rx="16" fill="#A03D2C"/>
+    <path d="M248 546 H392 M248 606 H392" stroke="#8A3324" stroke-width="6" stroke-linecap="round"/>
+    <!-- apoio de braço -->
+    <rect x="188" y="628" width="60" height="16" rx="8" fill="#14201E"/>
+    <rect x="392" y="628" width="60" height="16" rx="8" fill="#14201E"/>
+    <!-- apoio de cabeça -->
+    <rect x="284" y="424" width="72" height="42" rx="12" fill="#14201E"/>
+  </g>
+
+  <!-- Poste de barbeiro -->
+  <g transform="translate(66 430)">
+    <rect x="-6" y="-16" width="52" height="18" rx="6" fill="#C8912F"/>
+    <rect x="0" y="0" width="40" height="180" rx="20" fill="#F2F5F3"/>
+    <clipPath id="posteLogin">
+      <rect x="0" y="0" width="40" height="180" rx="20"/>
+    </clipPath>
+    <g clip-path="url(#posteLogin)">
+      <path d="M-30 40 L10 0 L34 0 L-6 40 Z" fill="#8A3324"/>
+      <path d="M-30 80 L10 40 L34 40 L-6 80 Z" fill="#2E7D6B"/>
+      <path d="M-30 120 L10 80 L34 80 L-6 120 Z" fill="#8A3324"/>
+      <path d="M-30 160 L10 120 L34 120 L-6 160 Z" fill="#2E7D6B"/>
+      <path d="M-30 200 L10 160 L34 160 L-6 200 Z" fill="#8A3324"/>
+    </g>
+    <rect x="-6" y="178" width="52" height="18" rx="6" fill="#C8912F"/>
+  </g>
+</svg>

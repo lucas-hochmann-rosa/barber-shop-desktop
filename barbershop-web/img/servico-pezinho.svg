@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Pezinho">
+  <title>Pezinho</title>
+  <rect width="320" height="180" fill="#F6EFE2"/>
+  <g opacity=".16" fill="none" stroke="#8A6516" stroke-width="1.5">
+    <path d="M0 45h320M0 90h320M0 135h320"/>
+    <path d="M53 0v45M107 0v45M160 0v45M213 0v45M267 0v45"/>
+    <path d="M27 45v45M80 45v45M133 45v45M187 45v45M240 45v45M293 45v45"/>
+    <path d="M53 90v45M107 90v45M160 90v45M213 90v45M267 90v45"/>
+    <path d="M27 135v45M80 135v45M133 135v45M187 135v45M240 135v45M293 135v45"/>
+  </g>
+  <g transform="translate(159 96)" stroke="#8A6516" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="-40" y="-6" width="52" height="34" rx="6"/>
+    <path d="M12 4 h30 v12 h-30"/>
+    <path d="M-40 -6 v-20 h20 v20"/>
+  </g>
+</svg>

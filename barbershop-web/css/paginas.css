@@ -1,0 +1,177 @@
+/* ===========================================================================
+   paginas.css - regras específicas de cada tela
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   01 - Entrar (index.html)
+   --------------------------------------------------------------------------- */
+
+.corpo-entrada {
+    background: var(--branco);
+}
+
+.entrada {
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    min-height: 100vh;
+}
+
+.entrada__ilustracao {
+    position: relative;
+    overflow: hidden;
+    background: var(--verde-cadeira);
+    /* Sem isto a largura intrínseca do SVG (640px) estica a coluna do grid */
+    min-width: 0;
+}
+
+.entrada__ilustracao img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.entrada__painel {
+    display: grid;
+    place-items: center;
+    padding: var(--e-6) var(--e-5);
+    background: var(--porcelana);
+    min-width: 0;
+}
+
+.entrada__cartao {
+    width: min(420px, 100%);
+    padding: var(--e-7) var(--e-6);
+    text-align: center;
+}
+
+.entrada__logo {
+    margin: 0 auto var(--e-4);
+}
+
+.entrada__titulo {
+    font-size: 34px;
+}
+
+.entrada__subtitulo {
+    margin-bottom: var(--e-6);
+}
+
+.entrada__cartao form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+    text-align: left;
+}
+
+.entrada__botao {
+    margin-top: var(--e-2);
+}
+
+.entrada__rodape {
+    margin-top: var(--e-5);
+    color: var(--fumaca);
+}
+
+.entrada__dica {
+    margin-top: var(--e-4);
+    padding-top: var(--e-3);
+    border-top: 1px solid var(--porcelana);
+}
+
+@media (max-width: 860px) {
+    .entrada {
+        grid-template-columns: 1fr;
+    }
+
+    /* Em telas pequenas a ilustração vira uma faixa no topo */
+    .entrada__ilustracao {
+        height: 180px;
+    }
+
+    .entrada__cartao {
+        padding: var(--e-6) var(--e-5);
+    }
+}
+
+@media (max-width: 380px) {
+    .entrada__ilustracao {
+        height: 120px;
+    }
+
+    .entrada__cartao {
+        padding: var(--e-5) var(--e-4);
+    }
+
+    .entrada__titulo {
+        font-size: 28px;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   02 - Agenda do dia (agenda.html)
+   --------------------------------------------------------------------------- */
+
+.cartao-resumo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+}
+
+.cartao-resumo__valor {
+    font-family: var(--fonte-titulo);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--verde-cadeira);
+}
+
+.cartao-resumo__valor--alerta {
+    color: var(--oxblood);
+}
+
+/* Cartão de serviço: foto, nome, preço e duração */
+.cartao-servico {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    overflow: hidden;
+    color: var(--tinta);
+    transition: border-color .15s ease, transform .15s ease;
+}
+
+.cartao-servico:hover {
+    border-color: var(--verde-claro);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.cartao-servico__foto {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: var(--borda);
+}
+
+.cartao-servico__nome {
+    padding: var(--e-3) var(--e-4) 0;
+    font-family: var(--fonte-titulo);
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--verde-cadeira);
+}
+
+.cartao-servico__preco {
+    padding: 0 var(--e-4);
+    font-size: 16px;
+    color: var(--tinta);
+}
+
+.cartao-servico__duracao {
+    padding: 0 var(--e-4) var(--e-4);
+}

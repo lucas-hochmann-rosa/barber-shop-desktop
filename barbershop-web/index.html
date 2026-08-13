@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar &middot; BarberDesk</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/paginas.css">
+</head>
+<body class="corpo-entrada">
+
+    <main class="entrada">
+
+        <!-- Ilustração da barbearia (SVG próprio) -->
+        <div class="entrada__ilustracao">
+            <img src="img/barbearia.svg" alt="Ilustração de um salão de barbearia com espelho, cadeira e poste">
+        </div>
+
+        <!-- Formulário -->
+        <div class="entrada__painel">
+            <section class="cartao entrada__cartao" aria-labelledby="tituloEntrar">
+
+                <img class="entrada__logo" src="img/logo.svg" width="56" height="56" alt="">
+
+                <h1 id="tituloEntrar" class="entrada__titulo">Entrar</h1>
+                <p class="entrada__subtitulo texto-secundario">Acesse o painel da sua barbearia</p>
+
+                <form id="formEntrar" novalidate>
+
+                    <p id="avisoEntrar" class="aviso aviso--erro" role="alert" aria-live="polite" hidden></p>
+
+                    <div class="campo">
+                        <label class="campo__rotulo" for="usuario">Usuário</label>
+                        <input class="campo__entrada" type="text" id="usuario" name="usuario"
+                               autocomplete="username" aria-describedby="usuario-erro">
+                        <span class="campo__erro" id="usuario-erro" aria-live="polite"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label class="campo__rotulo" for="senha">Senha</label>
+                        <input class="campo__entrada" type="password" id="senha" name="senha"
+                               autocomplete="current-password" aria-describedby="senha-erro">
+                        <span class="campo__erro" id="senha-erro" aria-live="polite"></span>
+                    </div>
+
+                    <button class="botao botao--primario botao--bloco entrada__botao" type="submit">Entrar</button>
+                </form>
+
+                <p class="entrada__rodape texto-pequeno">
+                    Primeiro acesso? <a href="barbearia.html">Cadastre sua barbearia</a>
+                </p>
+
+                <p class="entrada__dica texto-pequeno texto-secundario">
+                    Demonstração: usuário <strong class="mono">lucas</strong>, senha <strong class="mono">1234</strong>
+                </p>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/validacao.js"></script>
+    <script>
+        (function () {
+            const USUARIO_VALIDO = 'lucas';
+            const SENHA_VALIDA = '1234';
+
+            const formulario = document.getElementById('formEntrar');
+            const usuario = document.getElementById('usuario');
+            const senha = document.getElementById('senha');
+
+            Validacao.limparAoDigitar(formulario);
+
+            formulario.addEventListener('submit', function (evento) {
+                evento.preventDefault();
+
+                Validacao.limparTodos(formulario);
+                Validacao.avisar('#avisoEntrar', '');
+
+                // Campos vazios: mensagem no próprio campo
+                let valido = true;
+                if (!Validacao.obrigatorio(usuario, 'Informe o usuário.')) valido = false;
+                if (!Validacao.obrigatorio(senha, 'Informe a senha.')) valido = false;
+                if (!valido) return;
+
+                // Credenciais: mensagem geral, sem dizer qual dos dois está errado
+                if (usuario.value.trim() !== USUARIO_VALIDO || senha.value !== SENHA_VALIDA) {
+                    Validacao.avisar('#avisoEntrar', 'Usuário ou senha incorretos. Tente novamente.', 'erro');
+                    senha.value = '';
+                    senha.focus();
+                    return;
+                }
+
+                Sessao.entrar(usuario.value.trim());
+                window.location.href = 'agenda.html';
+            });
+        })();
+    </script>
+</body>
+</html>

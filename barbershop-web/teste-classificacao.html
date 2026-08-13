@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paridade da regra RF11 &middot; BarberDesk</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+</head>
+<body>
+    <main class="pagina" style="max-width:860px;margin:0 auto">
+
+        <h1>Paridade da regra RF11</h1>
+        <p class="texto-secundario">
+            Esta página roda, no navegador, os mesmos casos do teste JUnit
+            <strong>ClassificadorAgendaTest</strong> (Etapa 7) contra a versão JavaScript
+            da regra em <code class="mono">js/classificacao.js</code>. Serve para provar que
+            desktop e web classificam os agendamentos exatamente do mesmo jeito.
+            Data de referência fixa: <span class="mono">10/03/2026 14:00</span>.
+        </p>
+
+        <p id="resultado" class="aviso" role="status" aria-live="polite"></p>
+
+        <div class="tabela-envolucro">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th scope="col">Caso</th>
+                        <th scope="col">Entrada</th>
+                        <th scope="col">Esperado</th>
+                        <th scope="col">Obtido</th>
+                        <th scope="col">Resultado</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTestes"></tbody>
+            </table>
+        </div>
+
+        <p style="margin-top:24px"><a href="agenda.html">&larr; Voltar para a agenda</a></p>
+    </main>
+
+    <script src="js/classificacao.js"></script>
+    <script>
+        (function () {
+            // Mesma data de referência do teste em Java
+            const REF = new Date(2026, 2, 10, 14, 0, 0, 0);
+
+            function agendamento(minutos, status) {
+                return { dataHora: new Date(REF.getTime() + minutos * 60000), status: status };
+            }
+
+            const casos = [
+                ['agendamento cancelado retorna CANCELADO',                 agendamento(60, 'CANCELADO'),       'referência + 1h, CANCELADO',       'CANCELADO'],
+                ['agendamento concluído retorna CONCLUIDO',                 agendamento(-60, 'CONCLUIDO'),      'referência − 1h, CONCLUIDO',       'CONCLUIDO'],
+                ['agendamento em atendimento retorna EM_ANDAMENTO',         agendamento(-10, 'EM_ATENDIMENTO'), 'referência − 10min, EM_ATENDIMENTO','EM_ANDAMENTO'],
+                ['agendado no passado retorna ATRASADO',                    agendamento(-1, 'AGENDADO'),        'referência − 1min, AGENDADO',      'ATRASADO'],
+                ['exatamente na hora de referência não é atrasado',         agendamento(0, 'AGENDADO'),         'referência exata, AGENDADO',       'IMINENTE'],
+                ['faltando 30 minutos retorna IMINENTE',                    agendamento(30, 'AGENDADO'),        'faltando 30 min',                  'IMINENTE'],
+                ['faltando exatamente 60 minutos retorna IMINENTE',         agendamento(60, 'AGENDADO'),        'faltando 60 min (fronteira)',      'IMINENTE'],
+                ['faltando 61 minutos retorna PROXIMO',                     agendamento(61, 'AGENDADO'),        'faltando 61 min',                  'PROXIMO'],
+                ['faltando exatamente 120 minutos retorna PROXIMO',         agendamento(120, 'AGENDADO'),       'faltando 120 min (fronteira)',     'PROXIMO'],
+                ['faltando 121 minutos retorna DISTANTE',                   agendamento(121, 'AGENDADO'),       'faltando 121 min',                 'DISTANTE']
+            ];
+
+            const corpo = document.getElementById('corpoTestes');
+            let falhas = 0;
+            let linhas = '';
+
+            casos.forEach((caso) => {
+                const [nome, entrada, descricao, esperado] = caso;
+                let obtido;
+                try {
+                    obtido = classificar(entrada, REF);
+                } catch (erro) {
+                    obtido = 'erro: ' + erro.message;
+                }
+                const passou = obtido === esperado;
+                if (!passou) falhas++;
+
+                linhas += `<tr>
+                    <td>${nome}</td>
+                    <td class="texto-pequeno texto-secundario">${descricao}</td>
+                    <td class="mono">${esperado}</td>
+                    <td class="mono">${obtido}</td>
+                    <td><span class="selo selo--${passou ? 'em-atendimento' : 'cancelado'}">${passou ? 'passou' : 'falhou'}</span></td>
+                </tr>`;
+            });
+
+            // Os dois casos de argumento inválido
+            [
+                ['agendamento nulo lança erro', null, 'null'],
+                ['data/hora nula lança erro', { dataHora: null, status: 'AGENDADO' }, 'dataHora null']
+            ].forEach(([nome, entrada, descricao]) => {
+                let lancou = false;
+                let mensagem = '(não lançou)';
+                try {
+                    classificar(entrada, REF);
+                } catch (erro) {
+                    lancou = true;
+                    mensagem = erro.message;
+                }
+                if (!lancou) falhas++;
+
+                linhas += `<tr>
+                    <td>${nome}</td>
+                    <td class="texto-pequeno texto-secundario">${descricao}</td>
+                    <td class="mono">Error</td>
+                    <td class="mono texto-pequeno">${mensagem}</td>
+                    <td><span class="selo selo--${lancou ? 'em-atendimento' : 'cancelado'}">${lancou ? 'passou' : 'falhou'}</span></td>
+                </tr>`;
+            });
+
+            corpo.innerHTML = linhas;
+
+            const total = casos.length + 2;
+            const resultado = document.getElementById('resultado');
+            resultado.className = 'aviso aviso--' + (falhas === 0 ? 'sucesso' : 'erro');
+            resultado.textContent = falhas === 0
+                ? `${total} casos executados, nenhuma falha — a regra da web bate com a do desktop.`
+                : `${total} casos executados, ${falhas} falha(s).`;
+        })();
+    </script>
+</body>
+</html>

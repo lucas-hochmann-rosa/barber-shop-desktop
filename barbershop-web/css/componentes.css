@@ -1,0 +1,708 @@
+/* ===========================================================================
+   componentes.css - botões, campos, tabelas, cartões, selos, modal e régua
+   =========================================================================== */
+
+/* --- Cartão --------------------------------------------------------------- */
+
+.cartao {
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    padding: var(--e-5);
+}
+
+.cartao--compacto {
+    padding: var(--e-4);
+}
+
+/* Painel de apoio, desenhado com traço interrompido (wireframe 03) */
+.cartao--tracejado {
+    border-style: dashed;
+    border-color: var(--fumaca);
+    background: transparent;
+}
+
+.cartao__titulo {
+    margin-bottom: var(--e-4);
+}
+
+/* --- Botões --------------------------------------------------------------- */
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--e-2);
+    padding: var(--e-3) var(--e-5);
+    border-radius: var(--canto);
+    border: 1px solid transparent;
+    font-family: var(--fonte-titulo);
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    white-space: nowrap;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.botao:hover {
+    text-decoration: none;
+}
+
+.botao--primario {
+    background: var(--verde-cadeira);
+    color: var(--branco);
+}
+
+.botao--primario:hover {
+    background: var(--verde-claro);
+}
+
+.botao--secundario {
+    background: var(--branco);
+    border-color: var(--neblina);
+    color: var(--verde-cadeira);
+}
+
+.botao--secundario:hover {
+    border-color: var(--verde-claro);
+    color: var(--verde-claro);
+}
+
+.botao--perigo {
+    background: var(--branco);
+    border-color: var(--neblina);
+    color: var(--oxblood);
+}
+
+.botao--perigo:hover {
+    background: var(--oxblood);
+    border-color: var(--oxblood);
+    color: var(--branco);
+}
+
+.botao--bloco {
+    width: 100%;
+}
+
+.botao[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* Botão pequeno de ação dentro de tabela/cartão */
+.botao-acao {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: var(--borda);
+    border-radius: var(--canto);
+    color: var(--fumaca);
+    transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+
+.botao-acao svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    fill: none;
+}
+
+.botao-acao:hover {
+    border-color: var(--verde-claro);
+    color: var(--verde-claro);
+    background: var(--porcelana);
+}
+
+.botao-acao--perigo:hover {
+    border-color: var(--oxblood);
+    color: var(--oxblood);
+}
+
+.botao-acao[disabled] {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.botao-acao[disabled]:hover {
+    border-color: var(--neblina);
+    color: var(--fumaca);
+    background: none;
+}
+
+.grupo-acoes {
+    display: flex;
+    gap: var(--e-2);
+}
+
+/* --- Campos --------------------------------------------------------------- */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+    min-width: 0;
+}
+
+.campo__rotulo {
+    font-family: var(--fonte-titulo);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--verde-cadeira);
+}
+
+.campo__obrigatorio {
+    color: var(--oxblood);
+}
+
+.campo__entrada,
+.campo__selecao,
+.campo__area {
+    width: 100%;
+    padding: var(--e-3) var(--e-3);
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    font-size: 15px;
+    color: var(--tinta);
+    transition: border-color .15s ease;
+}
+
+.campo__entrada:hover,
+.campo__selecao:hover,
+.campo__area:hover {
+    border-color: var(--fumaca);
+}
+
+.campo__entrada:focus,
+.campo__selecao:focus,
+.campo__area:focus {
+    border-color: var(--verde-claro);
+}
+
+/* Datas, horas e valores usam monoespaçada para alinhar */
+.campo__entrada[type="date"],
+.campo__entrada[type="time"],
+.campo__entrada[inputmode="numeric"] {
+    font-family: var(--fonte-mono);
+    font-weight: 500;
+}
+
+.campo__area {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.campo__selecao {
+    appearance: none;
+    padding-right: var(--e-6);
+    /* Seta desenhada em SVG embutido, para não depender de imagem externa */
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%236B7A76' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--e-3) center;
+}
+
+/* Estado de erro */
+.campo--invalido .campo__entrada,
+.campo--invalido .campo__selecao,
+.campo--invalido .campo__area {
+    border-color: var(--oxblood);
+}
+
+.campo__erro {
+    font-size: 13px;
+    color: var(--oxblood);
+    min-height: 1em;
+}
+
+.campo__erro:empty {
+    display: none;
+}
+
+.linha-campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--e-4);
+}
+
+/* --- Avisos --------------------------------------------------------------- */
+
+.aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-4);
+    border-radius: var(--canto);
+    border: 1px solid;
+    font-size: 14px;
+}
+
+.aviso--erro {
+    background: rgba(138, 51, 36, .07);
+    border-color: rgba(138, 51, 36, .35);
+    color: var(--oxblood);
+}
+
+.aviso--alerta {
+    background: rgba(200, 145, 47, .1);
+    border-color: rgba(200, 145, 47, .45);
+    color: #7A5410;
+}
+
+.aviso--sucesso {
+    background: rgba(46, 125, 107, .09);
+    border-color: rgba(46, 125, 107, .4);
+    color: var(--verde-cadeira);
+}
+
+.aviso--neutro {
+    background: var(--porcelana);
+    border-color: var(--neblina);
+    color: var(--fumaca);
+}
+
+.aviso__icone {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    fill: none;
+}
+
+/* --- Selos de status ------------------------------------------------------ */
+
+.selo {
+    display: inline-block;
+    padding: 3px var(--e-3);
+    border-radius: 999px;
+    border: 1px solid;
+    font-family: var(--fonte-titulo);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    white-space: nowrap;
+}
+
+.selo--agendado {
+    background: var(--porcelana);
+    border-color: var(--neblina);
+    color: var(--fumaca);
+}
+
+.selo--em-atendimento {
+    background: rgba(46, 125, 107, .12);
+    border-color: rgba(46, 125, 107, .5);
+    color: var(--verde-cadeira);
+}
+
+.selo--concluido {
+    background: rgba(20, 72, 63, .1);
+    border-color: rgba(20, 72, 63, .35);
+    color: var(--verde-cadeira);
+}
+
+.selo--cancelado {
+    background: var(--porcelana);
+    border-color: var(--neblina);
+    color: var(--fumaca);
+    text-decoration: line-through;
+}
+
+/* --- Tabela --------------------------------------------------------------- */
+
+.tabela-envolucro {
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    overflow-x: auto;
+}
+
+.tabela {
+    min-width: 720px;
+}
+
+.tabela thead th {
+    padding: var(--e-3) var(--e-4);
+    background: var(--porcelana);
+    border-bottom: var(--borda);
+    text-align: left;
+    font-family: var(--fonte-titulo);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--fumaca);
+    white-space: nowrap;
+}
+
+.tabela tbody td {
+    padding: var(--e-3) var(--e-4);
+    border-bottom: 1px solid var(--porcelana);
+    vertical-align: middle;
+}
+
+.tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela tbody tr:hover {
+    background: rgba(242, 245, 243, .7);
+}
+
+/* Cabeçalho ordenável (histórico) */
+.tabela th.ordenavel {
+    padding: 0;
+}
+
+.tabela th.ordenavel button {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    width: 100%;
+    padding: var(--e-3) var(--e-4);
+    font: inherit;
+    color: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+}
+
+.tabela th.ordenavel button:hover {
+    color: var(--verde-claro);
+}
+
+.tabela th.ordenavel .seta {
+    font-size: 11px;
+    opacity: .35;
+}
+
+.tabela th[aria-sort] .seta {
+    opacity: 1;
+    color: var(--verde-claro);
+}
+
+/* Faixa colorida à esquerda indicando a classificação (RF11) */
+.tabela .celula-faixa {
+    width: 6px;
+    padding: 0;
+}
+
+.faixa-classificacao {
+    display: block;
+    width: 4px;
+    height: 34px;
+    margin-left: var(--e-3);
+    border-radius: 2px;
+    background: var(--neblina);
+}
+
+.linha-cancelada td:not(.celula-faixa) {
+    color: var(--fumaca);
+    text-decoration: line-through;
+}
+
+/* Estado vazio */
+.estado-vazio {
+    padding: var(--e-7) var(--e-4);
+    text-align: center;
+    color: var(--fumaca);
+}
+
+.estado-vazio__titulo {
+    margin-bottom: var(--e-2);
+    color: var(--fumaca);
+}
+
+/* --- Cores por classificação (RF11) --------------------------------------- */
+
+.cls-EM_ANDAMENTO { background: var(--verde-claro); }
+.cls-ATRASADO     { background: var(--oxblood); }
+.cls-IMINENTE     { background: var(--latao); }
+.cls-PROXIMO      { background: var(--fumaca); }
+.cls-DISTANTE     { background: var(--neblina); }
+.cls-CONCLUIDO    { background: rgba(20, 72, 63, .4); }
+.cls-CANCELADO    { background: var(--neblina); }
+
+/* --- Régua do dia (elemento-assinatura) ----------------------------------- */
+
+.regua {
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    padding: var(--e-5);
+}
+
+.regua__cabecalho {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-4);
+    margin-bottom: var(--e-5);
+}
+
+.regua__agora {
+    font-family: var(--fonte-mono);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--fumaca);
+}
+
+.regua__trilho {
+    position: relative;
+    height: 64px;
+    margin: 0 var(--e-2);
+}
+
+/* Barra horizontal representando o expediente */
+.regua__barra {
+    position: absolute;
+    top: 27px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--porcelana);
+    border: 1px solid var(--neblina);
+}
+
+/* Blocos de agendamento, posicionados proporcionalmente pelo horário */
+.regua__bloco {
+    position: absolute;
+    top: 14px;
+    width: 36px;
+    height: 36px;
+    margin-left: -18px;
+    border-radius: var(--canto);
+    border: 2px solid var(--branco);
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.regua__bloco:hover,
+.regua__bloco:focus-visible {
+    transform: scale(1.12);
+    z-index: 4;
+}
+
+/* Balão com cliente, serviço e horário */
+.regua__balao {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    width: max-content;
+    max-width: 220px;
+    padding: var(--e-2) var(--e-3);
+    border-radius: var(--canto);
+    background: var(--tinta);
+    color: var(--porcelana);
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: left;
+    box-shadow: var(--sombra-flutuante);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .15s ease;
+    pointer-events: none;
+}
+
+.regua__bloco:hover .regua__balao,
+.regua__bloco:focus-visible .regua__balao {
+    opacity: 1;
+    visibility: visible;
+}
+
+.regua__balao::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-top-color: var(--tinta);
+}
+
+.regua__balao strong {
+    display: block;
+    font-weight: 600;
+}
+
+.regua__balao .hora {
+    color: var(--latao);
+}
+
+/* Marcador vertical da hora atual */
+.regua__agulha {
+    position: absolute;
+    top: 4px;
+    bottom: 14px;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--tinta);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.regua__agulha::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--tinta);
+}
+
+/* Escala de horas sob a barra */
+.regua__escala {
+    position: relative;
+    height: 18px;
+    margin: var(--e-2) var(--e-2) 0;
+}
+
+.regua__hora {
+    position: absolute;
+    transform: translateX(-50%);
+    font-family: var(--fonte-mono);
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--fumaca);
+}
+
+.regua__legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-4);
+    margin-top: var(--e-4);
+    padding-top: var(--e-3);
+    border-top: 1px solid var(--porcelana);
+}
+
+.regua__legenda-item {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    font-size: 12px;
+    color: var(--fumaca);
+}
+
+.regua__legenda-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+/* --- Abas ----------------------------------------------------------------- */
+
+.abas {
+    display: flex;
+    gap: var(--e-2);
+    flex-wrap: wrap;
+}
+
+.aba {
+    padding: var(--e-3) var(--e-5);
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: var(--canto);
+    font-family: var(--fonte-titulo);
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--fumaca);
+}
+
+.aba:hover {
+    color: var(--verde-cadeira);
+    border-color: var(--fumaca);
+}
+
+.aba[aria-selected="true"] {
+    background: var(--verde-cadeira);
+    border-color: var(--verde-cadeira);
+    color: var(--branco);
+}
+
+/* --- Modal ---------------------------------------------------------------- */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    padding: var(--e-4);
+    background: rgba(20, 32, 30, .5);
+}
+
+.modal[hidden] {
+    display: none;
+}
+
+.modal__caixa {
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--branco);
+    border-radius: var(--canto);
+    box-shadow: var(--sombra-flutuante);
+}
+
+.modal__cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding: var(--e-4) var(--e-5);
+    border-bottom: var(--borda);
+}
+
+.modal__corpo {
+    padding: var(--e-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+}
+
+.modal__rodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--e-3);
+    padding: var(--e-4) var(--e-5);
+    border-top: var(--borda);
+}
+
+.modal__fechar {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--canto);
+    color: var(--fumaca);
+}
+
+.modal__fechar:hover {
+    background: var(--porcelana);
+    color: var(--tinta);
+}
+
+/* --- Responsivo ----------------------------------------------------------- */
+
+@media (max-width: 700px) {
+    .linha-campos {
+        grid-template-columns: 1fr;
+    }
+
+    .cartao {
+        padding: var(--e-4);
+    }
+}

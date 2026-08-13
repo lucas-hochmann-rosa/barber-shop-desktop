@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Corte e barba">
+  <title>Corte e barba</title>
+  <rect width="320" height="180" fill="#E7EEEB"/>
+  <g opacity=".16" fill="none" stroke="#2E7D6B" stroke-width="1.5">
+    <path d="M0 45h320M0 90h320M0 135h320"/>
+    <path d="M53 0v45M107 0v45M160 0v45M213 0v45M267 0v45"/>
+    <path d="M27 45v45M80 45v45M133 45v45M187 45v45M240 45v45M293 45v45"/>
+    <path d="M53 90v45M107 90v45M160 90v45M213 90v45M267 90v45"/>
+    <path d="M27 135v45M80 135v45M133 135v45M187 135v45M240 135v45M293 135v45"/>
+  </g>
+  <g transform="translate(163 85)" stroke="#2E7D6B" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-46 -30 L-6 10"/>
+    <path d="M-6 -30 L-46 10"/>
+    <circle cx="-44" cy="20" r="10"/>
+    <circle cx="-8" cy="20" r="10"/>
+    <path d="M12 40 L48 4 a8 8 0 0 0 -12 -12 L0 28 Z"/>
+  </g>
+</svg>
