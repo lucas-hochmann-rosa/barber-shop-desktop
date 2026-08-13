@@ -1,7 +1,8 @@
 package br.com.barberdesk.ui.support;
 
 import br.com.barberdesk.model.Agendamento;
-import br.com.barberdesk.model.StatusAgendamento;
+import br.com.barberdesk.model.ClassificacaoAgenda;
+import br.com.barberdesk.service.ClassificadorAgenda;
 import java.awt.Color;
 import java.awt.Component;
 import java.time.LocalDateTime;
@@ -11,16 +12,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- * Colore a linha pelo status do agendamento e, quando ainda está AGENDADO,
- * destaca os que começam em até 30 minutos - RF11 (classificação visual por
- * status/proximidade). Compartilhado entre as tabelas de agendamentos
- * pendentes e de histórico, cada uma com sua própria origem de dados.
+ * Colore a linha pela classificação visual do agendamento (RF11 -
+ * classificação por status/proximidade), calculada por
+ * {@link ClassificadorAgenda}. Esta classe só mapeia classificação para
+ * cor - o cálculo em si (status, atraso, proximidade do horário) vive
+ * inteiramente no core, testável sem Swing. Compartilhado entre as tabelas
+ * de agendamentos pendentes e de histórico, cada uma com sua própria
+ * origem de dados.
  */
 public class StatusRowRenderer extends DefaultTableCellRenderer {
-    private static final Color COR_CANCELADO = new Color(248, 215, 218);
+    private static final Color COR_EM_ANDAMENTO = new Color(183, 235, 191);
+    private static final Color COR_ATRASADO = new Color(255, 190, 190);
+    private static final Color COR_IMINENTE = new Color(255, 213, 153);
+    private static final Color COR_PROXIMO = new Color(255, 243, 205);
+    private static final Color COR_DISTANTE = new Color(238, 238, 238);
     private static final Color COR_CONCLUIDO = new Color(212, 237, 218);
-    private static final Color COR_EM_ATENDIMENTO = new Color(204, 229, 255);
-    private static final Color COR_INICIO_IMINENTE = new Color(255, 243, 205);
+    private static final Color COR_CANCELADO = new Color(248, 215, 218);
 
     private final Supplier<List<Agendamento>> origemSupplier;
 
@@ -46,15 +53,19 @@ public class StatusRowRenderer extends DefaultTableCellRenderer {
         if (modelRow < 0 || modelRow >= origem.size()) return Color.WHITE;
 
         Agendamento a = origem.get(modelRow);
-        if (a.getStatus() == StatusAgendamento.CANCELADO) return COR_CANCELADO;
-        if (a.getStatus() == StatusAgendamento.CONCLUIDO) return COR_CONCLUIDO;
-        if (a.getStatus() == StatusAgendamento.EM_ATENDIMENTO) return COR_EM_ATENDIMENTO;
+        ClassificacaoAgenda classificacao = ClassificadorAgenda.classificar(a, LocalDateTime.now());
+        return corDaClassificacao(classificacao);
+    }
 
-        if (a.getStatus() == StatusAgendamento.AGENDADO && a.getDataHora() != null) {
-            long minutosParaComecar = java.time.Duration.between(LocalDateTime.now(), a.getDataHora()).toMinutes();
-            if (minutosParaComecar >= 0 && minutosParaComecar <= 30) return COR_INICIO_IMINENTE;
-        }
-
-        return Color.WHITE;
+    private Color corDaClassificacao(ClassificacaoAgenda classificacao) {
+        return switch (classificacao) {
+            case EM_ANDAMENTO -> COR_EM_ANDAMENTO;
+            case ATRASADO -> COR_ATRASADO;
+            case IMINENTE -> COR_IMINENTE;
+            case PROXIMO -> COR_PROXIMO;
+            case DISTANTE -> COR_DISTANTE;
+            case CONCLUIDO -> COR_CONCLUIDO;
+            case CANCELADO -> COR_CANCELADO;
+        };
     }
 }
