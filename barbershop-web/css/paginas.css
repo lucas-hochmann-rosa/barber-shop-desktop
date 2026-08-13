@@ -319,3 +319,54 @@
     padding-inline: var(--e-3);
     font-size: 14px;
 }
+
+/* ---------------------------------------------------------------------------
+   05 - Histórico (historico.html)
+   --------------------------------------------------------------------------- */
+
+/* Filtros numa linha só, com as ações à direita (como no wireframe) */
+.barra-filtros {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: var(--e-4);
+    align-items: end;
+}
+
+.barra-filtros__acoes {
+    display: flex;
+    gap: var(--e-2);
+}
+
+.paginacao {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--e-4);
+    padding: var(--e-3) var(--e-4);
+    border-top: var(--borda);
+}
+
+.paginacao__estado {
+    font-size: 14px;
+    color: var(--fumaca);
+}
+
+@media (max-width: 1100px) {
+    .barra-filtros {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .barra-filtros__acoes {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 560px) {
+    .barra-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .paginacao {
+        justify-content: space-between;
+    }
+}
