@@ -1,7 +1,7 @@
 /* RF11: classificação visual do agendamento
 
    Esta é a MESMA regra da classe Java ClassificadorAgenda
-   (barber-shop-core/src/main/java/br/com/barberdesk/service/ClassificadorAgenda.java),
+   (barber-shop-core/src/main/java/br/com/barbershop/service/ClassificadorAgenda.java),
    coberta por 12 testes unitários na Etapa 7
    (ClassificadorAgendaTest, incluindo as fronteiras de 60 e 120 minutos).
 

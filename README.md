@@ -139,7 +139,7 @@ barber-shop-suite/
 ├── barber-shop-core/                    # [MÓDULO 1] Núcleo de regras de negócio compartilhado (Java)
 │   ├── pom.xml
 │   └── src/
-│       ├── main/java/br/com/barberdesk/
+│       ├── main/java/br/com/barbershop/
 │       │   ├── model/                  # Entidades de domínio (POJOs: Agendamento, Barbearia, Servico, Barbeiro, Usuario)
 │       │   ├── dao/                    # Camada de acesso a dados (JDBC/MySQL), uma classe por entidade
 │       │   │   └── repository/         # Interfaces consumidas pelos services (Repository Pattern)
@@ -148,7 +148,7 @@ barber-shop-suite/
 │       ├── main/resources/
 │       │   ├── config.properties       # Configuração de conexão JDBC com o banco MySQL
 │       │   └── db/schema.sql           # DDL do schema inicial, criado automaticamente no 1º start
-│       └── test/java/br/com/barberdesk/
+│       └── test/java/br/com/barbershop/
 │           ├── model/, util/           # Testes unitários de domínio, hash e datas
 │           └── service/                # Testes de service com repositórios fake em memória (ex.: ClassificadorAgendaTest)
 │               └── fake/               # Implementações em memória das interfaces de repositório
@@ -157,7 +157,7 @@ barber-shop-suite/
 │   ├── pom.xml                         # Gera o JAR executável único sombreado (maven-shade-plugin)
 │   ├── nbactions.xml                   # Perfis de execução/debug para Apache NetBeans
 │   └── src/main/
-│       ├── java/br/com/barberdesk/
+│       ├── java/br/com/barbershop/
 │       │   ├── app/
 │       │   │   ├── Main.java             # Ponto de entrada: decide entre cadastro inicial e login
 │       │   │   ├── FabricaDeServicos.java # Composition root: instancia DAOs concretos e injeta nos services
@@ -189,7 +189,7 @@ barber-shop-suite/
 
 ### 1. Módulo `barber-shop-core` (Núcleo)
 
-Não possui interface gráfica nem ponto de entrada executável direto — é uma biblioteca de regras de negócio e acesso a dados consumida pelo desktop e portada conceitualmente para a web.
+Não possui interface gráfica nem ponto de entrada executável direto - é uma biblioteca de regras de negócio e acesso a dados consumida pelo desktop e portada conceitualmente para a web.
 
 Para compilar e rodar a suíte de testes unitários do núcleo:
 
@@ -213,7 +213,7 @@ docker compose up -d
 
 1. Abra a pasta raiz do repositório (`barber-shop-suite`) no NetBeans: **File** → **Open Project**.
 2. O NetBeans identificará automaticamente o monorepo Maven e seus submódulos.
-3. Expanda o projeto **barber-shop-desktop** (`barber-shop-desktop`), clique com o botão direito e selecione **Run** (a classe principal configurada é `br.com.barberdesk.app.Main`).
+3. Expanda o projeto **barber-shop-desktop** (`barber-shop-desktop`), clique com o botão direito e selecione **Run** (a classe principal configurada é `br.com.barbershop.app.Main`).
 4. Os menus de **Debug** e **Profile** funcionam da mesma forma pela IDE.
 
 #### Opção B: Executar via Linha de Comando (Maven + JAR)
@@ -227,7 +227,7 @@ java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 
 ### 3. Módulo `barber-shop-web` (Front-end Web)
 
-A versão web é construída com **HTML5, CSS3 e JavaScript puros** — sem frameworks pesados, sem etapas de build e sem dependências externas.
+A versão web é construída com **HTML5, CSS3 e JavaScript puros** - sem frameworks pesados, sem etapas de build e sem dependências externas.
 
 #### Como executar:
 
@@ -257,7 +257,7 @@ A versão web é construída com **HTML5, CSS3 e JavaScript puros** — sem fram
 Um dos princípios fundamentais da arquitetura do Barbershop é a preservação e portabilidade das regras de negócio entre as diferentes plataformas:
 
 - **Regra de Classificação da Agenda (RF11):** Define o status visual de cada agendamento conforme a proximidade temporal em relação à hora de referência (`EM_ANDAMENTO`, `ATRASADO`, `IMINENTE` até 60 min, `PROXIMO` até 120 min, `DISTANTE` acima de 120 min, `CONCLUIDO` e `CANCELADO`).
-- **Implementação no Java:** Classe `br.com.barberdesk.service.ClassificadorAgenda` no `barber-shop-core`, rigorosamente coberta pela suíte de testes JUnit 5 [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
+- **Implementação no Java:** Classe `br.com.barbershop.service.ClassificadorAgenda` no `barber-shop-core`, rigorosamente coberta pela suíte de testes JUnit 5 [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barbershop/service/ClassificadorAgendaTest.java).
 - **Portabilidade para JavaScript:** A regra foi portada fielmente para [`barber-shop-web/js/classificacao.js`](barber-shop-web/js/classificacao.js), mantendo exatamente os mesmos nomes de constantes, ordem de precedência e tratamento de fronteiras.
 - **Comprovação de Paridade em Navegador:** A página [`barber-shop-web/verificacao-classificacao.html`](barber-shop-web/verificacao-classificacao.html) executa todos os 12 casos do JUnit diretamente no navegador contra o script JS, apresentando uma tabela comparativa com 100% de conformidade comprovada.
 
@@ -294,7 +294,7 @@ Um dos princípios fundamentais da arquitetura do Barbershop é a preservação 
 
 - JDK 17+ instalado e configurado no `PATH`
 - MySQL 8 ativo e acessível (localmente ou via Docker Compose)
-- Usuário MySQL com permissão para criar/alterar tabelas no schema `barberdesk`
+- Usuário MySQL com permissão para criar/alterar tabelas no schema `barbershop`
 - Maven 3.8+ (opcional, caso utilize a IDE NetBeans)
 - Navegador web moderno (Chrome, Firefox, Edge, Safari) para o módulo web
 
@@ -315,12 +315,12 @@ cd barber-shop-suite
 docker compose up -d
 ```
 
-Sobe automaticamente um container MySQL 8 configurado com o schema `barberdesk` e usuário `root` sem senha.
+Sobe automaticamente um container MySQL 8 configurado com o schema `barbershop` e usuário `root` sem senha.
 
 **Opção 2 - MySQL Instalado Localmente:**
 
 ```sql
-CREATE DATABASE barberdesk;
+CREATE DATABASE barbershop;
 ```
 
 > Em ambas as opções, todas as tabelas e migrações são executadas automaticamente no primeiro start da aplicação desktop (`barber-shop-core/src/main/resources/db/schema.sql`).
@@ -332,7 +332,7 @@ CREATE DATABASE barberdesk;
 As configurações de conexão residem em `barber-shop-core/src/main/resources/config.properties`:
 
 ```properties
-db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
+db.url=jdbc:mysql://localhost:3306/barbershop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
 db.user=root
 db.password=
 db.driver=com.mysql.cj.jdbc.Driver
@@ -342,7 +342,7 @@ Ou podem ser sobrescritas via variáveis de ambiente do sistema operacional:
 
 | Variável | Descrição | Padrão |
 | --- | --- | --- |
-| `DB_URL` | URL de conexão JDBC | `jdbc:mysql://localhost:3306/barberdesk...` |
+| `DB_URL` | URL de conexão JDBC | `jdbc:mysql://localhost:3306/barbershop...` |
 | `DB_USER` | Usuário do MySQL | `root` |
 | `DB_PASSWORD` | Senha do MySQL | *(vazio)* |
 | `DB_DRIVER` | Classe do driver JDBC | `com.mysql.cj.jdbc.Driver` |
@@ -395,13 +395,13 @@ Arquivo gerado: `barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 
 | Tela Desktop | Tela Web Equivalente | Objetivo |
 | --- | --- | --- |
-| `TelaCadastroInicial` | — | Configuração inicial da barbearia (RF01) |
+| `TelaCadastroInicial` | - | Configuração inicial da barbearia (RF01) |
 | `TelaLogin` | `index.html` | Autenticação com credenciais (RF02) |
 | `TelaHome` | `agenda.html` | Agenda diária, régua visual e ações rápidas (RF08, RF11, RF07) |
 | `Minha Barbearia` | `barbearia.html` | Manutenção de dados gerais, serviços e barbeiros (RF03, RF04) |
 | `Histórico` | `historico.html` | Consulta geral de atendimentos com filtros (RF09) |
 | `TelaNovoAgendamento` / `TelaEditarAgendamento` | `agendamento.html` | Agendamento com validação de conflito de horário (RF05, RF06, RF10) |
-| `Clientes` (aba em Barbearia) | — | Diretório consolidado de clientes |
+| `Clientes` (aba em Barbearia) | - | Diretório consolidado de clientes |
 | `Relatórios` | `relatorios.html` | Faturamento por período, serviços mais vendidos e ranking (RF09) |
 
 ---
@@ -458,7 +458,7 @@ mvn test
 
 Cobre:
 - Lógica pura de domínio e utilitários (`model`, `util`, hash de senhas, formatação de datas, equals/hashCode).
-- Services de negócio (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) usando **repositórios fake em memória** — testes rápidos, isolados e determinísticos, sem necessidade de banco real.
+- Services de negócio (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) usando **repositórios fake em memória** - testes rápidos, isolados e determinísticos, sem necessidade de banco real.
 
 ---
 
@@ -469,7 +469,7 @@ Além dos testes unitários em memória, o módulo desktop inclui um utilitário
 ```bash
 docker compose up -d
 mvn clean package
-java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barbershop.app.VerificacaoSistema
 ```
 
 Valida automaticamente:
@@ -518,7 +518,7 @@ Ao final, remove todos os registros criados no teste, deixando o banco limpo.
 
 ## ⚠️ Avisos
 
-Projeto desenvolvido com finalidade acadêmica no âmbito do Projeto Integrador II. Concebido para uso operacional em ambiente local/rede interna de uma única barbearia.
+Destinado a uso operacional em ambiente local/rede interna de uma única barbearia.
 
 ---
 

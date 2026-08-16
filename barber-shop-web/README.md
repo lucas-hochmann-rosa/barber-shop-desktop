@@ -1,12 +1,12 @@
-# 💈 Barbershop Web — front-end
+# 💈 Barbershop Web - front-end
 
-Versão web do Barbershop, feita com **HTML, CSS e JavaScript puros**: sem framework, sem build, sem back-end. Os dados vêm de um arquivo `.js` de exemplo. É a camada de apresentação que, numa etapa seguinte, será ligada a uma API — consumindo o módulo `barber-shop-core` compartilhado, que não depende de interface gráfica.
+Versão web do Barbershop, feita com **HTML, CSS e JavaScript puros**: sem framework, sem build, sem back-end. Os dados vêm de um arquivo `.js` de exemplo. É a camada de apresentação que, numa etapa seguinte, será ligada a uma API - consumindo o módulo `barber-shop-core` compartilhado, que não depende de interface gráfica.
 
 ---
 
 ## Como abrir
 
-Os arquivos são estáticos, então abrir `index.html` direto no navegador funciona. Mesmo assim, prefira servir por HTTP — é o mais parecido com o ambiente real e evita restrições do protocolo `file://`:
+Os arquivos são estáticos, então abrir `index.html` direto no navegador funciona. Mesmo assim, prefira servir por HTTP - é o mais parecido com o ambiente real e evita restrições do protocolo `file://`:
 
 ```bash
 cd barber-shop-web
@@ -59,14 +59,14 @@ barber-shop-web/
 - cada bloco colorido pela classificação do RF11;
 - um balão, ao passar o mouse ou navegar por teclado, com cliente, serviço e horário.
 
-Os blocos são botões de verdade, alcançáveis por `Tab` e com `aria-label` descrevendo horário, cliente, serviço e classificação — quem usa leitor de tela recebe a mesma informação que o balão mostra.
+Os blocos são botões de verdade, alcançáveis por `Tab` e com `aria-label` descrevendo horário, cliente, serviço e classificação - quem usa leitor de tela recebe a mesma informação que o balão mostra.
 
 ---
 
 ## A regra do RF11 é a mesma do desktop
 
 `js/classificacao.js` é a tradução direta da classe Java `ClassificadorAgenda`
-(`barber-shop-core/src/main/java/br/com/barberdesk/service/ClassificadorAgenda.java`), mantendo os mesmos nomes de classificação, a mesma ordem de decisão e as mesmas fronteiras (60 e 120 minutos). Assim como no Java, a data de referência entra por parâmetro em vez de ser lida do relógio dentro da função — é isso que torna a regra testável.
+(`barber-shop-core/src/main/java/br/com/barbershop/service/ClassificadorAgenda.java`), mantendo os mesmos nomes de classificação, a mesma ordem de decisão e as mesmas fronteiras (60 e 120 minutos). Assim como no Java, a data de referência entra por parâmetro em vez de ser lida do relógio dentro da função - é isso que torna a regra testável.
 
 Para não ficar só na palavra, [**`verificacao-classificacao.html`**](verificacao-classificacao.html) roda no navegador os mesmos 12 casos do teste JUnit `ClassificadorAgendaTest` (o da Etapa 7), com a mesma data de referência fixa, e mostra o resultado numa tabela. Abra a página: os 12 passam.
 
@@ -84,7 +84,7 @@ Para não ficar só na palavra, [**`verificacao-classificacao.html`**](verificac
 
 ## Direção visual
 
-O vocabulário vem da barbearia física: azulejo, couro, latão, cadeira. Nada de gradiente nem de sombra difusa — as superfícies são separadas por borda de 1px, e sombra só aparece em elemento flutuante (o modal).
+O vocabulário vem da barbearia física: azulejo, couro, latão, cadeira. Nada de gradiente nem de sombra difusa - as superfícies são separadas por borda de 1px, e sombra só aparece em elemento flutuante (o modal).
 
 | Variável | Cor | Uso |
 | --- | --- | --- |
@@ -105,7 +105,7 @@ O vocabulário vem da barbearia física: azulejo, couro, latão, cadeira. Nada d
 ## Acessibilidade e responsividade
 
 - HTML5 semântico: `nav`, `main`, `section`, tabelas com `thead` e `th scope`, `caption` explicando cada tabela.
-- Todo campo tem `label` associado; erros aparecem ao lado do campo, em elementos com `aria-live` — **nenhum `alert()` no projeto**.
+- Todo campo tem `label` associado; erros aparecem ao lado do campo, em elementos com `aria-live` - **nenhum `alert()` no projeto**.
 - Foco sempre visível; o modal prende o foco enquanto aberto e devolve ao elemento anterior ao fechar; `Esc` fecha.
 - Link "pular para o conteúdo" no começo de cada página.
 - `prefers-reduced-motion` respeitado.
@@ -117,16 +117,16 @@ O vocabulário vem da barbearia física: azulejo, couro, latão, cadeira. Nada d
 
 | Requisito | Onde |
 | --- | --- |
-| RF02 — autenticação | `index.html` |
-| RF03 — serviços | `barbearia.html` (aba Serviços) e grade da `agenda.html` |
-| RF04 — barbeiros | `barbearia.html` (aba Barbeiros) |
-| RF05 — novo agendamento | `agendamento.html` |
-| RF06 — editar e excluir | `agendamento.html` (`?id=`) |
-| RF07 — iniciar e concluir | `agenda.html`, ações na tabela de pendentes |
-| RF08 — só pendentes na Home | `agenda.html` |
-| RF09 — histórico e relatórios | `historico.html`, `relatorios.html` |
-| RF10 — conflito de horário | `agendamento.html`, painel de verificação |
-| RF11 — classificação visual | régua e faixa colorida da tabela, via `js/classificacao.js` |
+| RF02 - autenticação | `index.html` |
+| RF03 - serviços | `barbearia.html` (aba Serviços) e grade da `agenda.html` |
+| RF04 - barbeiros | `barbearia.html` (aba Barbeiros) |
+| RF05 - novo agendamento | `agendamento.html` |
+| RF06 - editar e excluir | `agendamento.html` (`?id=`) |
+| RF07 - iniciar e concluir | `agenda.html`, ações na tabela de pendentes |
+| RF08 - só pendentes na Home | `agenda.html` |
+| RF09 - histórico e relatórios | `historico.html`, `relatorios.html` |
+| RF10 - conflito de horário | `agendamento.html`, painel de verificação |
+| RF11 - classificação visual | régua e faixa colorida da tabela, via `js/classificacao.js` |
 
 RF01 (cadastro inicial da barbearia) não tem tela própria nesta etapa: os seis wireframes não previam uma, e a edição dos dados da barbearia está em `barbearia.html`, na aba Dados.
 
@@ -134,7 +134,7 @@ RF01 (cadastro inicial da barbearia) não tem tela própria nesta etapa: os seis
 
 ## Limitações conhecidas
 
-- **Nada é persistido.** Iniciar um atendimento, salvar um agendamento ou cadastrar um serviço muda os dados apenas na memória daquela página; recarregar ou trocar de tela volta tudo ao estado inicial de `dados.js`. É esperado nesta etapa — a persistência entra junto com o back-end.
+- **Nada é persistido.** Iniciar um atendimento, salvar um agendamento ou cadastrar um serviço muda os dados apenas na memória daquela página; recarregar ou trocar de tela volta tudo ao estado inicial de `dados.js`. É esperado nesta etapa - a persistência entra junto com o back-end.
 - Os agendamentos de hoje são montados **em relação ao horário atual**, e não em horas fixas, para que a régua e as faixas do RF11 sempre tenham o que mostrar, a qualquer hora em que a página seja aberta. O histórico dos últimos 60 dias é gerado com sorteio de semente fixa, então os relatórios dão sempre o mesmo resultado.
 - A verificação de conflito (RF10) roda contra os dados de exemplo carregados na página, não contra um banco.
 

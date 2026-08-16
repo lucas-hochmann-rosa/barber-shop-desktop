@@ -1,97 +1,99 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="852" viewBox="0 0 1440 852">
 <rect width="1440" height="852" fill="#FFFFFF"/>
 <rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
-<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">07 — Relatórios Desktop</text>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">07 - Relatórios Desktop</text>
 <text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Faturamento no período, serviços mais vendidos e ranking de produtividade (RF09)</text>
 <text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP DESKTOP</text>
-<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Java Swing (FlatLaf) · 1440px</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Baixa fidelidade · 1440px</text>
 <line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
-<rect x="0" y="92" width="1440" height="760" rx="0" fill="#EAECEE"/>
+<rect x="0" y="92" width="1440" height="760" rx="0" fill="#F7F8F9"/>
 
 <!-- Janela Principal Swing -->
-<rect x="120" y="115" width="1200" height="705" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="2"/>
+<rect x="120" y="115" width="1200" height="705" rx="6" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
 <!-- Barra de título do JFrame -->
-<rect x="120" y="115" width="1200" height="38" rx="8" fill="#2C3437"/>
-<rect x="120" y="141" width="1200" height="12" fill="#2C3437"/>
-<text x="150" y="140" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Barbershop - Relatórios</text>
-<circle cx="1285" cy="134" r="6" fill="#6B7278"/>
-<circle cx="1305" cy="134" r="6" fill="#D9534F"/>
+<rect x="120" y="115" width="1200" height="36" rx="6" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="120" y="139" width="1200" height="12" fill="#E3E6E8"/>
+<line x1="120" y1="151" x2="1320" y2="151" stroke="#8E959C" stroke-width="1.5"/>
+<text x="145" y="138" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Barbershop - Relatórios</text>
+<circle cx="1280" cy="133" r="5" fill="#C6CBD0" stroke="#8E959C" stroke-width="1"/>
+<circle cx="1300" cy="133" r="5" fill="#C6CBD0" stroke="#8E959C" stroke-width="1"/>
 
 <!-- Barra de Menu do Swing -->
-<rect x="120" y="153" width="1200" height="32" fill="#F0F2F4" stroke="#E3E6E8" stroke-width="1"/>
-<text x="145" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Agenda</text>
-<text x="215" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Minha Barbearia</text>
-<text x="345" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Histórico</text>
-<text x="430" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#2C3437">Relatórios</text>
+<rect x="120" y="151" width="1200" height="34" fill="#F4F5F6"/>
+<line x1="120" y1="185" x2="1320" y2="185" stroke="#8E959C" stroke-width="1"/>
+<text x="145" y="173" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Agenda</text>
+<text x="215" y="173" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Minha Barbearia</text>
+<text x="345" y="173" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Histórico</text>
+<text x="430" y="173" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Relatórios</text>
 
 <!-- Filtro de Período -->
-<rect x="150" y="200" width="1140" height="60" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
-<text x="170" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">Período De:</text>
-<rect x="250" y="215" width="140" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<rect x="150" y="200" width="1140" height="60" rx="4" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<text x="170" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278">Período De:</text>
+<rect x="250" y="215" width="140" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
 <text x="260" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">17/07/2026</text>
 
-<text x="410" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">Até:</text>
-<rect x="445" y="215" width="140" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="410" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278">Até:</text>
+<rect x="445" y="215" width="140" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
 <text x="455" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">16/08/2026</text>
 
-<rect x="610" y="215" width="130" height="30" rx="4" fill="#2C3437"/>
-<text x="675" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Gerar Relatório</text>
+<rect x="610" y="215" width="130" height="30" rx="15" fill="#DCDFE2" stroke="#8E959C" stroke-width="1.3"/>
+<text x="675" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D" text-anchor="middle">Gerar Relatório</text>
 
 <!-- Grade de Painéis de Resultados -->
 <!-- Painel 1: Faturamento Total -->
-<rect x="150" y="275" width="360" height="150" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
-<text x="175" y="305" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#6B7278">FATURAMENTO TOTAL NO PERÍODO</text>
-<text x="175" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="32" font-weight="bold" fill="#2E7D6B">R$ 14.850,00</text>
+<rect x="150" y="275" width="360" height="150" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.4"/>
+<text x="175" y="305" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" letter-spacing="0.5">FATURAMENTO TOTAL NO PERÍODO</text>
+<text x="175" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="30" font-weight="bold" fill="#33383D">R$ 14.850,00</text>
 <text x="175" y="390" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">Baseado em 324 agendamentos concluídos.</text>
 
 <!-- Painel 2: Serviços Mais Vendidos -->
-<rect x="530" y="275" width="760" height="240" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
-<text x="555" y="305" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#2C3437">Serviços Mais Vendidos</text>
+<rect x="530" y="275" width="760" height="240" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.4"/>
+<text x="555" y="305" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#33383D">Serviços Mais Vendidos</text>
 
 <text x="555" y="340" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#33383D">Corte Masculino</text>
-<rect x="710" y="328" width="480" height="14" rx="7" fill="#F0F2F4"/>
-<rect x="710" y="328" width="420" height="14" rx="7" fill="#2E7D6B"/>
+<rect x="710" y="328" width="480" height="14" rx="7" fill="#F4F5F6" stroke="#8E959C" stroke-width="1"/>
+<rect x="710" y="328" width="420" height="14" rx="7" fill="#DCDFE2"/>
 <text x="1210" y="340" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">140</text>
 
 <text x="555" y="375" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#33383D">Corte + Barba</text>
-<rect x="710" y="363" width="480" height="14" rx="7" fill="#F0F2F4"/>
-<rect x="710" y="363" width="290" height="14" rx="7" fill="#2E7D6B"/>
+<rect x="710" y="363" width="480" height="14" rx="7" fill="#F4F5F6" stroke="#8E959C" stroke-width="1"/>
+<rect x="710" y="363" width="290" height="14" rx="7" fill="#DCDFE2"/>
 <text x="1210" y="375" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">95</text>
 
 <text x="555" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#33383D">Barba Tradicional</text>
-<rect x="710" y="398" width="480" height="14" rx="7" fill="#F0F2F4"/>
-<rect x="710" y="398" width="160" height="14" rx="7" fill="#2E7D6B"/>
+<rect x="710" y="398" width="480" height="14" rx="7" fill="#F4F5F6" stroke="#8E959C" stroke-width="1"/>
+<rect x="710" y="398" width="160" height="14" rx="7" fill="#DCDFE2"/>
 <text x="1210" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">52</text>
 
 <text x="555" y="445" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#33383D">Platinado</text>
-<rect x="710" y="433" width="480" height="14" rx="7" fill="#F0F2F4"/>
-<rect x="710" y="433" width="70" height="14" rx="7" fill="#2E7D6B"/>
+<rect x="710" y="433" width="480" height="14" rx="7" fill="#F4F5F6" stroke="#8E959C" stroke-width="1"/>
+<rect x="710" y="433" width="70" height="14" rx="7" fill="#DCDFE2"/>
 <text x="1210" y="445" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">22</text>
 
 <text x="555" y="480" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#33383D">Pezinho / Sobrancelha</text>
-<rect x="710" y="468" width="480" height="14" rx="7" fill="#F0F2F4"/>
-<rect x="710" y="468" width="45" height="14" rx="7" fill="#2E7D6B"/>
+<rect x="710" y="468" width="480" height="14" rx="7" fill="#F4F5F6" stroke="#8E959C" stroke-width="1"/>
+<rect x="710" y="468" width="45" height="14" rx="7" fill="#DCDFE2"/>
 <text x="1210" y="480" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">15</text>
 
 <!-- Painel 3: Ranking de Barbeiros -->
-<rect x="150" y="530" width="1140" height="240" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
-<text x="175" y="560" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#2C3437">Ranking de Produtividade dos Barbeiros</text>
+<rect x="150" y="530" width="1140" height="240" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.4"/>
+<text x="175" y="560" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#33383D">Ranking de Produtividade dos Barbeiros</text>
 
-<rect x="175" y="580" width="345" height="165" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
-<text x="195" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#C8912F">1º Lugar</text>
-<text x="195" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#2C3437">Carlos Silva</text>
+<rect x="175" y="580" width="345" height="165" rx="4" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<text x="195" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">1º Lugar</text>
+<text x="195" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">Carlos Silva</text>
 <text x="195" y="660" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">120 atendimentos</text>
-<text x="195" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#2E7D6B">R$ 5.850,00 gerados</text>
+<text x="195" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#33383D">R$ 5.850,00 gerados</text>
 
-<rect x="545" y="580" width="345" height="165" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
-<text x="565" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#6B7278">2º Lugar</text>
-<text x="565" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#2C3437">Diego Torres</text>
+<rect x="545" y="580" width="345" height="165" rx="4" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<text x="565" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">2º Lugar</text>
+<text x="565" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">Diego Torres</text>
 <text x="565" y="660" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">98 atendimentos</text>
-<text x="565" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#2E7D6B">R$ 4.620,00 gerados</text>
+<text x="565" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#33383D">R$ 4.620,00 gerados</text>
 
-<rect x="915" y="580" width="350" height="165" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
-<text x="935" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="bold" fill="#A4ACB3">3º Lugar</text>
-<text x="935" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#2C3437">Bruno Alencar</text>
+<rect x="915" y="580" width="350" height="165" rx="4" fill="#F4F5F6" stroke="#8E959C" stroke-width="1.2"/>
+<text x="935" y="605" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">3º Lugar</text>
+<text x="935" y="635" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D">Bruno Alencar</text>
 <text x="935" y="660" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">76 atendimentos</text>
-<text x="935" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#2E7D6B">R$ 3.120,00 gerados</text>
+<text x="935" y="685" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#33383D">R$ 3.120,00 gerados</text>
 </svg>

@@ -1,36 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="852" viewBox="0 0 1440 852">
 <rect width="1440" height="852" fill="#FFFFFF"/>
 <rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
-<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">01 — Login Desktop</text>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">01 - Login Desktop</text>
 <text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Autenticação do usuário no sistema desktop Swing (RF02)</text>
 <text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP DESKTOP</text>
-<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Java Swing (FlatLaf) · 1440px</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Baixa fidelidade · 1440px</text>
 <line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
-<rect x="0" y="92" width="1440" height="760" rx="0" fill="#EAECEE"/>
+<rect x="0" y="92" width="1440" height="760" rx="0" fill="#F7F8F9"/>
 
 <!-- Janela Swing TelaLogin -->
-<rect x="495" y="210" width="450" height="420" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="2"/>
+<rect x="495" y="210" width="450" height="430" rx="6" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
 <!-- Barra de título do JFrame -->
-<rect x="495" y="210" width="450" height="38" rx="8" fill="#2C3437"/>
-<rect x="495" y="236" width="450" height="12" fill="#2C3437"/>
-<text x="525" y="235" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Barbershop - Login</text>
-<circle cx="905" cy="229" r="6" fill="#6B7278"/>
-<circle cx="925" cy="229" r="6" fill="#D9534F"/>
+<rect x="495" y="210" width="450" height="36" rx="6" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="495" y="234" width="450" height="12" fill="#E3E6E8"/>
+<line x1="495" y1="246" x2="945" y2="246" stroke="#8E959C" stroke-width="1.5"/>
+<text x="520" y="233" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Barbershop - Login</text>
+<circle cx="905" cy="228" r="5" fill="#C6CBD0" stroke="#8E959C" stroke-width="1"/>
+<circle cx="925" cy="228" r="5" fill="#C6CBD0" stroke="#8E959C" stroke-width="1"/>
 
 <!-- Conteúdo da janela -->
-<text x="720" y="300" font-family="DejaVu Sans, Arial, sans-serif" font-size="24" font-weight="bold" fill="#2C3437" text-anchor="middle">Barbershop</text>
-<text x="720" y="325" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#6B7278" text-anchor="middle">Sistema de Gestão de Barbearia</text>
+<rect x="688" y="276" width="64" height="64" rx="12" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.5"/>
+<text x="720" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0.5">LOGO</text>
 
-<text x="555" y="375" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#33383D">Login:</text>
-<rect x="555" y="385" width="330" height="38" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
-<text x="570" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">admin</text>
+<text x="720" y="372" font-family="DejaVu Sans, Arial, sans-serif" font-size="22" font-weight="bold" fill="#33383D" text-anchor="middle">Barbershop</text>
+<text x="720" y="394" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#6B7278" text-anchor="middle">Sistema de Gestão de Barbearia</text>
 
-<text x="555" y="455" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#33383D">Senha:</text>
-<rect x="555" y="465" width="330" height="38" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
-<text x="570" y="492" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" fill="#33383D">••••••••</text>
+<text x="555" y="432" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278">Usuário</text>
+<rect x="555" y="440" width="330" height="38" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="568" y="455" width="120" height="8" rx="4" fill="#C6CBD0"/>
 
-<rect x="555" y="535" width="330" height="42" rx="4" fill="#2C3437" stroke="#2C3437" stroke-width="1"/>
-<text x="720" y="561" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Entrar</text>
+<text x="555" y="504" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278">Senha</text>
+<rect x="555" y="512" width="330" height="38" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.5"/>
+<rect x="568" y="527" width="100" height="8" rx="4" fill="#C6CBD0"/>
 
-<text x="495" y="670" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#7E8790" text-anchor="start">▸ Autenticação com senha hash salgada PBKDF2; se não houver barbearia, direciona para Cadastro Inicial.</text>
+<rect x="555" y="572" width="330" height="42" rx="21" fill="#DCDFE2" stroke="#8E959C" stroke-width="1.5"/>
+<text x="720" y="598" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="bold" fill="#33383D" text-anchor="middle">Entrar</text>
+
+<text x="495" y="675" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="normal" fill="#7E8790" text-anchor="start">▸ Autenticação com senha hash salgada PBKDF2; se não houver barbearia, direciona para Cadastro Inicial.</text>
 </svg>

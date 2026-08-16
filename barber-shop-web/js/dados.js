@@ -134,14 +134,14 @@ const Dados = {
 
 (function montar() {
     const CLIENTES = [
-        ['Marcelo Antunes', '(51) 99812-4471'], ['Vinícius Prado', '(51) 99145-0092'],
-        ['Otávio Bastos', '(51) 98877-3310'], ['Henrique Sales', '(51) 99630-7788'],
-        ['Caio Ferraz', '(51) 98120-5566'], ['Eduardo Lima', '(51) 99471-2039'],
-        ['Rodrigo Vianna', '(51) 99358-1147'], ['Thiago Moraes', '(51) 98604-9921'],
-        ['Gustavo Reis', '(51) 99287-6650'], ['Felipe Barcelos', '(51) 99013-4482'],
-        ['André Kuhn', '(51) 98745-1120'], ['Leandro Pires', '(51) 99566-8834'],
-        ['Murilo Tavares', '(51) 98392-7745'], ['Sérgio Andrade', '(51) 99724-3308'],
-        ['Paulo Meirelles', '(51) 99880-2214'], ['Ricardo Nunes', '(51) 98457-9903']
+        ['Marcelo Antunes', '(49) 99999-9901'], ['Vinícius Prado', '(49) 99999-9902'],
+        ['Otávio Bastos', '(49) 99999-9903'], ['Henrique Sales', '(49) 99999-9904'],
+        ['Caio Ferraz', '(49) 99999-9905'], ['Eduardo Lima', '(49) 99999-9906'],
+        ['Rodrigo Vianna', '(49) 99999-9907'], ['Thiago Moraes', '(49) 99999-9908'],
+        ['Gustavo Reis', '(49) 99999-9909'], ['Felipe Barcelos', '(49) 99999-9910'],
+        ['André Kuhn', '(49) 99999-9911'], ['Leandro Pires', '(49) 99999-9912'],
+        ['Murilo Tavares', '(49) 99999-9913'], ['Sérgio Andrade', '(49) 99999-9914'],
+        ['Paulo Meirelles', '(49) 99999-9915'], ['Ricardo Nunes', '(49) 99999-9916']
     ];
 
     let sequencia = 1;
@@ -177,7 +177,7 @@ const Dados = {
     /* Dia de hoje: oito atendimentos posicionados em relação ao horário
        atual (e não em horas fixas). É de propósito: assim a régua e as
        faixas do RF11 têm sempre o que mostrar, a qualquer hora em que a
-       página for aberta — do contrário, abrindo às 19h o dia inteiro já
+       página for aberta - do contrário, abrindo às 19h o dia inteiro já
        estaria concluído e a tela pareceria vazia.
        Os minutos abaixo são a distância até agora; os status vêm junto
        para garantir um exemplo de cada faixa (atrasado, em andamento,

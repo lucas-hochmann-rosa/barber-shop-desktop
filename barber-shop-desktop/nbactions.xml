@@ -13,7 +13,7 @@
             <exec.vmArgs></exec.vmArgs>
             <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
             <exec.appArgs></exec.appArgs>
-            <exec.mainClass>br.com.barberdesk.app.Main</exec.mainClass>
+            <exec.mainClass>br.com.barbershop.app.Main</exec.mainClass>
             <exec.executable>java</exec.executable>
         </properties>
     </action>
@@ -30,7 +30,7 @@
             <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
             <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
             <exec.appArgs></exec.appArgs>
-            <exec.mainClass>br.com.barberdesk.app.Main</exec.mainClass>
+            <exec.mainClass>br.com.barbershop.app.Main</exec.mainClass>
             <exec.executable>java</exec.executable>
             <jpda.listen>true</jpda.listen>
         </properties>
@@ -48,7 +48,7 @@
             <exec.vmArgs>${profiler.jvmargs.arg1} ${profiler.jvmargs.arg2} ${profiler.jvmargs.arg3} ${profiler.jvmargs.arg4} ${profiler.jvmargs.arg5}</exec.vmArgs>
             <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
             <exec.appArgs></exec.appArgs>
-            <exec.mainClass>br.com.barberdesk.app.Main</exec.mainClass>
+            <exec.mainClass>br.com.barbershop.app.Main</exec.mainClass>
             <exec.executable>java</exec.executable>
         </properties>
     </action>

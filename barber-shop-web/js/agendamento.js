@@ -14,7 +14,7 @@ const TelaAgendamento = {
 
         servico.innerHTML = '<option value="">Selecione…</option>'
             + Dados.servicos.map((s) =>
-                `<option value="${s.id}">${s.nome} — ${Formato.moeda(s.preco)} (${s.duracaoMinutos} min)</option>`
+                `<option value="${s.id}">${s.nome} - ${Formato.moeda(s.preco)} (${s.duracaoMinutos} min)</option>`
             ).join('');
 
         barbeiro.innerHTML = '<option value="">Selecione…</option>'
@@ -108,12 +108,12 @@ const TelaAgendamento = {
         const barbeiro = this.barbeiroEscolhido();
         const quando = this.dataHoraEscolhida();
 
-        document.getElementById('resumoServico').textContent = servico ? servico.nome : '—';
-        document.getElementById('resumoDuracao').textContent = servico ? servico.duracaoMinutos + ' min' : '—';
-        document.getElementById('resumoBarbeiro').textContent = barbeiro ? barbeiro.nome : '—';
+        document.getElementById('resumoServico').textContent = servico ? servico.nome : '-';
+        document.getElementById('resumoDuracao').textContent = servico ? servico.duracaoMinutos + ' min' : '-';
+        document.getElementById('resumoBarbeiro').textContent = barbeiro ? barbeiro.nome : '-';
         document.getElementById('resumoQuando').textContent = quando
             ? Formato.data(quando) + ' ' + Formato.hora(quando)
-            : '—';
+            : '-';
         document.getElementById('resumoTotal').textContent = Formato.moeda(servico ? servico.preco : 0);
     },
 

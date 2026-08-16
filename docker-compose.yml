@@ -1,15 +1,15 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: barberdesk-mysql
+    container_name: barbershop-mysql
     restart: unless-stopped
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: barberdesk
+      MYSQL_DATABASE: barbershop
     ports:
       - "3306:3306"
     volumes:
-      - barberdesk-mysql-data:/var/lib/mysql
+      - barbershop-mysql-data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -17,4 +17,4 @@ services:
       retries: 10
 
 volumes:
-  barberdesk-mysql-data:
+  barbershop-mysql-data:

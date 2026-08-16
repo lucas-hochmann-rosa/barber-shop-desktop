@@ -217,7 +217,7 @@ const TelaBarbearia = {
         const item = lista[posicao];
 
         // Avisa se há agendamentos usando este item (o histórico guarda o
-        // nome como snapshot, então não se perde — mesmo desenho do desktop)
+        // nome como snapshot, então não se perde - mesmo desenho do desktop)
         const emUso = Dados.agendamentos.filter(
             (a) => (ehServico ? a.servicoId : a.barbeiroId) === item.id
         ).length;

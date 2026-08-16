@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS barberdesk;
-USE barberdesk;
+CREATE DATABASE IF NOT EXISTS barbershop;
+USE barbershop;
 
 CREATE TABLE IF NOT EXISTS barbearias (
   id INT AUTO_INCREMENT PRIMARY KEY,

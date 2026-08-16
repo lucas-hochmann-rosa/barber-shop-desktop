@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>br.com.barberdesk</groupId>
+        <groupId>br.com.barbershop</groupId>
         <artifactId>barbershop</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -17,12 +17,12 @@
     <description>Interface Swing do Barbershop - depende de barber-shop-core para as regras de negócio.</description>
 
     <properties>
-        <exec.mainClass>br.com.barberdesk.app.Main</exec.mainClass>
+        <exec.mainClass>br.com.barbershop.app.Main</exec.mainClass>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>br.com.barberdesk</groupId>
+            <groupId>br.com.barbershop</groupId>
             <artifactId>barber-shop-core</artifactId>
         </dependency>
 
@@ -64,7 +64,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>br.com.barberdesk.app.Main</mainClass>
+                            <mainClass>br.com.barbershop.app.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -84,7 +84,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>br.com.barberdesk.app.Main</mainClass>
+                                    <mainClass>br.com.barbershop.app.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

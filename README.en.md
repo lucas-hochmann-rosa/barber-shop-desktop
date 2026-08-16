@@ -90,7 +90,7 @@ npx serve barber-shop-web      # access http://localhost:3000 (demo login: lucas
 - Visual classification of appointments by status and proximity (color-coded badges/rows per RF11).
 - Search and filtering across appointment history and client directory.
 - Reports dashboard: revenue by period, top services, and barber rankings.
-- Photos stored as Base64 in the database — no dependency on specific local disk paths.
+- Photos stored as Base64 in the database - no dependency on specific local disk paths.
 - Native application icon across all windows.
 - File logging (`~/.barbershop/logs/`) and connection pooling (HikariCP).
 
@@ -139,7 +139,7 @@ barber-shop-suite/
 ├── barber-shop-core/                    # [MODULE 1] Shared business rules core (Java)
 │   ├── pom.xml
 │   └── src/
-│       ├── main/java/br/com/barberdesk/
+│       ├── main/java/br/com/barbershop/
 │       │   ├── model/                  # Domain entities (POJOs: Agendamento, Barbearia, Servico, Barbeiro, Usuario)
 │       │   ├── dao/                    # Data access layer (JDBC/MySQL), one class per entity
 │       │   │   └── repository/         # Interfaces consumed by services (Repository Pattern)
@@ -148,7 +148,7 @@ barber-shop-suite/
 │       ├── main/resources/
 │       │   ├── config.properties       # JDBC MySQL database connection defaults
 │       │   └── db/schema.sql           # Initial DDL schema, automatically executed on first start
-│       └── test/java/br/com/barberdesk/
+│       └── test/java/br/com/barbershop/
 │           ├── model/, util/           # Unit tests for domain logic, hashing, and dates
 │           └── service/                # Service tests using in-memory fake repositories (e.g. ClassificadorAgendaTest)
 │               └── fake/               # In-memory test doubles for repository interfaces
@@ -157,7 +157,7 @@ barber-shop-suite/
 │   ├── pom.xml                         # Builds shaded standalone executable JAR (maven-shade-plugin)
 │   ├── nbactions.xml                   # NetBeans IDE execution and debug profiles
 │   └── src/main/
-│       ├── java/br/com/barberdesk/
+│       ├── java/br/com/barbershop/
 │       │   ├── app/
 │       │   │   ├── Main.java             # Entry point: selects between initial setup and login
 │       │   │   ├── FabricaDeServicos.java # Composition root: instantiates concrete DAOs and injects into services
@@ -189,7 +189,7 @@ barber-shop-suite/
 
 ### 1. `barber-shop-core` Module (Core Rules)
 
-This module has no graphical interface or standalone executable entry point — it is a library containing business logic and data access components.
+This module has no graphical interface or standalone executable entry point - it is a library containing business logic and data access components.
 
 To compile and run the core unit test suite:
 
@@ -213,7 +213,7 @@ docker compose up -d
 
 1. Open the project root folder (`barber-shop-suite`) in NetBeans: **File** → **Open Project**.
 2. NetBeans will detect the Maven monorepo and its submodules automatically.
-3. Expand the **barber-shop-desktop** (`barber-shop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barberdesk.app.Main`).
+3. Expand the **barber-shop-desktop** (`barber-shop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barbershop.app.Main`).
 4. **Debug** and **Profile** actions work through the same menu.
 
 #### Option B: Run via Command Line (Maven + JAR)
@@ -227,7 +227,7 @@ java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 
 ### 3. `barber-shop-web` Module (Web Front-end)
 
-The web version is developed with **plain HTML5, CSS3, and JavaScript** — no heavy frameworks, no build steps, and zero external runtime dependencies.
+The web version is developed with **plain HTML5, CSS3, and JavaScript** - no heavy frameworks, no build steps, and zero external runtime dependencies.
 
 #### How to run:
 
@@ -257,7 +257,7 @@ The web version is developed with **plain HTML5, CSS3, and JavaScript** — no h
 A core design principle of Barbershop is the consistency and portability of business rules across platforms:
 
 - **Schedule Classification Rule (RF11):** Determines visual status for each appointment based on time proximity to a reference instant (`EM_ANDAMENTO`, `ATRASADO`, `IMINENTE` within 60 min, `PROXIMO` within 120 min, `DISTANTE` over 120 min, `CONCLUIDO`, and `CANCELADO`).
-- **Java Implementation:** Class `br.com.barberdesk.service.ClassificadorAgenda` in `barber-shop-core`, covered by the JUnit 5 test suite [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
+- **Java Implementation:** Class `br.com.barbershop.service.ClassificadorAgenda` in `barber-shop-core`, covered by the JUnit 5 test suite [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barbershop/service/ClassificadorAgendaTest.java).
 - **JavaScript Port:** Ported to [`barber-shop-web/js/classificacao.js`](barber-shop-web/js/classificacao.js), maintaining identical constant names, precedence rules, and interval boundaries.
 - **In-Browser Verification:** The page [`barber-shop-web/verificacao-classificacao.html`](barber-shop-web/verificacao-classificacao.html) runs all 12 JUnit test cases directly in the browser against the JS implementation, validating 100% behavioral parity.
 
@@ -283,8 +283,8 @@ A core design principle of Barbershop is the consistency and portability of busi
 
 ## 📐 Project Ground Rules
 
-- Identifiers (classes, methods, variables, database tables, and columns) remain in Portuguese — matching the domain vocabulary of a Brazilian barbershop.
-- Code comments are reserved for non-obvious design decisions — the "why", not the "what".
+- Identifiers (classes, methods, variables, database tables, and columns) remain in Portuguese - matching the domain vocabulary of a Brazilian barbershop.
+- Code comments are reserved for non-obvious design decisions - the "why", not the "what".
 - User interface copy (Swing screens and Web pages) is in Portuguese for end-user realism.
 - No sensitive credentials are committed: `config.properties` ships with local development defaults, overridable via environment variables.
 
@@ -294,7 +294,7 @@ A core design principle of Barbershop is the consistency and portability of busi
 
 - JDK 17+ installed and available on `PATH`
 - MySQL 8 active and accessible (locally or via Docker Compose)
-- MySQL user with permissions to create and modify tables in the `barberdesk` schema
+- MySQL user with permissions to create and modify tables in the `barbershop` schema
 - Maven 3.8+ (optional if using NetBeans IDE)
 - Modern web browser for the web module
 
@@ -315,12 +315,12 @@ cd barber-shop-suite
 docker compose up -d
 ```
 
-Spins up a MySQL 8 container with the `barberdesk` schema and passwordless `root` user.
+Spins up a MySQL 8 container with the `barbershop` schema and passwordless `root` user.
 
 **Option 2 - Local MySQL Server:**
 
 ```sql
-CREATE DATABASE barberdesk;
+CREATE DATABASE barbershop;
 ```
 
 > In both options, all tables and schema migrations are automatically executed upon the first start of the desktop application (`barber-shop-core/src/main/resources/db/schema.sql`).
@@ -332,7 +332,7 @@ CREATE DATABASE barberdesk;
 Connection settings are defined in `barber-shop-core/src/main/resources/config.properties`:
 
 ```properties
-db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
+db.url=jdbc:mysql://localhost:3306/barbershop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
 db.user=root
 db.password=
 db.driver=com.mysql.cj.jdbc.Driver
@@ -342,7 +342,7 @@ They can also be overridden using OS environment variables:
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `DB_URL` | JDBC connection URL | `jdbc:mysql://localhost:3306/barberdesk...` |
+| `DB_URL` | JDBC connection URL | `jdbc:mysql://localhost:3306/barbershop...` |
 | `DB_USER` | MySQL database user | `root` |
 | `DB_PASSWORD` | MySQL database password | *(empty)* |
 | `DB_DRIVER` | JDBC driver class | `com.mysql.cj.jdbc.Driver` |
@@ -395,13 +395,13 @@ Generated artifact: `barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT
 
 | Desktop Screen | Equivalent Web Screen | Purpose |
 | --- | --- | --- |
-| `TelaCadastroInicial` | — | Initial barbershop setup (RF01) |
+| `TelaCadastroInicial` | - | Initial barbershop setup (RF01) |
 | `TelaLogin` | `index.html` | Authentication with credentials (RF02) |
 | `TelaHome` | `agenda.html` | Daily schedule, timeline, and quick actions (RF08, RF11, RF07) |
 | `Minha Barbearia` | `barbearia.html` | General settings, services, and barbers (RF03, RF04) |
 | `Histórico` | `historico.html` | Full appointment history with filters (RF09) |
 | `TelaNovoAgendamento` / `TelaEditarAgendamento` | `agendamento.html` | Appointment scheduling with conflict validation (RF05, RF06, RF10) |
-| `Clientes` (tab in Barbearia) | — | Consolidated client directory |
+| `Clientes` (tab in Barbearia) | - | Consolidated client directory |
 | `Relatórios` | `relatorios.html` | Revenue by period, top services, and rankings (RF09) |
 
 ---
@@ -458,7 +458,7 @@ mvn test
 
 Covers:
 - Pure domain models and utilities (`model`, `util`, password hashing, date handling, equals/hashCode).
-- Business services (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) using **in-memory fake repositories** — ultra-fast, isolated, and deterministic tests without needing a real database.
+- Business services (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) using **in-memory fake repositories** - ultra-fast, isolated, and deterministic tests without needing a real database.
 
 ---
 
@@ -469,7 +469,7 @@ In addition to in-memory unit tests, the desktop module includes an end-to-end o
 ```bash
 docker compose up -d
 mvn clean package
-java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barbershop.app.VerificacaoSistema
 ```
 
 Automatically validates:
@@ -518,7 +518,7 @@ Cleans up all generated test records upon completion, leaving the database prist
 
 ## ⚠️ Disclaimer
 
-Developed for academic purposes within the scope of Projeto Integrador II. Designed for local / internal network operations of a single barbershop.
+Intended for operational use within the local environment or internal network of a single barbershop.
 
 ---
 

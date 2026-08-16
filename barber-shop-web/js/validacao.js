@@ -39,12 +39,12 @@ const Validacao = {
 
     /**
      * Contato aceito: telefone brasileiro com DDD, com ou sem máscara.
-     * Ex.: (51) 99999-1234, 51999991234, 51 9999-1234.
+     * Ex.: (49) 99999-9999, 49999999999, 49 99999-9999.
      */
     telefone(entrada, mensagem) {
         const digitos = entrada.value.replace(/\D/g, '');
         if (digitos.length < 10 || digitos.length > 11) {
-            Validacao.marcarErro(entrada, mensagem || 'Informe um telefone com DDD, ex.: (51) 99999-1234.');
+            Validacao.marcarErro(entrada, mensagem || 'Informe um telefone com DDD, ex.: (49) 99999-9999.');
             return false;
         }
         return true;

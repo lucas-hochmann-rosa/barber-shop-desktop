@@ -419,13 +419,33 @@
 
 /* Cores por classificação (RF11) */
 
-.cls-EM_ANDAMENTO { background: var(--verde-claro); }
-.cls-ATRASADO     { background: var(--oxblood); }
-.cls-IMINENTE     { background: var(--latao); }
-.cls-PROXIMO      { background: var(--fumaca); }
-.cls-DISTANTE     { background: var(--neblina); }
-.cls-CONCLUIDO    { background: rgba(20, 72, 63, .4); }
-.cls-CANCELADO    { background: var(--neblina); }
+.cls-EM_ANDAMENTO {
+    background: var(--verde-claro);
+}
+
+.cls-ATRASADO {
+    background: var(--oxblood);
+}
+
+.cls-IMINENTE {
+    background: var(--latao);
+}
+
+.cls-PROXIMO {
+    background: var(--fumaca);
+}
+
+.cls-DISTANTE {
+    background: var(--neblina);
+}
+
+.cls-CONCLUIDO {
+    background: rgba(20, 72, 63, .4);
+}
+
+.cls-CANCELADO {
+    background: var(--neblina);
+}
 
 /* Régua do dia */
 
@@ -471,7 +491,7 @@
 
 /* Blocos de agendamento, posicionados proporcionalmente pelo horário.
    Ficam propositalmente estreitos: quando dois atendimentos são próximos,
-   os blocos se encostam, e essa aglomeração é informação — mostra que a
+   os blocos se encostam, e essa aglomeração é informação - mostra que a
    agenda está apertada naquele trecho do dia. */
 .regua__bloco {
     position: absolute;
