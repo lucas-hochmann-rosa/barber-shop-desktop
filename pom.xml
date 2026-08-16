@@ -9,12 +9,12 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>BarberDesk</name>
-    <description>Sistema de Gerenciamento de Barbearia - módulo pai</description>
+    <name>Barbershop</name>
+    <description>Sistema de Gestão de Barbearia - módulo pai</description>
 
     <modules>
-        <module>barbershop-core</module>
-        <module>barbershop-desktop</module>
+        <module>barber-shop-core</module>
+        <module>barber-shop-desktop</module>
     </modules>
 
     <properties>
@@ -76,7 +76,7 @@
             </dependency>
             <dependency>
                 <groupId>br.com.barberdesk</groupId>
-                <artifactId>barbershop-core</artifactId>
+                <artifactId>barber-shop-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

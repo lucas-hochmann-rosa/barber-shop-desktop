@@ -1,4 +1,4 @@
-# 💈 barber-shop-suite - *BarberDesk*
+# 💈 barber-shop-suite - *Barbershop*
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-suite">
@@ -20,7 +20,7 @@
 
 <p align="center"><a href="README.md">🇧🇷 Português</a> · 🇺🇸 English</p>
 
-> Barbershop operational management system (*BarberDesk*) structured as a three-module monorepo: a shared business rules core in Java (`barbershop-core`), a complete desktop application in Java Swing with MySQL persistence (`barbershop-desktop`), and a modern web interface in plain HTML, CSS and JavaScript (`barbershop-web`) that shares the same business rules.
+> Barbershop operational management system (*Barbershop*) structured as a three-module monorepo: a shared business rules core in Java (`barber-shop-core`), a complete desktop application in Java Swing with MySQL persistence (`barber-shop-desktop`), and a modern web interface in plain HTML, CSS and JavaScript (`barber-shop-web`) that shares the same business rules.
 
 ---
 
@@ -34,21 +34,21 @@ cd barber-shop-suite
 # 2. Run the Desktop application (requires Java 17+ and MySQL)
 docker compose up -d          # spins up a pre-configured MySQL 8 instance
 mvn clean package
-java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 
 # 3. Or run the Web version (independent front-end)
-npx serve barbershop-web      # access http://localhost:3000 (demo login: lucas / 1234)
+npx serve barber-shop-web      # access http://localhost:3000 (demo login: lucas / 1234)
 ```
 
 ---
 
 ## 📌 Overview
 
-**BarberDesk** is a comprehensive barbershop management system (appointments, staff, services, history, and revenue), built on a modular architecture:
+**Barbershop** is a comprehensive barbershop management system (appointments, staff, services, history, and revenue), built on a modular architecture:
 
-- **Shared Core (`barbershop-core`)**: Centralizes domain entities, JDBC persistence, migrations, and core business rules (such as RF11 visual classification and RF10 real time-overlap conflict validation), without any coupling to visual interfaces.
-- **Desktop Application (`barbershop-desktop`)**: Desktop application built with Java Swing (FlatLaf Look & Feel) featuring automatic bootstrap (initial setup vs. login), CRUD operations for services and barbers, real-time schedule management, reports dashboard, and an operational smoke test (`VerificacaoSistema`).
-- **Web Version (`barbershop-web`)**: Modern static front-end in HTML5, CSS3, and JavaScript (Stage 8), mirroring the barbershop operational workflows, highlighting the **interactive daily schedule timeline** and direct portability of core business rules.
+- **Shared Core (`barber-shop-core`)**: Centralizes domain entities, JDBC persistence, migrations, and core business rules (such as RF11 visual classification and RF10 real time-overlap conflict validation), without any coupling to visual interfaces.
+- **Desktop Application (`barber-shop-desktop`)**: Desktop application built with Java Swing (FlatLaf Look & Feel) featuring automatic bootstrap (initial setup vs. login), CRUD operations for services and barbers, real-time schedule management, reports dashboard, and an operational smoke test (`VerificacaoSistema`).
+- **Web Version (`barber-shop-web`)**: Modern static front-end in HTML5, CSS3, and JavaScript (Stage 8), mirroring the barbershop operational workflows, highlighting the **interactive daily schedule timeline** and direct portability of core business rules.
 
 ---
 
@@ -92,7 +92,7 @@ npx serve barbershop-web      # access http://localhost:3000 (demo login: lucas 
 - Reports dashboard: revenue by period, top services, and barber rankings.
 - Photos stored as Base64 in the database — no dependency on specific local disk paths.
 - Native application icon across all windows.
-- File logging (`~/.barberdesk/logs/`) and connection pooling (HikariCP).
+- File logging (`~/.barbershop/logs/`) and connection pooling (HikariCP).
 
 ---
 
@@ -133,7 +133,7 @@ barber-shop-suite/
 ├── docs/
 │   └── screenshots/                    # Application screenshots used across documentation
 │
-├── barbershop-core/                    # [MODULE 1] Shared business rules core (Java)
+├── barber-shop-core/                    # [MODULE 1] Shared business rules core (Java)
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/br/com/barberdesk/
@@ -150,7 +150,7 @@ barber-shop-suite/
 │           └── service/                # Service tests using in-memory fake repositories (e.g. ClassificadorAgendaTest)
 │               └── fake/               # In-memory test doubles for repository interfaces
 │
-├── barbershop-desktop/                 # [MODULE 2] Graphical desktop interface in Java Swing
+├── barber-shop-desktop/                 # [MODULE 2] Graphical desktop interface in Java Swing
 │   ├── pom.xml                         # Builds shaded standalone executable JAR (maven-shade-plugin)
 │   ├── nbactions.xml                   # NetBeans IDE execution and debug profiles
 │   └── src/main/
@@ -166,7 +166,7 @@ barber-shop-suite/
 │           ├── logback.xml                # Logging configuration (console + rotating file appender)
 │           └── icon.ico                   # Application native icon
 │
-└── barbershop-web/                     # [MODULE 3] Standalone Web Front-end (plain HTML, CSS, and JavaScript)
+└── barber-shop-web/                     # [MODULE 3] Standalone Web Front-end (plain HTML, CSS, and JavaScript)
     ├── README.md                       # The web module's dedicated documentation
     ├── index.html                      # Login screen (RF02)
     ├── agenda.html                     # Main screen: daily timeline, summary cards, and pending table (RF08, RF11)
@@ -184,19 +184,19 @@ barber-shop-suite/
 
 ## 🚀 Execution Instructions by Module
 
-### 1. `barbershop-core` Module (Core Rules)
+### 1. `barber-shop-core` Module (Core Rules)
 
 This module has no graphical interface or standalone executable entry point — it is a library containing business logic and data access components.
 
 To compile and run the core unit test suite:
 
 ```bash
-mvn test -pl barbershop-core
+mvn test -pl barber-shop-core
 ```
 
 ---
 
-### 2. `barbershop-desktop` Module (Desktop App)
+### 2. `barber-shop-desktop` Module (Desktop App)
 
 Requires **JDK 17+** and a running **MySQL 8** instance.
 
@@ -210,32 +210,32 @@ docker compose up -d
 
 1. Open the project root folder (`barber-shop-suite`) in NetBeans: **File** → **Open Project**.
 2. NetBeans will detect the Maven monorepo and its submodules automatically.
-3. Expand the **BarberDesk Desktop** (`barbershop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barberdesk.app.Main`).
+3. Expand the **Barber Shop Desktop** (`barber-shop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barberdesk.app.Main`).
 4. **Debug** and **Profile** actions work through the same menu.
 
 #### Option B: Run via Command Line (Maven + JAR)
 
 ```bash
 mvn clean package
-java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 ```
 
 ---
 
-### 3. `barbershop-web` Module (Web Front-end)
+### 3. `barber-shop-web` Module (Web Front-end)
 
 The web version is developed with **plain HTML5, CSS3, and JavaScript** — no heavy frameworks, no build steps, and zero external runtime dependencies.
 
 #### How to run:
 
-- **Option A (Direct in Browser):** Simply open `barbershop-web/index.html` in any modern web browser.
+- **Option A (Direct in Browser):** Simply open `barber-shop-web/index.html` in any modern web browser.
 - **Option B (Local HTTP Server - recommended):**
   ```bash
   # Using npx serve
-  npx serve barbershop-web
+  npx serve barber-shop-web
 
   # Or using Python 3
-  cd barbershop-web
+  cd barber-shop-web
   python -m http.server 8000
   ```
   Open <http://localhost:8000> (or the port shown in your terminal).
@@ -245,18 +245,18 @@ The web version is developed with **plain HTML5, CSS3, and JavaScript** — no h
 - **Password:** `1234`
 
 > [!NOTE]
-> **Note on the Web Back-end (Stage 8):** In this stage, the web module runs with rich in-memory sample data (`barbershop-web/js/dados.js`). Actions performed on screen (starting/completing appointments, new bookings, etc.) operate on local session state. Integration with a persistent back-end API (consuming `barbershop-core` services) is scheduled for the subsequent project stage.
+> **Note on the Web Back-end (Stage 8):** In this stage, the web module runs with rich in-memory sample data (`barber-shop-web/js/dados.js`). Actions performed on screen (starting/completing appointments, new bookings, etc.) operate on local session state. Integration with a persistent back-end API (consuming `barber-shop-core` services) is scheduled for the subsequent project stage.
 
 ---
 
 ## 🔄 Core Reuse and Parity (RF11)
 
-A core design principle of BarberDesk is the consistency and portability of business rules across platforms:
+A core design principle of Barbershop is the consistency and portability of business rules across platforms:
 
 - **Schedule Classification Rule (RF11):** Determines visual status for each appointment based on time proximity to a reference instant (`EM_ANDAMENTO`, `ATRASADO`, `IMINENTE` within 60 min, `PROXIMO` within 120 min, `DISTANTE` over 120 min, `CONCLUIDO`, and `CANCELADO`).
-- **Java Implementation:** Class `br.com.barberdesk.service.ClassificadorAgenda` in `barbershop-core`, covered by the JUnit 5 test suite [`ClassificadorAgendaTest`](barbershop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
-- **JavaScript Port:** Ported to [`barbershop-web/js/classificacao.js`](barbershop-web/js/classificacao.js), maintaining identical constant names, precedence rules, and interval boundaries.
-- **In-Browser Verification:** The page [`barbershop-web/verificacao-classificacao.html`](barbershop-web/verificacao-classificacao.html) runs all 12 JUnit test cases directly in the browser against the JS implementation, validating 100% behavioral parity.
+- **Java Implementation:** Class `br.com.barberdesk.service.ClassificadorAgenda` in `barber-shop-core`, covered by the JUnit 5 test suite [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
+- **JavaScript Port:** Ported to [`barber-shop-web/js/classificacao.js`](barber-shop-web/js/classificacao.js), maintaining identical constant names, precedence rules, and interval boundaries.
+- **In-Browser Verification:** The page [`barber-shop-web/verificacao-classificacao.html`](barber-shop-web/verificacao-classificacao.html) runs all 12 JUnit test cases directly in the browser against the JS implementation, validating 100% behavioral parity.
 
 ---
 
@@ -320,13 +320,13 @@ Spins up a MySQL 8 container with the `barberdesk` schema and passwordless `root
 CREATE DATABASE barberdesk;
 ```
 
-> In both cases, tables and initial schema migrations are applied automatically on the first desktop app startup (`barbershop-core/src/main/resources/db/schema.sql`).
+> In both options, all tables and schema migrations are automatically executed upon the first start of the desktop application (`barber-shop-core/src/main/resources/db/schema.sql`).
 
 ---
 
 ## 🔐 Environment Variables
 
-Connection settings are located in `barbershop-core/src/main/resources/config.properties`:
+Connection settings are defined in `barber-shop-core/src/main/resources/config.properties`:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
@@ -335,53 +335,53 @@ db.password=
 db.driver=com.mysql.cj.jdbc.Driver
 ```
 
-Or overridden using environment variables:
+They can also be overridden using OS environment variables:
 
 | Variable | Description | Default |
 | --- | --- | --- |
 | `DB_URL` | JDBC connection URL | `jdbc:mysql://localhost:3306/barberdesk...` |
-| `DB_USER` | MySQL username | `root` |
-| `DB_PASSWORD` | MySQL password | *(empty)* |
+| `DB_USER` | MySQL database user | `root` |
+| `DB_PASSWORD` | MySQL database password | *(empty)* |
 | `DB_DRIVER` | JDBC driver class | `com.mysql.cj.jdbc.Driver` |
 
 ---
 
 ## 📦 Desktop Deployment (Windows / Linux)
 
-Packaging creates a single **executable fat JAR** with all bundled dependencies:
+Packaging creates a single **standalone shaded executable JAR (*fat jar*)** bundling all dependencies:
 
 ```bash
 mvn clean package
 ```
-Generated file: `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar`.
+Generated artifact: `barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar`.
 
 ### 🪟 Windows
 
 1. Ensure JRE/JDK 17+ is installed (`java -version`).
-2. Run via PowerShell or Command Prompt:
+2. Run in PowerShell or Command Prompt:
    ```powershell
-   java -jar barbershop-desktop\target\barbershop-desktop-1.0-SNAPSHOT.jar
+   java -jar barber-shop-desktop\target\barber-shop-desktop-1.0-SNAPSHOT.jar
    ```
-3. **Desktop Shortcut:** Create a `BarberDesk.bat` file next to the `.jar`:
+3. **Desktop Shortcut:** Create a `Barbershop.bat` file next to the `.jar`:
    ```bat
    @echo off
-   start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
+   start javaw -jar "%~dp0barber-shop-desktop-1.0-SNAPSHOT.jar"
    ```
-   Set the shortcut icon to `barbershop-desktop/src/main/resources/icon.ico`.
+   Set the shortcut icon to `barber-shop-desktop/src/main/resources/icon.ico`.
 
 ### 🐧 Linux
 
 1. Install OpenJDK 17 (`sudo apt install openjdk-17-jre` on Debian/Ubuntu).
 2. Run:
    ```bash
-   java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+   java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
    ```
-3. **Application Launcher (`.desktop`)** in `~/.local/share/applications/barberdesk.desktop`:
+3. **Application Launcher (`.desktop`)** in `~/.local/share/applications/barbershop.desktop`:
    ```ini
    [Desktop Entry]
-   Name=BarberDesk
-   Exec=java -jar /path/to/barbershop-desktop-1.0-SNAPSHOT.jar
-   Icon=/path/to/icon.ico
+   Name=Barbershop
+   Exec=java -jar /full/path/to/barber-shop-desktop-1.0-SNAPSHOT.jar
+   Icon=/full/path/to/icon.ico
    Type=Application
    Categories=Office;
    ```
@@ -393,27 +393,27 @@ Generated file: `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar`.
 | Desktop Screen | Equivalent Web Screen | Purpose |
 | --- | --- | --- |
 | `TelaCadastroInicial` | — | Initial barbershop setup (RF01) |
-| `TelaLogin` | `index.html` | User authentication (RF02) |
-| `TelaHome` | `agenda.html` | Daily schedule, interactive timeline, and quick actions (RF08, RF11, RF07) |
-| `Minha Barbearia` | `barbearia.html` | Shop profile, service catalog, and barber management (RF03, RF04) |
-| `Histórico` | `historico.html` | Appointment history with filters (RF09) |
-| `TelaNovoAgendamento` / `TelaEditarAgendamento` | `agendamento.html` | Booking creation/editing with conflict validation (RF05, RF06, RF10) |
-| `Clientes` (Barbearia tab) | — | Consolidated client directory |
-| `Relatórios` | `relatorios.html` | Revenue, top services, and barber rankings (RF09) |
+| `TelaLogin` | `index.html` | Authentication with credentials (RF02) |
+| `TelaHome` | `agenda.html` | Daily schedule, timeline, and quick actions (RF08, RF11, RF07) |
+| `Minha Barbearia` | `barbearia.html` | General settings, services, and barbers (RF03, RF04) |
+| `Histórico` | `historico.html` | Full appointment history with filters (RF09) |
+| `TelaNovoAgendamento` / `TelaEditarAgendamento` | `agendamento.html` | Appointment scheduling with conflict validation (RF05, RF06, RF10) |
+| `Clientes` (tab in Barbearia) | — | Consolidated client directory |
+| `Relatórios` | `relatorios.html` | Revenue by period, top services, and rankings (RF09) |
 
 ---
 
 ## 📋 Business Rules Implemented
 
-- No barbershop registered: redirects to initial setup.
-- Barbershop registered: enforces login with salted PBKDF2 hashes.
-- Appointments require mandatory fields (client, contact, date/time, service, barber, source).
-- Home / Agenda displays only incomplete appointments (`AGENDADO` and `EM_ATENDIMENTO`).
-- History displays all statuses (`AGENDADO`, `EM_ATENDIMENTO`, `CONCLUIDO`, `CANCELADO`).
-- Barber conflict validation evaluates actual interval overlap based on service duration.
+- If no barbershop exists: opens initial setup.
+- If barbershop exists: requires login with PBKDF2 salted hash.
+- Appointments require essential fields (client, contact, date/time, service, barber, and channel).
+- Home / Daily schedule displays only active appointments (`AGENDADO` and `EM_ATENDIMENTO`).
+- History displays all appointment statuses (`AGENDADO`, `EM_ATENDIMENTO`, `CONCLUIDO`, `CANCELADO`).
+- Barber scheduling conflict checks calculate real service duration (interval overlap, not fixed slot).
 - Scheduling outside configured business hours is blocked.
-- Cancellation requires a documented reason.
-- Visual classification (RF11) applied consistently across both desktop and web interfaces.
+- Appointment cancellation requires entering a cancellation reason.
+- RF11 visual classification applied across both Desktop tables and Web timeline/tables.
 
 ---
 
@@ -421,65 +421,65 @@ Generated file: `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar`.
 
 ### Functional Requirements
 
-- **RF01**: Barbershop initial setup (basic info, services, barbers, admin account). **Status**: Implemented.
-- **RF02**: Authentication with username and password. **Status**: Implemented.
-- **RF03**: Service catalog management (CRUD). **Status**: Implemented.
-- **RF04**: Barber staff management (CRUD). **Status**: Implemented.
-- **RF05**: Appointment creation with client, contact, date/time, service, barber, and contact source. **Status**: Implemented.
-- **RF06**: Appointment editing and deletion. **Status**: Implemented.
-- **RF07**: Status transitions (start and complete appointments). **Status**: Implemented.
-- **RF08**: Display only pending/in-progress appointments on the daily schedule. **Status**: Implemented.
-- **RF09**: Comprehensive appointment history including completed records. **Status**: Implemented.
-- **RF10**: Time conflict validation per barber based on actual service duration overlap. **Status**: Implemented.
-- **RF11**: Visual classification of appointments by status and proximity. **Status**: Implemented.
+- **RF01**: Allow initial barbershop registration with basic details, services, barbers, and admin user. **Status**: Implemented.
+- **RF02**: Allow authentication via username and password. **Status**: Implemented.
+- **RF03**: Allow creating, editing, and deleting services. **Status**: Implemented.
+- **RF04**: Allow creating, editing, and deleting barbers. **Status**: Implemented.
+- **RF05**: Allow creating new appointments with client, contact, date/time, service, barber, and channel. **Status**: Implemented.
+- **RF06**: Allow editing and deleting appointments. **Status**: Implemented.
+- **RF07**: Allow changing appointment status (start and complete service). **Status**: Implemented.
+- **RF08**: Display only non-completed appointments on Home. **Status**: Implemented.
+- **RF09**: Display full appointment history including completed records. **Status**: Implemented.
+- **RF10**: Validate scheduling conflicts per barber based on actual service duration. **Status**: Implemented.
+- **RF11**: Visually classify appointments based on time proximity or status. **Status**: Implemented.
 
 ### Non-Functional Requirements
 
-- **RNF01**: Developed in Java. **Status**: Implemented.
-- **RNF02**: Persistent relational storage using MySQL. **Status**: Implemented.
-- **RNF03**: Desktop application (complemented by web front-end in Stage 8). **Status**: Implemented.
-- **RNF04**: Object-oriented principles and separation of concerns. **Status**: Implemented.
-- **RNF05**: Persistent data storage in relational database. **Status**: Implemented.
-- **RNF06**: Validation of mandatory inputs prior to saving. **Status**: Implemented.
-- **RNF07**: Access protected by secure authentication (salted PBKDF2). **Status**: Implemented.
+- **RNF01**: System must be developed in Java. **Status**: Implemented.
+- **RNF02**: Database engine must be MySQL. **Status**: Implemented.
+- **RNF03**: System must run as a desktop application (complemented by web front-end in Stage 8). **Status**: Implemented.
+- **RNF04**: Code must follow object-oriented principles and separation of concerns. **Status**: Implemented.
+- **RNF05**: Data must be persisted in a relational database. **Status**: Implemented.
+- **RNF06**: System must validate mandatory fields before persisting data. **Status**: Implemented.
+- **RNF07**: Access must be protected by authentication (PBKDF2 passwords). **Status**: Implemented.
 
 ---
 
 ## 🧪 Automated Tests
 
-JUnit 5 unit test suite (40 tests) running from project root:
+JUnit 5 automated test suite (40 unit tests) executed from project root:
 
 ```bash
 mvn test
 ```
 
 Covers:
-- Domain model and utility logic (`model`, `util`, password hashing, date handling, equals/hashCode).
-- Business services (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) using **in-memory fake repositories** — fast, isolated, and deterministic tests without external database dependencies.
+- Pure domain models and utilities (`model`, `util`, password hashing, date handling, equals/hashCode).
+- Business services (`AgendaService`, `AuthService`, `CatalogoService`, `ClassificadorAgenda`, `RelatorioService`) using **in-memory fake repositories** — ultra-fast, isolated, and deterministic tests without needing a real database.
 
 ---
 
 ## ✅ System Verification (Smoke Test)
 
-In addition to in-memory unit tests, the desktop module includes an operational smoke test that validates end-to-end functionality against a **real MySQL** database:
+In addition to in-memory unit tests, the desktop module includes an end-to-end operational verification tool running against a **real MySQL instance**:
 
 ```bash
 docker compose up -d
 mvn clean package
-java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
 ```
 
-Verifies:
+Automatically validates:
 1. Database connectivity
-2. Schema initialization and migrations
-3. Initial setup creation
-4. Authentication with valid and invalid passwords
-5. Appointment scheduling
-6. Time conflict detection
+2. Schema creation and migrations
+3. Initial setup workflow
+4. Authentication with valid/invalid credentials
+5. Appointment booking
+6. Scheduling conflict detection
 7. Appointment cancellation with reason
-8. Report aggregation generation
+8. Report generation
 
-All verification test records are cleanly rolled back/deleted upon completion.
+Cleans up all generated test records upon completion, leaving the database pristine.
 
 ---
 
@@ -487,11 +487,11 @@ All verification test records are cleanly rolled back/deleted upon completion.
 
 | Desktop Login | Desktop Initial Setup |
 | --- | --- |
-| ![Login](docs/screenshots/login.png) | ![Initial setup](docs/screenshots/cadastro-inicial.png) |
+| ![Login Screen](docs/screenshots/login.png) | ![Initial Setup](docs/screenshots/cadastro-inicial.png) |
 
-| Desktop Home (Agenda) | Desktop New Appointment |
+| Desktop Home (Schedule) | Desktop New Appointment |
 | --- | --- |
-| ![Home](docs/screenshots/home.png) | ![New appointment](docs/screenshots/novo-agendamento.png) |
+| ![Home](docs/screenshots/home.png) | ![New Appointment](docs/screenshots/novo-agendamento.png) |
 
 | Desktop My Barbershop | Desktop History |
 | --- | --- |
@@ -505,7 +505,7 @@ All verification test records are cleanly rolled back/deleted upon completion.
 
 ## 🚀 Roadmap
 
-- **RESTful Back-end API:** Implementation of a backend service layer (e.g. Spring Boot or Micronaut) consuming `barbershop-core` to provide persistence for `barbershop-web`.
+- **RESTful Back-end API:** Implementation of a backend service layer (e.g. Spring Boot or Micronaut) consuming `barber-shop-core` to provide persistence for `barber-shop-web`.
 - **Integration Tests with Testcontainers:** Automated end-to-end integration tests against ephemeral MySQL instances in CI/CD.
 - **Role-Based Access Control:** Granular permission system separating admin accounts and individual barber logins.
 - **Flyway Migrations:** Automated database schema versioning and deployment.

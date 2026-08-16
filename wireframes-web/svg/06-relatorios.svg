@@ -3,14 +3,14 @@
 <rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
 <text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">06 — Relatórios</text>
 <text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Faturamento, serviços mais vendidos e ranking (RF09)</text>
-<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERDESK WEB</text>
+<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP WEB</text>
 <text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Baixa fidelidade · 1440px</text>
 <line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
 <rect x="0" y="92" width="230" height="900" rx="0" fill="#EDEFF1"/>
 <line x1="230" y1="92" x2="230" y2="992" stroke="#8E959C" stroke-width="1.5"/>
 <rect x="24" y="118" width="44" height="44" rx="8" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.5"/>
 <text x="46" y="146" font-family="DejaVu Sans, Arial, sans-serif" font-size="10" font-weight="bold" fill="#6B7278" text-anchor="middle" letter-spacing="0.5">LOGO</text>
-<text x="82" y="138" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">BarberDesk</text>
+<text x="82" y="138" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0">Barbershop</text>
 <text x="82" y="155" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Barbearia do Lucas</text>
 <rect x="28" y="210" width="16" height="16" rx="3" fill="#E3E6E8" stroke="#8E959C" stroke-width="1.2"/>
 <text x="56" y="224" font-family="DejaVu Sans, Arial, sans-serif" font-size="13.5" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Agenda</text>

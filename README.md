@@ -1,4 +1,4 @@
-# 💈 barber-shop-suite - *BarberDesk*
+# 💈 barber-shop-suite - *Barbershop*
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-suite">
@@ -20,7 +20,7 @@
 
 <p align="center">🇧🇷 Português · <a href="README.en.md">🇺🇸 English</a></p>
 
-> Sistema de gestão operacional de barbearia (*BarberDesk*) estruturado como monorepo com três módulos: um núcleo compartilhado de regras de negócio em Java (`barbershop-core`), uma aplicação desktop completa em Java Swing com persistência em MySQL (`barbershop-desktop`) e uma interface web moderna em HTML, CSS e JavaScript puros (`barbershop-web`) que compartilha as mesmas regras de negócio.
+> Sistema de gestão operacional de barbearia (*Barbershop*) estruturado como monorepo com três módulos: um núcleo compartilhado de regras de negócio em Java (`barber-shop-core`), uma aplicação desktop completa em Java Swing com persistência em MySQL (`barber-shop-desktop`) e uma interface web moderna em HTML, CSS e JavaScript puros (`barber-shop-web`) que compartilha as mesmas regras de negócio.
 
 ---
 
@@ -34,21 +34,21 @@ cd barber-shop-suite
 # 2. Executar a versão Desktop (requer Java 17+ e MySQL)
 docker compose up -d          # sobe um MySQL 8 já configurado
 mvn clean package
-java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 
 # 3. Ou executar a versão Web (front-end independente)
-npx serve barbershop-web      # e acesse http://localhost:3000 (login: lucas / 1234)
+npx serve barber-shop-web      # e acesse http://localhost:3000 (login: lucas / 1234)
 ```
 
 ---
 
 ## 📌 Visão Geral
 
-O **BarberDesk** é um sistema para controle operacional completo de uma barbearia (atendimentos, equipe, serviços, histórico e faturamento), projetado em arquitetura modular:
+O **Barbershop** é um sistema para controle operacional completo de uma barbearia (atendimentos, equipe, serviços, histórico e faturamento), projetado em arquitetura modular:
 
-- **Núcleo Compartilhado (`barbershop-core`)**: Centraliza as entidades de domínio, persistência JDBC, migrações e regras de negócio essenciais (como a regra de classificação RF11 e a validação de sobreposição real de horários RF10), sem qualquer acoplamento com interfaces visuais.
-- **Versão Desktop (`barbershop-desktop`)**: Aplicação desktop em Java Swing (Look & Feel FlatLaf) com fluxo de bootstrap automático (cadastro inicial vs. login), CRUD de serviços/barbeiros, gestão de agenda em tempo real, painel de relatórios e smoke test operacional (`VerificacaoSistema`).
-- **Versão Web (`barbershop-web`)**: Front-end estático moderno em HTML5, CSS3 e JavaScript (Etapa 8), espelhando as telas e fluxos operacionais da barbearia, com destaque para a **régua visual do dia** e a portabilidade direta das regras de negócio do núcleo.
+- **Núcleo Compartilhado (`barber-shop-core`)**: Centraliza as entidades de domínio, persistência JDBC, migrações e regras de negócio essenciais (como a regra de classificação RF11 e a validação de sobreposição real de horários RF10), sem qualquer acoplamento com interfaces visuais.
+- **Versão Desktop (`barber-shop-desktop`)**: Aplicação desktop em Java Swing (Look & Feel FlatLaf) com fluxo de bootstrap automático (cadastro inicial vs. login), CRUD de serviços/barbeiros, gestão de agenda em tempo real, painel de relatórios e smoke test operacional (`VerificacaoSistema`).
+- **Versão Web (`barber-shop-web`)**: Front-end estático moderno em HTML5, CSS3 e JavaScript (Etapa 8), espelhando as telas e fluxos operacionais da barbearia, com destaque para a **régua visual do dia** e a portabilidade direta das regras de negócio do núcleo.
 
 ---
 
@@ -92,7 +92,7 @@ O **BarberDesk** é um sistema para controle operacional completo de uma barbear
 - Tela de Relatórios: faturamento por período, serviços mais vendidos e ranking de barbeiros.
 - Fotos de barbeiro/serviço guardadas como Base64 direto no banco - não depende de um arquivo existir num caminho específico do disco.
 - Ícone próprio do aplicativo em todas as janelas.
-- Logging em arquivo (`~/.barberdesk/logs/`) e pool de conexões com o banco (HikariCP).
+- Logging em arquivo (`~/.barbershop/logs/`) e pool de conexões com o banco (HikariCP).
 
 ---
 
@@ -133,7 +133,7 @@ barber-shop-suite/
 ├── docs/
 │   └── screenshots/                    # Prints do sistema usados na documentação
 │
-├── barbershop-core/                    # [MÓDULO 1] Núcleo de regras de negócio compartilhado (Java)
+├── barber-shop-core/                    # [MÓDULO 1] Núcleo de regras de negócio compartilhado (Java)
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/br/com/barberdesk/
@@ -150,7 +150,7 @@ barber-shop-suite/
 │           └── service/                # Testes de service com repositórios fake em memória (ex.: ClassificadorAgendaTest)
 │               └── fake/               # Implementações em memória das interfaces de repositório
 │
-├── barbershop-desktop/                 # [MÓDULO 2] Interface desktop gráfica em Java Swing
+├── barber-shop-desktop/                 # [MÓDULO 2] Interface desktop gráfica em Java Swing
 │   ├── pom.xml                         # Gera o JAR executável único sombreado (maven-shade-plugin)
 │   ├── nbactions.xml                   # Perfis de execução/debug para Apache NetBeans
 │   └── src/main/
@@ -166,7 +166,7 @@ barber-shop-suite/
 │           ├── logback.xml                # Configuração de logging (console e arquivo)
 │           └── icon.ico                   # Ícone nativo do aplicativo
 │
-└── barbershop-web/                     # [MÓDULO 3] Front-end Web independente (HTML, CSS e JavaScript puros)
+└── barber-shop-web/                     # [MÓDULO 3] Front-end Web independente (HTML, CSS e JavaScript puros)
     ├── README.md                       # Documentação própria do módulo web
     ├── index.html                      # Tela de login / entrada (RF02)
     ├── agenda.html                     # Tela principal: régua do dia, cartões-resumo e pendentes (RF08, RF11)
@@ -184,19 +184,19 @@ barber-shop-suite/
 
 ## 🚀 Instruções de Execução por Módulo
 
-### 1. Módulo `barbershop-core` (Núcleo)
+### 1. Módulo `barber-shop-core` (Núcleo)
 
 Não possui interface gráfica nem ponto de entrada executável direto — é uma biblioteca de regras de negócio e acesso a dados consumida pelo desktop e portada conceitualmente para a web.
 
 Para compilar e rodar a suíte de testes unitários do núcleo:
 
 ```bash
-mvn test -pl barbershop-core
+mvn test -pl barber-shop-core
 ```
 
 ---
 
-### 2. Módulo `barbershop-desktop` (Sistema Desktop)
+### 2. Módulo `barber-shop-desktop` (Sistema Desktop)
 
 Requer **JDK 17+** e uma instância do **MySQL 8** ativa.
 
@@ -210,32 +210,32 @@ docker compose up -d
 
 1. Abra a pasta raiz do repositório (`barber-shop-suite`) no NetBeans: **File** → **Open Project**.
 2. O NetBeans identificará automaticamente o monorepo Maven e seus submódulos.
-3. Expanda o projeto **BarberDesk Desktop** (`barbershop-desktop`), clique com o botão direito e selecione **Run** (a classe principal configurada é `br.com.barberdesk.app.Main`).
+3. Expanda o projeto **Barber Shop Desktop** (`barber-shop-desktop`), clique com o botão direito e selecione **Run** (a classe principal configurada é `br.com.barberdesk.app.Main`).
 4. Os menus de **Debug** e **Profile** funcionam da mesma forma pela IDE.
 
 #### Opção B: Executar via Linha de Comando (Maven + JAR)
 
 ```bash
 mvn clean package
-java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
 ```
 
 ---
 
-### 3. Módulo `barbershop-web` (Front-end Web)
+### 3. Módulo `barber-shop-web` (Front-end Web)
 
 A versão web é construída com **HTML5, CSS3 e JavaScript puros** — sem frameworks pesados, sem etapas de build e sem dependências externas.
 
 #### Como executar:
 
-- **Opção A (Navegador direto):** Basta abrir o arquivo `barbershop-web/index.html` em qualquer navegador moderno.
+- **Opção A (Navegador direto):** Basta abrir o arquivo `barber-shop-web/index.html` em qualquer navegador moderno.
 - **Opção B (Servidor estático local - recomendado):**
   ```bash
   # Usando npx serve
-  npx serve barbershop-web
+  npx serve barber-shop-web
 
   # Ou usando Python 3
-  cd barbershop-web
+  cd barber-shop-web
   python -m http.server 8000
   ```
   Acesse <http://localhost:8000> ou a porta indicada no terminal.
@@ -245,18 +245,18 @@ A versão web é construída com **HTML5, CSS3 e JavaScript puros** — sem fram
 - **Senha:** `1234`
 
 > [!NOTE]
-> **Nota sobre o Back-end Web (Etapa 8):** O módulo web nesta etapa funciona com dados de exemplo ricos em memória (`barbershop-web/js/dados.js`). As alterações efetuadas em tela (iniciar/concluir atendimentos, novo agendamento, etc.) operam no estado local da sessão. A integração com uma API back-end persistente (consumindo as regras do `barbershop-core`) está planejada para a etapa seguinte.
+> **Nota sobre o Back-end Web (Etapa 8):** O módulo web nesta etapa funciona com dados de exemplo ricos em memória (`barber-shop-web/js/dados.js`). As alterações efetuadas em tela (iniciar/concluir atendimentos, novo agendamento, etc.) operam no estado local da sessão. A integração com uma API back-end persistente (consumindo as regras do `barber-shop-core`) está planejada para a etapa seguinte.
 
 ---
 
 ## 🔄 Reutilização do Núcleo e Paridade (RF11)
 
-Um dos princípios fundamentais da arquitetura do BarberDesk é a preservação e portabilidade das regras de negócio entre as diferentes plataformas:
+Um dos princípios fundamentais da arquitetura do Barbershop é a preservação e portabilidade das regras de negócio entre as diferentes plataformas:
 
 - **Regra de Classificação da Agenda (RF11):** Define o status visual de cada agendamento conforme a proximidade temporal em relação à hora de referência (`EM_ANDAMENTO`, `ATRASADO`, `IMINENTE` até 60 min, `PROXIMO` até 120 min, `DISTANTE` acima de 120 min, `CONCLUIDO` e `CANCELADO`).
-- **Implementação no Java:** Classe `br.com.barberdesk.service.ClassificadorAgenda` no `barbershop-core`, rigorosamente coberta pela suíte de testes JUnit 5 [`ClassificadorAgendaTest`](barbershop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
-- **Portabilidade para JavaScript:** A regra foi portada fielmente para [`barbershop-web/js/classificacao.js`](barbershop-web/js/classificacao.js), mantendo exatamente os mesmos nomes de constantes, ordem de precedência e tratamento de fronteiras.
-- **Comprovação de Paridade em Navegador:** A página [`barbershop-web/verificacao-classificacao.html`](barbershop-web/verificacao-classificacao.html) executa todos os 12 casos do JUnit diretamente no navegador contra o script JS, apresentando uma tabela comparativa com 100% de conformidade comprovada.
+- **Implementação no Java:** Classe `br.com.barberdesk.service.ClassificadorAgenda` no `barber-shop-core`, rigorosamente coberta pela suíte de testes JUnit 5 [`ClassificadorAgendaTest`](barber-shop-core/src/test/java/br/com/barberdesk/service/ClassificadorAgendaTest.java).
+- **Portabilidade para JavaScript:** A regra foi portada fielmente para [`barber-shop-web/js/classificacao.js`](barber-shop-web/js/classificacao.js), mantendo exatamente os mesmos nomes de constantes, ordem de precedência e tratamento de fronteiras.
+- **Comprovação de Paridade em Navegador:** A página [`barber-shop-web/verificacao-classificacao.html`](barber-shop-web/verificacao-classificacao.html) executa todos os 12 casos do JUnit diretamente no navegador contra o script JS, apresentando uma tabela comparativa com 100% de conformidade comprovada.
 
 ---
 
@@ -320,13 +320,13 @@ Sobe automaticamente um container MySQL 8 configurado com o schema `barberdesk` 
 CREATE DATABASE barberdesk;
 ```
 
-> Em ambas as opções, todas as tabelas e migrações são executadas automaticamente no primeiro start da aplicação desktop (`barbershop-core/src/main/resources/db/schema.sql`).
+> Em ambas as opções, todas as tabelas e migrações são executadas automaticamente no primeiro start da aplicação desktop (`barber-shop-core/src/main/resources/db/schema.sql`).
 
 ---
 
 ## 🔐 Variáveis de Ambiente
 
-As configurações de conexão residem em `barbershop-core/src/main/resources/config.properties`:
+As configurações de conexão residem em `barber-shop-core/src/main/resources/config.properties`:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/barberdesk?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
@@ -353,34 +353,34 @@ O empacotamento gera um único **JAR executável sombreado (*fat jar*)**, conten
 ```bash
 mvn clean package
 ```
-Arquivo gerado: `barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar`.
+Arquivo gerado: `barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar`.
 
 ### 🪟 Windows
 
 1. Certifique-se de ter o JRE/JDK 17+ instalado (`java -version`).
 2. Execute no PowerShell ou Prompt de Comando:
    ```powershell
-   java -jar barbershop-desktop\target\barbershop-desktop-1.0-SNAPSHOT.jar
+   java -jar barber-shop-desktop\target\barber-shop-desktop-1.0-SNAPSHOT.jar
    ```
-3. **Atalho sem terminal:** Crie um arquivo `BarberDesk.bat` ao lado do `.jar`:
+3. **Atalho sem terminal:** Crie um arquivo `Barbershop.bat` ao lado do `.jar`:
    ```bat
    @echo off
-   start javaw -jar "%~dp0barbershop-desktop-1.0-SNAPSHOT.jar"
+   start javaw -jar "%~dp0barber-shop-desktop-1.0-SNAPSHOT.jar"
    ```
-   Aponte o ícone do atalho para `barbershop-desktop/src/main/resources/icon.ico`.
+   Aponte o ícone do atalho para `barber-shop-desktop/src/main/resources/icon.ico`.
 
 ### 🐧 Linux
 
 1. Instale o OpenJDK 17 (`sudo apt install openjdk-17-jre` no Debian/Ubuntu).
 2. Execute:
    ```bash
-   java -jar barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar
+   java -jar barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
    ```
-3. **Atalho `.desktop`** em `~/.local/share/applications/barberdesk.desktop`:
+3. **Atalho `.desktop`** em `~/.local/share/applications/barbershop.desktop`:
    ```ini
    [Desktop Entry]
-   Name=BarberDesk
-   Exec=java -jar /caminho/completo/para/barbershop-desktop-1.0-SNAPSHOT.jar
+   Name=Barbershop
+   Exec=java -jar /caminho/completo/para/barber-shop-desktop-1.0-SNAPSHOT.jar
    Icon=/caminho/completo/para/icon.ico
    Type=Application
    Categories=Office;
@@ -466,7 +466,7 @@ Além dos testes unitários em memória, o módulo desktop inclui um utilitário
 ```bash
 docker compose up -d
 mvn clean package
-java -cp barbershop-desktop/target/barbershop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
+java -cp barber-shop-desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar br.com.barberdesk.app.VerificacaoSistema
 ```
 
 Valida automaticamente:
@@ -505,7 +505,7 @@ Ao final, remove todos os registros criados no teste, deixando o banco limpo.
 
 ## 🚀 Melhorias Futuras
 
-- **API Back-end RESTful:** Construção de uma camada de serviços web (ex.: Spring Boot ou Micronaut) consumindo o `barbershop-core` para alimentar o `barbershop-web` de forma persistente.
+- **API Back-end RESTful:** Construção de uma camada de serviços web (ex.: Spring Boot ou Micronaut) consumindo o `barber-shop-core` para alimentar o `barber-shop-web` de forma persistente.
 - **Testes de Integração com Testcontainers:** Execução automatizada de testes contra instâncias efêmeras de MySQL no pipeline de CI/CD.
 - **Papéis e Permissões:** Separação granular entre perfil administrador e perfil de barbeiro individual.
 - **Migrações via Flyway:** Evolução automatizada de esquemas de banco de dados.
