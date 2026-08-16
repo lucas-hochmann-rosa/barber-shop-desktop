@@ -72,8 +72,18 @@ const Agenda = {
 
         trilho.innerHTML = blocos;
 
+        // Rótulo textual da hora atual: quando fora do expediente, explicita o status
+        // (antes da abertura ou expediente encerrado), mantendo a indicação clara
         const rotuloAgora = document.getElementById('reguaAgora');
-        if (rotuloAgora) rotuloAgora.textContent = 'agora · ' + Formato.hora(agora);
+        if (rotuloAgora) {
+            let estadoExpediente = '';
+            if (posAgora < 0) {
+                estadoExpediente = ' · antes do expediente';
+            } else if (posAgora > 100) {
+                estadoExpediente = ' · expediente encerrado';
+            }
+            rotuloAgora.textContent = 'agora · ' + Formato.hora(agora) + estadoExpediente;
+        }
     },
 
     /* --- Cartões-resumo --------------------------------------------------- */

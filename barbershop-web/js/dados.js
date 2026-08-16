@@ -195,17 +195,23 @@ const Dados = {
         { minutos: +190, servico: 2, barbeiro: 3, cliente: 7, origem: 'PRESENCIAL', status: StatusAgendamento.AGENDADO }
     ];
 
-    /* Se a página for aberta perto da abertura ou do fechamento, não cabe a
-       distância inteira: em vez de empilhar todo mundo no mesmo horário
-       limite, comprime as distâncias proporcionalmente ao tempo que sobra
-       do expediente — o dia fica mais curto, porém com horários distintos
-       e na mesma ordem. */
+    /* Se a página for aberta fora do expediente (antes das 08h ou a partir das
+       20h), ancoramos os agendamentos de exemplo em 14h (meio do expediente) em vez
+       da hora atual. Isso evita que os blocos se empilhem nas bordas ou fiquem fora
+       da régua, mantendo a demonstração sempre legível com agendamentos bem
+       distribuídos em todos os status. Durante o expediente, mantemos a ancoragem
+       na hora atual, comprimindo proporcionalmente apenas quando próximo aos limites. */
     const minutoAgora = agora.getHours() * 60 + agora.getMinutes();
+    const inicioMin = Dados.expediente.inicio * 60;
+    const fimMin = Dados.expediente.fim * 60;
+    const foraDoExpediente = minutoAgora < inicioMin || minutoAgora >= fimMin;
+
+    const minutoBase = foraDoExpediente ? 14 * 60 : minutoAgora;
     const MAIOR_PASSADO = 205;
     const MAIOR_FUTURO = 190;
 
-    const decorrido = minutoAgora - Dados.expediente.inicio * 60;
-    const restante = (Dados.expediente.fim * 60 - 30) - minutoAgora;
+    const decorrido = minutoBase - inicioMin;
+    const restante = (fimMin - 30) - minutoBase;
 
     const fatorPassado = Math.max(0, Math.min(1, decorrido / MAIOR_PASSADO));
     const fatorFuturo = Math.max(0, Math.min(1, restante / MAIOR_FUTURO));
@@ -214,7 +220,7 @@ const Dados = {
 
     function horarioDe(minutosDeDiferenca) {
         const fator = minutosDeDiferenca < 0 ? fatorPassado : fatorFuturo;
-        let minuto = minutoAgora + Math.round(minutosDeDiferenca * fator);
+        let minuto = minutoBase + Math.round(minutosDeDiferenca * fator);
 
         const primeiro = Dados.expediente.inicio * 60;
         const ultimo = Dados.expediente.fim * 60 - 5;
