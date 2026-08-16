@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Barbershop</name>
+    <name>barber-shop-suite</name>
     <description>Sistema de Gestão de Barbearia - módulo pai</description>
 
     <modules>

@@ -210,7 +210,7 @@ docker compose up -d
 
 1. Open the project root folder (`barber-shop-suite`) in NetBeans: **File** → **Open Project**.
 2. NetBeans will detect the Maven monorepo and its submodules automatically.
-3. Expand the **Barber Shop Desktop** (`barber-shop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barberdesk.app.Main`).
+3. Expand the **barber-shop-desktop** (`barber-shop-desktop`) project, right-click, and choose **Run** (the configured main class is `br.com.barberdesk.app.Main`).
 4. **Debug** and **Profile** actions work through the same menu.
 
 #### Option B: Run via Command Line (Maven + JAR)

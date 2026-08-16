@@ -6,11 +6,11 @@
         </encoder>
     </appender>
 
-    <!-- Fora da pasta de instalação, mesmo diretório usado por ImageStorageUtil -->
+    <!-- Salva os logs no diretório do usuário com rotação diária -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.home}/.barberdesk/logs/barberdesk.log</file>
+        <file>${user.home}/.barbershop/logs/barbershop.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${user.home}/.barberdesk/logs/barberdesk.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${user.home}/.barbershop/logs/barbershop.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>14</maxHistory>
         </rollingPolicy>
         <encoder>

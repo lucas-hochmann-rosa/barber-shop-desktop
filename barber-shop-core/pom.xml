@@ -13,10 +13,10 @@
     <artifactId>barber-shop-core</artifactId>
     <packaging>jar</packaging>
 
-    <name>Barber Shop Core</name>
+    <name>barber-shop-core</name>
     <description>
         Regras de negócio da barbearia (model, dao, service, util de domínio) -
-        sem nenhuma dependência de interface gráfica, reaproveitável por desktop ou web.
+        sem dependência de interface gráfica, reaproveitável por desktop ou web.
     </description>
 
     <dependencies>

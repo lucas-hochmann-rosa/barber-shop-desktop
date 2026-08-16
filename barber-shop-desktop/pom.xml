@@ -13,7 +13,7 @@
     <artifactId>barber-shop-desktop</artifactId>
     <packaging>jar</packaging>
 
-    <name>Barber Shop Desktop</name>
+    <name>barber-shop-desktop</name>
     <description>Interface Swing do Barbershop - depende de barber-shop-core para as regras de negócio.</description>
 
     <properties>
