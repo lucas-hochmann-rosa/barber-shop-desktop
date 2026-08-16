@@ -29,7 +29,7 @@ barbershop-web/
 ├── barbearia.html             Dados, serviços e barbeiros, em abas (RF03, RF04)
 ├── historico.html             Listagem completa com filtros (RF09)
 ├── relatorios.html            Faturamento, mais vendidos e ranking (RF09)
-├── teste-classificacao.html   Confere a regra RF11 contra os casos do teste JUnit
+├── verificacao-classificacao.html Confere a regra RF11 contra os casos do teste JUnit
 ├── css/
 │   ├── base.css               Reset, variáveis, tipografia e utilitários
 │   ├── layout.css             Barra lateral, topo e grades das páginas
@@ -68,7 +68,7 @@ Os blocos são botões de verdade, alcançáveis por `Tab` e com `aria-label` de
 `js/classificacao.js` é a tradução direta da classe Java `ClassificadorAgenda`
 (`barbershop-core/src/main/java/br/com/barberdesk/service/ClassificadorAgenda.java`), mantendo os mesmos nomes de classificação, a mesma ordem de decisão e as mesmas fronteiras (60 e 120 minutos). Assim como no Java, a data de referência entra por parâmetro em vez de ser lida do relógio dentro da função — é isso que torna a regra testável.
 
-Para não ficar só na palavra, **`teste-classificacao.html` roda no navegador os mesmos 12 casos do teste JUnit `ClassificadorAgendaTest`** (o da Etapa 7), com a mesma data de referência fixa, e mostra o resultado numa tabela. Abra a página: os 12 passam.
+Para não ficar só na palavra, [**`verificacao-classificacao.html`**](verificacao-classificacao.html) roda no navegador os mesmos 12 casos do teste JUnit `ClassificadorAgendaTest` (o da Etapa 7), com a mesma data de referência fixa, e mostra o resultado numa tabela. Abra a página: os 12 passam.
 
 | Classificação | Quando | Cor |
 | --- | --- | --- |
@@ -142,4 +142,4 @@ RF01 (cadastro inicial da barbearia) não tem tela própria nesta etapa: os seis
 
 ## Observação sobre a estrutura de arquivos
 
-A especificação da etapa listava sete arquivos em `js/`. Foram usados nove: `agendamento.js` e `barbearia.js` foram acrescentados para que a lógica dessas duas telas não virasse um `<script>` gigante dentro do HTML, seguindo o mesmo padrão de `agenda.js`, `historico.js` e `relatorios.js`. A página `teste-classificacao.html` também é um acréscimo, para deixar registrada a paridade da regra RF11 entre desktop e web.
+A especificação da etapa listava sete arquivos em `js/`. Foram usados nove: `agendamento.js` e `barbearia.js` foram acrescentados para que a lógica dessas duas telas não virasse um `<script>` gigante dentro do HTML, seguindo o mesmo padrão de `agenda.js`, `historico.js` e `relatorios.js`. A página [`verificacao-classificacao.html`](verificacao-classificacao.html) também é um acréscimo, para deixar registrada a paridade da regra RF11 entre desktop e web.
