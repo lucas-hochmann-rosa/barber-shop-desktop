@@ -1,8 +1,6 @@
-/* ===========================================================================
-   app.js - navegação, menu recolhível, modal e utilidades compartilhadas
-   =========================================================================== */
+/* Navegação, menu recolhível, modal e utilidades compartilhadas */
 
-/* --- Formatação ----------------------------------------------------------- */
+/* Formatação */
 
 const Formato = {
     /** Formata um número como moeda brasileira: 45 -> "R$ 45,00". */
@@ -44,7 +42,7 @@ const Formato = {
     }
 };
 
-/* --- Menu recolhível ------------------------------------------------------ */
+/* Menu recolhível */
 
 const Menu = {
     iniciar() {
@@ -77,7 +75,7 @@ const Menu = {
     }
 };
 
-/* --- Navegação ------------------------------------------------------------ */
+/* Navegação */
 
 const Navegacao = {
     /** Marca o item da barra lateral correspondente à página aberta. */
@@ -100,7 +98,7 @@ const Navegacao = {
     }
 };
 
-/* --- Modal ---------------------------------------------------------------- */
+/* Modal */
 
 const Modal = {
     _elemento: null,
@@ -172,7 +170,7 @@ const Modal = {
     }
 };
 
-/* --- Sessão --------------------------------------------------------------- */
+/* Sessão */
 
 const Sessao = {
     CHAVE: 'barbershop.usuario',
@@ -205,7 +203,7 @@ const Sessao = {
     }
 };
 
-/* --- Partida -------------------------------------------------------------- */
+/* Partida */
 
 document.addEventListener('DOMContentLoaded', () => {
     Navegacao.marcarPaginaAtual();

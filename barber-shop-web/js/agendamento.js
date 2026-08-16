@@ -1,13 +1,11 @@
-/* ===========================================================================
-   agendamento.js - formulário de novo agendamento / edição (RF05, RF06, RF10)
-   =========================================================================== */
+/* Formulário de novo agendamento / edição (RF05, RF06, RF10) */
 
 const TelaAgendamento = {
 
     /** Preenchido quando a página abre com ?id=, indicando edição. */
     emEdicao: null,
 
-    /* --- Preparação dos campos -------------------------------------------- */
+    /* Preparação dos campos */
 
     preencherSelecoes() {
         const servico = document.getElementById('servico');
@@ -84,7 +82,7 @@ const TelaAgendamento = {
 
     paraCampoHora(data) {
         return String(data.getHours()).padStart(2, '0') + ':'
-             + String(data.getMinutes()).padStart(2, '0');
+            + String(data.getMinutes()).padStart(2, '0');
     },
 
     /** Junta os campos data + hora num Date, ou null se algum faltar. */
@@ -103,7 +101,7 @@ const TelaAgendamento = {
         return Dados.barbeiroPorId(document.getElementById('barbeiro').value);
     },
 
-    /* --- Painel de resumo -------------------------------------------------- */
+    /* Painel de resumo */
 
     atualizarResumo() {
         const servico = this.servicoEscolhido();
@@ -119,7 +117,7 @@ const TelaAgendamento = {
         document.getElementById('resumoTotal').textContent = Formato.moeda(servico ? servico.preco : 0);
     },
 
-    /* --- Verificação de conflito (RF10) ------------------------------------ */
+    /* Verificação de conflito (RF10) */
 
     verificarConflito() {
         const painel = document.getElementById('painelConflito');
@@ -163,7 +161,7 @@ const TelaAgendamento = {
         return true;
     },
 
-    /* --- Salvar ------------------------------------------------------------ */
+    /* Salvar */
 
     validar() {
         const formulario = document.getElementById('formAgendamento');
@@ -285,7 +283,7 @@ const TelaAgendamento = {
             'sucesso');
     },
 
-    /* --- Partida ----------------------------------------------------------- */
+    /* Partida */
 
     iniciar() {
         const formulario = document.getElementById('formAgendamento');

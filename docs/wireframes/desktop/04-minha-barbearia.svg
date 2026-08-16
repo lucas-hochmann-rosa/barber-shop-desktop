@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="852" viewBox="0 0 1440 852">
+<rect width="1440" height="852" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">04 — Minha Barbearia Desktop</text>
+<text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Gestão de dados gerais, catálogo de serviços e barbeiros (RF03, RF04)</text>
+<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP DESKTOP</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Java Swing (FlatLaf) · 1440px</text>
+<line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
+<rect x="0" y="92" width="1440" height="760" rx="0" fill="#EAECEE"/>
+
+<!-- Janela Principal Swing -->
+<rect x="120" y="115" width="1200" height="705" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="2"/>
+<!-- Barra de título do JFrame -->
+<rect x="120" y="115" width="1200" height="38" rx="8" fill="#2C3437"/>
+<rect x="120" y="141" width="1200" height="12" fill="#2C3437"/>
+<text x="150" y="140" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Barbershop - Minha Barbearia</text>
+<circle cx="1285" cy="134" r="6" fill="#6B7278"/>
+<circle cx="1305" cy="134" r="6" fill="#D9534F"/>
+
+<!-- Barra de Menu do Swing -->
+<rect x="120" y="153" width="1200" height="32" fill="#F0F2F4" stroke="#E3E6E8" stroke-width="1"/>
+<text x="145" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Agenda</text>
+<text x="215" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#2C3437">Minha Barbearia</text>
+<text x="345" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Histórico</text>
+<text x="430" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Relatórios</text>
+
+<!-- JTabbedPane (Abas) -->
+<rect x="150" y="200" width="1140" height="36" fill="#FFFFFF"/>
+<!-- Aba 1: Dados Gerais -->
+<rect x="150" y="200" width="140" height="36" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
+<text x="220" y="223" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278" text-anchor="middle">Dados Gerais</text>
+
+<!-- Aba 2: Serviços (Ativa) -->
+<rect x="295" y="200" width="140" height="37" rx="4" fill="#2C3437" stroke="#2C3437" stroke-width="1"/>
+<text x="365" y="223" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Serviços</text>
+
+<!-- Aba 3: Barbeiros -->
+<rect x="440" y="200" width="140" height="36" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
+<text x="510" y="223" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278" text-anchor="middle">Barbeiros</text>
+
+<!-- Aba 4: Clientes -->
+<rect x="585" y="200" width="140" height="36" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
+<text x="655" y="223" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278" text-anchor="middle">Clientes</text>
+
+<!-- Painel da Aba Ativa -->
+<rect x="150" y="236" width="1140" height="560" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+
+<!-- Topo da aba: Ação de Novo Serviço -->
+<text x="175" y="275" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="bold" fill="#2C3437">Catálogo de Serviços</text>
+<rect x="1100" y="255" width="165" height="34" rx="4" fill="#2E7D6B"/>
+<text x="1182" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#FFFFFF" text-anchor="middle">+ Novo Serviço</text>
+
+<!-- Tabela de Serviços -->
+<rect x="175" y="305" width="1090" height="420" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<rect x="175" y="305" width="1090" height="32" rx="4" fill="#F0F2F4"/>
+<line x1="175" y1="337" x2="1265" y2="337" stroke="#8E959C" stroke-width="1"/>
+
+<text x="195" y="326" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">NOME DO SERVIÇO</text>
+<text x="560" y="326" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">DURAÇÃO</text>
+<text x="760" y="326" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">PREÇO</text>
+<text x="960" y="326" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">FOTO</text>
+<text x="1120" y="326" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#33383D">AÇÕES</text>
+
+<!-- Linhas de Serviços -->
+<text x="195" y="367" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Corte Masculino</text>
+<text x="560" y="367" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">30 min</text>
+<text x="760" y="367" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 45,00</text>
+<text x="960" y="367" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="367" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+<line x1="175" y1="385" x2="1265" y2="385" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="195" y="415" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Barba Tradicional</text>
+<text x="560" y="415" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">30 min</text>
+<text x="760" y="415" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 35,00</text>
+<text x="960" y="415" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="415" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+<line x1="175" y1="433" x2="1265" y2="433" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="195" y="463" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Corte + Barba</text>
+<text x="560" y="463" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">60 min</text>
+<text x="760" y="463" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 70,00</text>
+<text x="960" y="463" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="463" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+<line x1="175" y1="481" x2="1265" y2="481" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="195" y="511" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Pezinho</text>
+<text x="560" y="511" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">15 min</text>
+<text x="760" y="511" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 20,00</text>
+<text x="960" y="511" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="511" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+<line x1="175" y1="529" x2="1265" y2="529" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="195" y="559" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Sobrancelha</text>
+<text x="560" y="559" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">15 min</text>
+<text x="760" y="559" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 15,00</text>
+<text x="960" y="559" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="559" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+<line x1="175" y1="577" x2="1265" y2="577" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="195" y="607" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">Platinado</text>
+<text x="560" y="607" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#6B7278">90 min</text>
+<text x="760" y="607" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#2C3437">R$ 120,00</text>
+<text x="960" y="607" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2E7D6B">[Base64 / Foto]</text>
+<text x="1120" y="607" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">[Editar]  [Excluir]</text>
+</svg>

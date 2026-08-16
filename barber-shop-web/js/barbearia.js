@@ -1,7 +1,4 @@
-/* ===========================================================================
-   barbearia.js - abas (dados, serviços, barbeiros), cartões e modal
-   (RF03, RF04)
-   =========================================================================== */
+/* Abas (dados, serviços, barbeiros), cartões e modal (RF03, RF04) */
 
 const TelaBarbearia = {
 
@@ -9,7 +6,7 @@ const TelaBarbearia = {
     tipoEmEdicao: null,
     itemEmEdicao: null,
 
-    /* --- Abas -------------------------------------------------------------- */
+    /* Abas */
 
     trocarAba(nome) {
         const paineis = {
@@ -28,7 +25,7 @@ const TelaBarbearia = {
         });
     },
 
-    /* --- Aba Dados --------------------------------------------------------- */
+    /* Aba Dados */
 
     carregarDados() {
         const b = Dados.barbearia;
@@ -72,7 +69,7 @@ const TelaBarbearia = {
         self.avisar('Dados da barbearia atualizados.');
     },
 
-    /* --- Cartões ----------------------------------------------------------- */
+    /* Cartões */
 
     desenharServicos() {
         const grade = document.getElementById('gradeServicos');
@@ -119,7 +116,7 @@ const TelaBarbearia = {
         ).length;
     },
 
-    /* --- Modal ------------------------------------------------------------- */
+    /* Modal */
 
     abrirModal(tipo, item) {
         this.tipoEmEdicao = tipo;
@@ -209,7 +206,7 @@ const TelaBarbearia = {
         self.desenharBarbeiros();
     },
 
-    /* --- Exclusão ---------------------------------------------------------- */
+    /* Exclusão */
 
     excluir(tipo, id) {
         const ehServico = tipo === 'servico';
@@ -236,7 +233,7 @@ const TelaBarbearia = {
         );
     },
 
-    /* --- Mensagens --------------------------------------------------------- */
+    /* Mensagens */
 
     avisar(mensagem, tipo) {
         const painel = document.getElementById('avisoBarbearia');
@@ -248,7 +245,7 @@ const TelaBarbearia = {
         this._temporizador = setTimeout(() => { painel.hidden = true; }, 5000);
     },
 
-    /* --- Partida ----------------------------------------------------------- */
+    /* Partida */
 
     iniciar() {
         if (!document.getElementById('painelServicos')) return;

@@ -1,8 +1,7 @@
-/* ===========================================================================
-   historico.js - filtros, ordenação e paginação do histórico (RF09)
+/* RF09: filtros, ordenação e paginação do histórico
+
    Todos os filtros são aplicados em JavaScript sobre os dados já
-   carregados; nada é buscado de novo.
-   =========================================================================== */
+   carregados; nada é buscado de novo. */
 
 const Historico = {
 
@@ -12,7 +11,7 @@ const Historico = {
     pagina: 1,
     ordem: { coluna: 'dataHora', crescente: false },
 
-    /* --- Filtros ----------------------------------------------------------- */
+    /* Filtros  */
 
     preencherBarbeiros() {
         const selecao = document.getElementById('filtroBarbeiro');
@@ -47,7 +46,7 @@ const Historico = {
         this.aplicarFiltros();
     },
 
-    /* --- Ordenação ---------------------------------------------------------- */
+    /* Ordenação */
 
     ordenar() {
         const { coluna, crescente } = this.ordem;
@@ -92,7 +91,7 @@ const Historico = {
         });
     },
 
-    /* --- Desenho ------------------------------------------------------------ */
+    /* Desenho da tabela */
 
     desenhar() {
         const corpo = document.getElementById('corpoHistorico');
@@ -153,7 +152,7 @@ const Historico = {
         this.desenhar();
     },
 
-    /* --- Partida ------------------------------------------------------------ */
+    /* Partida */
 
     iniciar() {
         if (!document.getElementById('corpoHistorico')) return;

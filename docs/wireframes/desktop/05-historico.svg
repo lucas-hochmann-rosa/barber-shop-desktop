@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="852" viewBox="0 0 1440 852">
+<rect width="1440" height="852" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">05 — Histórico de Agendamentos Desktop</text>
+<text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Consulta geral de atendimentos, todos os status e filtros de período (RF09)</text>
+<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP DESKTOP</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Java Swing (FlatLaf) · 1440px</text>
+<line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
+<rect x="0" y="92" width="1440" height="760" rx="0" fill="#EAECEE"/>
+
+<!-- Janela Principal Swing -->
+<rect x="120" y="115" width="1200" height="705" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="2"/>
+<!-- Barra de título do JFrame -->
+<rect x="120" y="115" width="1200" height="38" rx="8" fill="#2C3437"/>
+<rect x="120" y="141" width="1200" height="12" fill="#2C3437"/>
+<text x="150" y="140" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Barbershop - Histórico</text>
+<circle cx="1285" cy="134" r="6" fill="#6B7278"/>
+<circle cx="1305" cy="134" r="6" fill="#D9534F"/>
+
+<!-- Barra de Menu do Swing -->
+<rect x="120" y="153" width="1200" height="32" fill="#F0F2F4" stroke="#E3E6E8" stroke-width="1"/>
+<text x="145" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Agenda</text>
+<text x="215" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Minha Barbearia</text>
+<text x="345" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#2C3437">Histórico</text>
+<text x="430" y="174" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" fill="#6B7278">Relatórios</text>
+
+<!-- Topo da tela: Filtros de Consulta -->
+<rect x="150" y="200" width="1140" height="76" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
+<text x="170" y="222" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">DE:</text>
+<rect x="170" y="230" width="140" height="32" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="180" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">01/08/2026</text>
+
+<text x="330" y="222" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">ATÉ:</text>
+<rect x="330" y="230" width="140" height="32" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="340" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">31/08/2026</text>
+
+<text x="490" y="222" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">BARBEIRO:</text>
+<rect x="490" y="230" width="200" height="32" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="500" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">Todos os barbeiros</text>
+
+<text x="710" y="222" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">STATUS:</text>
+<rect x="710" y="230" width="180" height="32" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="720" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">Todos os status</text>
+
+<rect x="910" y="230" width="110" height="32" rx="4" fill="#2C3437"/>
+<text x="965" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Filtrar</text>
+
+<rect x="1030" y="230" width="100" height="32" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="1080" y="251" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#33383D" text-anchor="middle">Limpar</text>
+
+<!-- Tabela JTable -->
+<rect x="150" y="295" width="1140" height="465" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<rect x="150" y="295" width="1140" height="32" rx="4" fill="#F0F2F4"/>
+<line x1="150" y1="327" x2="1290" y2="327" stroke="#8E959C" stroke-width="1.2"/>
+
+<text x="170" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">DATA</text>
+<text x="280" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">HORA</text>
+<text x="370" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">CLIENTE</text>
+<text x="560" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">CONTATO</text>
+<text x="730" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">SERVIÇO</text>
+<text x="910" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">BARBEIRO</text>
+<text x="1070" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">STATUS</text>
+<text x="1195" y="316" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#33383D">VALOR</text>
+
+<!-- Linhas -->
+<text x="170" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">16/08/2026</text>
+<text x="280" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3437">10:00</text>
+<text x="370" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Otávio Bastos</text>
+<text x="560" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">(51) 98877-3310</text>
+<text x="730" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Corte Masculino</text>
+<text x="910" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Carlos Silva</text>
+<text x="1070" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#2E7D6B">CONCLUIDO</text>
+<text x="1195" y="355" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3437">R$ 45,00</text>
+<line x1="150" y1="370" x2="1290" y2="370" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="170" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">16/08/2026</text>
+<text x="280" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3437">11:30</text>
+<text x="370" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Henrique Sales</text>
+<text x="560" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">(51) 99630-7788</text>
+<text x="730" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Corte + Barba</text>
+<text x="910" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Diego Torres</text>
+<text x="1070" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#2E7D6B">CONCLUIDO</text>
+<text x="1195" y="398" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3437">R$ 70,00</text>
+<line x1="150" y1="413" x2="1290" y2="413" stroke="#E3E6E8" stroke-width="1"/>
+
+<text x="170" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C" text-decoration="line-through">15/08/2026</text>
+<text x="280" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">14:00</text>
+<text x="370" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">Caio Ferraz</text>
+<text x="560" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">(51) 98120-5566</text>
+<text x="730" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">Barba Tradicional</text>
+<text x="910" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">Carlos Silva</text>
+<text x="1070" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="bold" fill="#8A3324">CANCELADO</text>
+<text x="1195" y="441" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#8E959C">R$ 35,00</text>
+<line x1="150" y1="456" x2="1290" y2="456" stroke="#E3E6E8" stroke-width="1"/>
+
+<!-- Paginação do JTable -->
+<text x="170" y="735" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">Exibindo 1 a 15 de 142 agendamentos</text>
+<rect x="1120" y="715" width="70" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="1155" y="734" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#33383D" text-anchor="middle">Anterior</text>
+
+<rect x="1200" y="715" width="70" height="30" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="1235" y="734" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#33383D" text-anchor="middle">Próxima</text>
+</svg>

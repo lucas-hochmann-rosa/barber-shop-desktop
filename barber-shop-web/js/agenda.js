@@ -1,7 +1,5 @@
-/* ===========================================================================
-   agenda.js - régua do dia, cartões-resumo, grade de serviços e tabela
-   de pendentes (RF08, RF11, RF07)
-   =========================================================================== */
+/* Régua do dia, cartões-resumo, grade de serviços e tabela
+   de pendentes (RF08, RF11, RF07) */
 
 const Agenda = {
 
@@ -15,7 +13,7 @@ const Agenda = {
         this.desenharTabela(agora);
     },
 
-    /* --- Régua do dia ----------------------------------------------------- */
+    /* Régua do dia */
 
     /** Converte um horário na posição percentual dentro do expediente. */
     posicao(data) {
@@ -86,7 +84,7 @@ const Agenda = {
         }
     },
 
-    /* --- Cartões-resumo --------------------------------------------------- */
+    /* Cartões-resumo */
 
     desenharResumo(doDia, agora) {
         const atrasados = doDia.filter(
@@ -113,7 +111,7 @@ const Agenda = {
         if (alvo) alvo.textContent = valor;
     },
 
-    /* --- Grade de serviços (RF03) ----------------------------------------- */
+    /* Grade de serviços (RF03) */
 
     desenharServicos() {
         const grade = document.getElementById('gradeServicos');
@@ -130,7 +128,7 @@ const Agenda = {
             </li>`).join('');
     },
 
-    /* --- Tabela de pendentes (RF08) --------------------------------------- */
+    /* Tabela de pendentes (RF08) */
 
     desenharTabela(agora) {
         const corpo = document.getElementById('corpoPendentes');
@@ -182,7 +180,7 @@ const Agenda = {
         }).join('');
     },
 
-    /* --- Ações (RF07) ----------------------------------------------------- */
+    /* Ações (RF07) */
 
     tratarAcao(evento) {
         const botao = evento.target.closest('[data-acao]');
@@ -215,7 +213,7 @@ const Agenda = {
         this._temporizador = setTimeout(() => { painel.hidden = true; }, 4000);
     },
 
-    /* --- Partida ---------------------------------------------------------- */
+    /* Partida */
 
     iniciar() {
         this.desenharServicos();

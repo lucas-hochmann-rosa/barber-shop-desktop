@@ -1,6 +1,4 @@
-/* ===========================================================================
-   layout.css - barra lateral, topo e grade das páginas
-   =========================================================================== */
+/* Barra lateral, topo e grade das páginas */
 
 .aplicacao {
     display: grid;
@@ -8,7 +6,7 @@
     min-height: 100vh;
 }
 
-/* --- Barra lateral -------------------------------------------------------- */
+/* Barra lateral */
 
 .barra-lateral {
     grid-row: 1 / -1;
@@ -108,7 +106,7 @@
     text-decoration: none;
 }
 
-/* --- Topo ----------------------------------------------------------------- */
+/* Topo */
 
 .topo {
     display: flex;
@@ -168,7 +166,7 @@
     fill: none;
 }
 
-/* --- Conteúdo ------------------------------------------------------------- */
+/* Conteúdo */
 
 .conteudo {
     display: flex;
@@ -221,7 +219,7 @@
     align-items: start;
 }
 
-/* --- Véu que escurece o fundo quando o menu abre no celular --------------- */
+/* Véu de fundo do menu mobile */
 
 .veu-menu {
     display: none;
@@ -235,7 +233,7 @@
     display: block;
 }
 
-/* --- Responsivo ----------------------------------------------------------- */
+/* Responsivo */
 
 @media (max-width: 1100px) {
     .grade-resumo,

@@ -1,7 +1,4 @@
-/* ===========================================================================
-   base.css - reset, variáveis, tipografia e utilitários
-   Barbershop Web - Projeto Integrador II, Etapa 8
-   =========================================================================== */
+/* Reset, variáveis, tipografia e utilitários*/
 
 :root {
     /* Paleta: vocabulário visual da barbearia física (azulejo, couro, latão) */
@@ -39,7 +36,7 @@
     --altura-topo: 76px;
 }
 
-/* --- Reset ---------------------------------------------------------------- */
+/* Reset */
 
 *,
 *::before,
@@ -52,18 +49,29 @@ html {
 }
 
 body,
-h1, h2, h3, h4, h5, h6,
-p, figure, blockquote, dl, dd {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
     margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-img, svg {
+img,
+svg {
     display: block;
     max-width: 100%;
 }
@@ -73,7 +81,10 @@ img, svg {
     display: none !important;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
     font: inherit;
     color: inherit;
 }
@@ -89,7 +100,7 @@ table {
     width: 100%;
 }
 
-/* --- Tipografia ----------------------------------------------------------- */
+/* Tipografia */
 
 body {
     font-family: var(--fonte-interface);
@@ -101,7 +112,10 @@ body {
 }
 
 /* Títulos e rótulos de seção: letreiro esmaltado, caixa alta e condensado */
-h1, h2, h3, h4,
+h1,
+h2,
+h3,
+h4,
 .rotulo-secao {
     font-family: var(--fonte-titulo);
     font-weight: 700;
@@ -111,10 +125,21 @@ h1, h2, h3, h4,
     color: var(--verde-cadeira);
 }
 
-h1 { font-size: 30px; }
-h2 { font-size: 23px; }
-h3 { font-size: 19px; }
-h4 { font-size: 16px; }
+h1 {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 23px;
+}
+
+h3 {
+    font-size: 19px;
+}
+
+h4 {
+    font-size: 16px;
+}
 
 .rotulo-secao {
     font-size: 13px;
@@ -140,14 +165,14 @@ a:hover {
     text-decoration: underline;
 }
 
-/* --- Foco visível --------------------------------------------------------- */
+/* Foco visível */
 
 :focus-visible {
     outline: 2px solid var(--latao);
     outline-offset: 2px;
 }
 
-/* --- Utilitários ---------------------------------------------------------- */
+/* Utilitários */
 
 .texto-secundario {
     color: var(--fumaca);
@@ -191,9 +216,10 @@ a:hover {
     transform: translateY(0);
 }
 
-/* --- Movimento reduzido --------------------------------------------------- */
+/* Movimento reduzido */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

@@ -1,8 +1,6 @@
-/* ===========================================================================
-   componentes.css - botões, campos, tabelas, cartões, selos, modal e régua
-   =========================================================================== */
+/* Componentes da interface: botões, campos, tabelas, cartões, selos, modal e régua */
 
-/* --- Cartão --------------------------------------------------------------- */
+/* Cartão */
 
 .cartao {
     background: var(--branco);
@@ -26,7 +24,7 @@
     margin-bottom: var(--e-4);
 }
 
-/* --- Botões --------------------------------------------------------------- */
+/* Botões */
 
 .botao {
     display: inline-flex;
@@ -137,7 +135,7 @@
     gap: var(--e-2);
 }
 
-/* --- Campos --------------------------------------------------------------- */
+/* Campos */
 
 .campo {
     display: flex;
@@ -229,7 +227,7 @@
     gap: var(--e-4);
 }
 
-/* --- Avisos --------------------------------------------------------------- */
+/* Avisos */
 
 .aviso {
     display: flex;
@@ -275,7 +273,7 @@
     fill: none;
 }
 
-/* --- Selos de status ------------------------------------------------------ */
+/* Selos de status */
 
 .selo {
     display: inline-block;
@@ -315,7 +313,7 @@
     text-decoration: line-through;
 }
 
-/* --- Tabela --------------------------------------------------------------- */
+/* Tabela */
 
 .tabela-envolucro {
     background: var(--branco);
@@ -419,7 +417,7 @@
     color: var(--fumaca);
 }
 
-/* --- Cores por classificação (RF11) --------------------------------------- */
+/* Cores por classificação (RF11) */
 
 .cls-EM_ANDAMENTO { background: var(--verde-claro); }
 .cls-ATRASADO     { background: var(--oxblood); }
@@ -429,7 +427,7 @@
 .cls-CONCLUIDO    { background: rgba(20, 72, 63, .4); }
 .cls-CANCELADO    { background: var(--neblina); }
 
-/* --- Régua do dia (elemento-assinatura) ----------------------------------- */
+/* Régua do dia */
 
 .regua {
     background: var(--branco);
@@ -603,7 +601,7 @@
     border-radius: 3px;
 }
 
-/* --- Abas ----------------------------------------------------------------- */
+/* Abas */
 
 .abas {
     display: flex;
@@ -635,7 +633,7 @@
     color: var(--branco);
 }
 
-/* --- Modal ---------------------------------------------------------------- */
+/* Modal */
 
 .modal {
     position: fixed;
@@ -698,7 +696,7 @@
     color: var(--tinta);
 }
 
-/* --- Responsivo ----------------------------------------------------------- */
+/* Responsivo */
 
 @media (max-width: 700px) {
     .linha-campos {

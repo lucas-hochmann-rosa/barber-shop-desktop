@@ -1,8 +1,4 @@
-/* ===========================================================================
-   validacao.js - validação de formulários, sem recarregar a página
-   Nenhuma mensagem usa alert(): o erro aparece ao lado do próprio campo,
-   num elemento com aria-live para ser anunciado por leitores de tela.
-   =========================================================================== */
+/* Validação de formulários e mensagens de erro */
 
 const Validacao = {
     /** Marca o campo como inválido e mostra a mensagem abaixo dele. */

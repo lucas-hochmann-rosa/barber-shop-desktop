@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,17 +8,20 @@
     <link rel="icon" href="img/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/componentes.css">
     <link rel="stylesheet" href="css/paginas.css">
 </head>
+
 <body class="corpo-entrada">
 
     <main class="entrada">
 
-        <!-- Ilustração da barbearia (SVG próprio) -->
+        <!-- Ilustração da barbearia -->
         <div class="entrada__ilustracao">
             <img src="img/barbearia.svg" alt="Ilustração de um salão de barbearia com espelho, cadeira e poste">
         </div>
@@ -37,15 +41,15 @@
 
                     <div class="campo">
                         <label class="campo__rotulo" for="usuario">Usuário</label>
-                        <input class="campo__entrada" type="text" id="usuario" name="usuario"
-                               autocomplete="username" aria-describedby="usuario-erro">
+                        <input class="campo__entrada" type="text" id="usuario" name="usuario" autocomplete="username"
+                            aria-describedby="usuario-erro">
                         <span class="campo__erro" id="usuario-erro" aria-live="polite"></span>
                     </div>
 
                     <div class="campo">
                         <label class="campo__rotulo" for="senha">Senha</label>
                         <input class="campo__entrada" type="password" id="senha" name="senha"
-                               autocomplete="current-password" aria-describedby="senha-erro">
+                            autocomplete="current-password" aria-describedby="senha-erro">
                         <span class="campo__erro" id="senha-erro" aria-live="polite"></span>
                     </div>
 
@@ -103,4 +107,5 @@
         })();
     </script>
 </body>
+
 </html>

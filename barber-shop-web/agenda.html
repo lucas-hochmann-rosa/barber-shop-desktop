@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,12 +8,15 @@
     <link rel="icon" href="img/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/componentes.css">
     <link rel="stylesheet" href="css/paginas.css">
 </head>
+
 <body>
 
     <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
@@ -30,11 +34,33 @@
 
             <nav class="barra-lateral__nav" aria-label="Navegação principal">
                 <ul>
-                    <li><a class="barra-lateral__link" href="agenda.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</a></li>
-                    <li><a class="barra-lateral__link" href="agendamento.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M12 11v7M8.5 14.5h7"/></svg>Novo agendamento</a></li>
-                    <li><a class="barra-lateral__link" href="barbearia.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z"/><path d="M4 9 6 3h12l2 6"/><path d="M10 21v-6h4v6"/></svg>Minha barbearia</a></li>
-                    <li><a class="barra-lateral__link" href="historico.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Histórico</a></li>
-                    <li><a class="barra-lateral__link" href="relatorios.html"><svg class="barra-lateral__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><rect x="6" y="11" width="3.5" height="7"/><rect x="13" y="6" width="3.5" height="12"/></svg>Relatórios</a></li>
+                    <li><a class="barra-lateral__link" href="agenda.html"><svg class="barra-lateral__icone"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M3 10h18M8 3v4M16 3v4" />
+                            </svg>Agenda</a></li>
+                    <li><a class="barra-lateral__link" href="agendamento.html"><svg class="barra-lateral__icone"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M8 3v4M16 3v4M12 11v7M8.5 14.5h7" />
+                            </svg>Novo agendamento</a></li>
+                    <li><a class="barra-lateral__link" href="barbearia.html"><svg class="barra-lateral__icone"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 9h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z" />
+                                <path d="M4 9 6 3h12l2 6" />
+                                <path d="M10 21v-6h4v6" />
+                            </svg>Minha barbearia</a></li>
+                    <li><a class="barra-lateral__link" href="historico.html"><svg class="barra-lateral__icone"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M12 7v5l3.5 2" />
+                            </svg>Histórico</a></li>
+                    <li><a class="barra-lateral__link" href="relatorios.html"><svg class="barra-lateral__icone"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 20h16" />
+                                <rect x="6" y="11" width="3.5" height="7" />
+                                <rect x="13" y="6" width="3.5" height="12" />
+                            </svg>Relatórios</a></li>
                 </ul>
             </nav>
 
@@ -46,8 +72,11 @@
         <div class="conteudo">
 
             <div class="topo">
-                <button class="topo__menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="barraLateral" aria-label="Abrir menu">
-                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                <button class="topo__menu" type="button" data-abrir-menu aria-expanded="false"
+                    aria-controls="barraLateral" aria-label="Abrir menu">
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
                 </button>
                 <h1 class="topo__titulo">Agenda do dia</h1>
                 <span class="topo__data" data-data-hoje></span>
@@ -58,7 +87,7 @@
 
                 <p id="avisoAgenda" class="aviso aviso--sucesso" role="status" aria-live="polite" hidden></p>
 
-                <!-- ============ RÉGUA DO DIA ============ -->
+                <!-- RÉGUA DO DIA -->
                 <section class="regua" aria-labelledby="tituloRegua">
                     <div class="regua__cabecalho">
                         <h2 id="tituloRegua" class="rotulo-secao">Régua do dia</h2>
@@ -69,16 +98,22 @@
                     <div class="regua__escala" id="reguaEscala"></div>
 
                     <div class="regua__legenda">
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-EM_ANDAMENTO"></span>Em andamento</span>
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-ATRASADO"></span>Atrasado</span>
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-IMINENTE"></span>Até 1h</span>
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-PROXIMO"></span>Até 2h</span>
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-DISTANTE"></span>Mais de 2h</span>
-                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-CONCLUIDO"></span>Concluído</span>
+                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-EM_ANDAMENTO"></span>Em
+                            andamento</span>
+                        <span class="regua__legenda-item"><span
+                                class="regua__legenda-cor cls-ATRASADO"></span>Atrasado</span>
+                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-IMINENTE"></span>Até
+                            1h</span>
+                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-PROXIMO"></span>Até
+                            2h</span>
+                        <span class="regua__legenda-item"><span class="regua__legenda-cor cls-DISTANTE"></span>Mais de
+                            2h</span>
+                        <span class="regua__legenda-item"><span
+                                class="regua__legenda-cor cls-CONCLUIDO"></span>Concluído</span>
                     </div>
                 </section>
 
-                <!-- ============ CARTÕES-RESUMO ============ -->
+                <!-- CARTÕES-RESUMO -->
                 <section class="grade-resumo" aria-label="Resumo do dia">
                     <div class="cartao cartao--compacto cartao-resumo">
                         <span class="rotulo-secao">Hoje</span>
@@ -86,7 +121,8 @@
                     </div>
                     <div class="cartao cartao--compacto cartao-resumo">
                         <span class="rotulo-secao">Atrasados</span>
-                        <strong class="cartao-resumo__valor cartao-resumo__valor--alerta" id="resumoAtrasados">—</strong>
+                        <strong class="cartao-resumo__valor cartao-resumo__valor--alerta"
+                            id="resumoAtrasados">—</strong>
                     </div>
                     <div class="cartao cartao--compacto cartao-resumo">
                         <span class="rotulo-secao">Em atendimento</span>
@@ -98,7 +134,7 @@
                     </div>
                 </section>
 
-                <!-- ============ SERVIÇOS OFERECIDOS ============ -->
+                <!-- SERVIÇOS OFERECIDOS -->
                 <section aria-labelledby="tituloServicos">
                     <div class="secao__cabecalho">
                         <h2 id="tituloServicos">Serviços oferecidos</h2>
@@ -106,7 +142,7 @@
                     <ul class="grade-cartoes" id="gradeServicos"></ul>
                 </section>
 
-                <!-- ============ AGENDAMENTOS PENDENTES ============ -->
+                <!-- AGENDAMENTOS PENDENTES -->
                 <section aria-labelledby="tituloPendentes">
                     <div class="secao__cabecalho">
                         <h2 id="tituloPendentes">Agendamentos pendentes</h2>
@@ -149,4 +185,5 @@
     <script src="js/dados.js"></script>
     <script src="js/agenda.js"></script>
 </body>
+
 </html>

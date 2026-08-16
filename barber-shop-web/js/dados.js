@@ -1,5 +1,4 @@
-/* ===========================================================================
-   dados.js - dados de exemplo do Barbershop Web
+/* Dados de exemplo do Barbershop Web
 
    Etapa 8 não tem back-end: tudo aqui é fixo, em memória. Na próxima etapa
    estes objetos serão substituídos por respostas da API, mantendo o mesmo
@@ -10,8 +9,7 @@
    régua do dia e a classificação (RF11) tenham sempre o que mostrar,
    independentemente do dia em que a página for aberta. O histórico dos
    últimos 60 dias é gerado com um sorteio de semente fixa, então os
-   relatórios dão o mesmo resultado a cada carregamento.
-   =========================================================================== */
+   relatórios dão o mesmo resultado a cada carregamento. */
 
 /** Sorteio determinístico (mulberry32): mesma semente, mesma sequência. */
 function _sorteio(semente) {
@@ -46,19 +44,19 @@ const Dados = {
     expediente: { inicio: 8, fim: 20 },
 
     servicos: [
-        { id: 1, nome: 'Corte masculino',  preco: 45,  duracaoMinutos: 30, imagem: 'img/servico-corte.svg' },
-        { id: 2, nome: 'Barba tradicional', preco: 35,  duracaoMinutos: 30, imagem: 'img/servico-barba.svg' },
-        { id: 3, nome: 'Corte + barba',     preco: 70,  duracaoMinutos: 60, imagem: 'img/servico-combo.svg' },
-        { id: 4, nome: 'Pezinho',           preco: 20,  duracaoMinutos: 15, imagem: 'img/servico-pezinho.svg' },
-        { id: 5, nome: 'Sobrancelha',       preco: 15,  duracaoMinutos: 15, imagem: 'img/servico-sobrancelha.svg' },
-        { id: 6, nome: 'Platinado',         preco: 120, duracaoMinutos: 90, imagem: 'img/servico-platinado.svg' }
+        { id: 1, nome: 'Corte masculino', preco: 45, duracaoMinutos: 30, imagem: 'img/servico-corte.svg' },
+        { id: 2, nome: 'Barba tradicional', preco: 35, duracaoMinutos: 30, imagem: 'img/servico-barba.svg' },
+        { id: 3, nome: 'Corte + barba', preco: 70, duracaoMinutos: 60, imagem: 'img/servico-combo.svg' },
+        { id: 4, nome: 'Pezinho', preco: 20, duracaoMinutos: 15, imagem: 'img/servico-pezinho.svg' },
+        { id: 5, nome: 'Sobrancelha', preco: 15, duracaoMinutos: 15, imagem: 'img/servico-sobrancelha.svg' },
+        { id: 6, nome: 'Platinado', preco: 120, duracaoMinutos: 90, imagem: 'img/servico-platinado.svg' }
     ],
 
     barbeiros: [
         { id: 1, nome: 'Rafael Menezes', imagem: 'img/avatar-1.svg' },
-        { id: 2, nome: 'Diego Torres',   imagem: 'img/avatar-2.svg' },
-        { id: 3, nome: 'Bruno Alencar',  imagem: 'img/avatar-3.svg' },
-        { id: 4, nome: 'Igor Prado',     imagem: 'img/avatar-4.svg' }
+        { id: 2, nome: 'Diego Torres', imagem: 'img/avatar-2.svg' },
+        { id: 3, nome: 'Bruno Alencar', imagem: 'img/avatar-3.svg' },
+        { id: 4, nome: 'Igor Prado', imagem: 'img/avatar-4.svg' }
     ],
 
     origensContato: ['INSTAGRAM', 'WHATSAPP', 'PRESENCIAL', 'TELEFONE', 'OUTRO'],
@@ -66,7 +64,7 @@ const Dados = {
     /** Preenchido por montar(); ver o final do arquivo. */
     agendamentos: [],
 
-    /* --- Consultas auxiliares -------------------------------------------- */
+    /* Consultas auxiliares */
 
     servicoPorId(id) {
         return this.servicos.find((s) => s.id === Number(id)) || null;
@@ -132,17 +130,17 @@ const Dados = {
     }
 };
 
-/* --- Montagem dos agendamentos -------------------------------------------- */
+/* Montagem dos agendamentos */
 
 (function montar() {
     const CLIENTES = [
         ['Marcelo Antunes', '(51) 99812-4471'], ['Vinícius Prado', '(51) 99145-0092'],
-        ['Otávio Bastos', '(51) 98877-3310'],   ['Henrique Sales', '(51) 99630-7788'],
-        ['Caio Ferraz', '(51) 98120-5566'],     ['Eduardo Lima', '(51) 99471-2039'],
-        ['Rodrigo Vianna', '(51) 99358-1147'],  ['Thiago Moraes', '(51) 98604-9921'],
-        ['Gustavo Reis', '(51) 99287-6650'],    ['Felipe Barcelos', '(51) 99013-4482'],
-        ['André Kuhn', '(51) 98745-1120'],      ['Leandro Pires', '(51) 99566-8834'],
-        ['Murilo Tavares', '(51) 98392-7745'],  ['Sérgio Andrade', '(51) 99724-3308'],
+        ['Otávio Bastos', '(51) 98877-3310'], ['Henrique Sales', '(51) 99630-7788'],
+        ['Caio Ferraz', '(51) 98120-5566'], ['Eduardo Lima', '(51) 99471-2039'],
+        ['Rodrigo Vianna', '(51) 99358-1147'], ['Thiago Moraes', '(51) 98604-9921'],
+        ['Gustavo Reis', '(51) 99287-6650'], ['Felipe Barcelos', '(51) 99013-4482'],
+        ['André Kuhn', '(51) 98745-1120'], ['Leandro Pires', '(51) 99566-8834'],
+        ['Murilo Tavares', '(51) 98392-7745'], ['Sérgio Andrade', '(51) 99724-3308'],
         ['Paulo Meirelles', '(51) 99880-2214'], ['Ricardo Nunes', '(51) 98457-9903']
     ];
 
@@ -185,13 +183,13 @@ const Dados = {
        para garantir um exemplo de cada faixa (atrasado, em andamento,
        iminente, próximo e distante). */
     const DIA = [
-        { minutos: -205, servico: 1, barbeiro: 1, cliente: 0, origem: 'WHATSAPP',   status: StatusAgendamento.CONCLUIDO },
-        { minutos: -145, servico: 3, barbeiro: 2, cliente: 1, origem: 'INSTAGRAM',  status: StatusAgendamento.CONCLUIDO },
-        { minutos:  -85, servico: 2, barbeiro: 1, cliente: 2, origem: 'PRESENCIAL', status: StatusAgendamento.CONCLUIDO },
-        { minutos:  -45, servico: 1, barbeiro: 3, cliente: 3, origem: 'TELEFONE',   status: StatusAgendamento.AGENDADO },
-        { minutos:  -12, servico: 4, barbeiro: 2, cliente: 4, origem: 'WHATSAPP',   status: StatusAgendamento.EM_ATENDIMENTO },
-        { minutos:  +35, servico: 6, barbeiro: 4, cliente: 5, origem: 'INSTAGRAM',  status: StatusAgendamento.AGENDADO },
-        { minutos:  +95, servico: 3, barbeiro: 1, cliente: 6, origem: 'WHATSAPP',   status: StatusAgendamento.AGENDADO },
+        { minutos: -205, servico: 1, barbeiro: 1, cliente: 0, origem: 'WHATSAPP', status: StatusAgendamento.CONCLUIDO },
+        { minutos: -145, servico: 3, barbeiro: 2, cliente: 1, origem: 'INSTAGRAM', status: StatusAgendamento.CONCLUIDO },
+        { minutos: -85, servico: 2, barbeiro: 1, cliente: 2, origem: 'PRESENCIAL', status: StatusAgendamento.CONCLUIDO },
+        { minutos: -45, servico: 1, barbeiro: 3, cliente: 3, origem: 'TELEFONE', status: StatusAgendamento.AGENDADO },
+        { minutos: -12, servico: 4, barbeiro: 2, cliente: 4, origem: 'WHATSAPP', status: StatusAgendamento.EM_ATENDIMENTO },
+        { minutos: +35, servico: 6, barbeiro: 4, cliente: 5, origem: 'INSTAGRAM', status: StatusAgendamento.AGENDADO },
+        { minutos: +95, servico: 3, barbeiro: 1, cliente: 6, origem: 'WHATSAPP', status: StatusAgendamento.AGENDADO },
         { minutos: +190, servico: 2, barbeiro: 3, cliente: 7, origem: 'PRESENCIAL', status: StatusAgendamento.AGENDADO }
     ];
 

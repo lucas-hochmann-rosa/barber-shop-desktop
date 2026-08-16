@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="852" viewBox="0 0 1440 852">
+<rect width="1440" height="852" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="92" rx="0" fill="#F7F8F9"/>
+<text x="60" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="21" font-weight="bold" fill="#33383D" text-anchor="start" letter-spacing="0.6">06 — Novo Agendamento Desktop</text>
+<text x="60" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="normal" fill="#6B7278" text-anchor="start" letter-spacing="0">Criação de agendamento com validação de conflito de horário por barbeiro (RF05, RF10)</text>
+<text x="1380" y="40" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#6B7278" text-anchor="end" letter-spacing="1">WIREFRAME · BARBERSHOP DESKTOP</text>
+<text x="1380" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="11.5" font-weight="normal" fill="#6B7278" text-anchor="end" letter-spacing="0">Java Swing (FlatLaf) · 1440px</text>
+<line x1="0" y1="92" x2="1440" y2="92" stroke="#8E959C" stroke-width="2"/>
+<rect x="0" y="92" width="1440" height="760" rx="0" fill="#EAECEE"/>
+
+<!-- Janela Modal/Dialog Swing TelaNovoAgendamento -->
+<rect x="370" y="140" width="700" height="660" rx="8" fill="#FFFFFF" stroke="#8E959C" stroke-width="2"/>
+<!-- Barra de título do JDialog -->
+<rect x="370" y="140" width="700" height="38" rx="8" fill="#2C3437"/>
+<rect x="370" y="166" width="700" height="12" fill="#2C3437"/>
+<text x="400" y="165" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Barbershop - Novo Agendamento</text>
+<circle cx="1045" cy="159" r="6" fill="#D9534F"/>
+
+<!-- Conteúdo do Formulário -->
+<text x="410" y="215" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="bold" fill="#2C3437">Dados do Agendamento</text>
+
+<text x="410" y="250" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Nome do Cliente *:</text>
+<rect x="410" y="258" width="620" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="422" y="280" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">Lucas Hochmann Rosa</text>
+
+<text x="410" y="315" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Telefone / Contato *:</text>
+<rect x="410" y="323" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="422" y="345" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">(51) 99880-1122</text>
+
+<text x="730" y="315" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Origem do Contato *:</text>
+<rect x="730" y="323" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="742" y="345" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">WHATSAPP [▼]</text>
+
+<text x="410" y="380" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Data *:</text>
+<rect x="410" y="388" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="422" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">16/08/2026</text>
+
+<text x="730" y="380" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Horário *:</text>
+<rect x="730" y="388" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="742" y="410" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">14:00</text>
+
+<text x="410" y="445" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Serviço *:</text>
+<rect x="410" y="453" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="422" y="475" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Corte + Barba (60 min) [▼]</text>
+
+<text x="730" y="445" font-family="DejaVu Sans, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#33383D">Barbeiro *:</text>
+<rect x="730" y="453" width="300" height="34" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1.2"/>
+<text x="742" y="475" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2C3437">Carlos Silva [▼]</text>
+
+<!-- Painel de Validação / Resumo de Conflito (RF10) -->
+<rect x="410" y="510" width="620" height="90" rx="4" fill="#F0F2F4" stroke="#8E959C" stroke-width="1"/>
+<text x="425" y="533" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2E7D6B">✓ Horário Disponível</text>
+<text x="425" y="555" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6B7278">O barbeiro Carlos Silva está livre entre 14:00 e 15:00 (duração: 60 min).</text>
+<text x="425" y="578" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C3437">Total do Serviço: R$ 70,00</text>
+
+<!-- Botões de Ação -->
+<line x1="410" y1="620" x2="1030" y2="620" stroke="#E3E6E8" stroke-width="1.5"/>
+<rect x="850" y="640" width="180" height="42" rx="4" fill="#2C3437"/>
+<text x="940" y="666" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Salvar Agendamento</text>
+
+<rect x="720" y="640" width="115" height="42" rx="4" fill="#FFFFFF" stroke="#8E959C" stroke-width="1"/>
+<text x="777" y="666" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#33383D" text-anchor="middle">Cancelar</text>
+</svg>

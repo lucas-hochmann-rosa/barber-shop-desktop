@@ -1,5 +1,4 @@
-/* ===========================================================================
-   classificacao.js - RF11: classificação visual do agendamento
+/* RF11: classificação visual do agendamento
 
    Esta é a MESMA regra da classe Java ClassificadorAgenda
    (barber-shop-core/src/main/java/br/com/barberdesk/service/ClassificadorAgenda.java),
@@ -9,8 +8,7 @@
    Os nomes das classificações e a ordem das faixas foram mantidos idênticos
    para que desktop e web classifiquem exatamente do mesmo jeito. Assim como
    no Java, a data de referência é recebida por parâmetro em vez de ser lida
-   do relógio aqui dentro - é o que permite testar com datas fixas.
-   =========================================================================== */
+   do relógio aqui dentro - é o que permite testar com datas fixas. */
 
 const ClassificacaoAgenda = {
     EM_ANDAMENTO: 'EM_ANDAMENTO',

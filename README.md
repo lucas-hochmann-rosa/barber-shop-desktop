@@ -1,4 +1,4 @@
-# 💈 barber-shop-suite - *Barbershop*
+# 💈 Barbershop
 
 <p align="center">
   <a href="https://github.com/lucas-hochmann-rosa/barber-shop-suite">
@@ -20,7 +20,7 @@
 
 <p align="center">🇧🇷 Português · <a href="README.en.md">🇺🇸 English</a></p>
 
-> Sistema de gestão operacional de barbearia (*Barbershop*) estruturado como monorepo com três módulos: um núcleo compartilhado de regras de negócio em Java (`barber-shop-core`), uma aplicação desktop completa em Java Swing com persistência em MySQL (`barber-shop-desktop`) e uma interface web moderna em HTML, CSS e JavaScript puros (`barber-shop-web`) que compartilha as mesmas regras de negócio.
+> Sistema de gestão operacional de barbearia estruturado como monorepo com três módulos: um núcleo compartilhado de regras de negócio em Java (`barber-shop-core`), uma aplicação desktop completa em Java Swing com persistência em MySQL (`barber-shop-desktop`) e uma interface web moderna em HTML, CSS e JavaScript puros (`barber-shop-web`) que compartilha as mesmas regras de negócio.
 
 ---
 
@@ -131,7 +131,10 @@ barber-shop-suite/
 ├── README.md / README.en.md
 ├── LICENSE
 ├── docs/
-│   └── screenshots/                    # Prints do sistema usados na documentação
+│   ├── screenshots/                    # Prints do sistema usados na documentação
+│   └── wireframes/                     # Wireframes em SVG puro para desktop e web
+│       ├── desktop/                    # Wireframes conceituais da aplicação Swing
+│       └── web/                        # Wireframes conceituais da interface web
 │
 ├── barber-shop-core/                    # [MÓDULO 1] Núcleo de regras de negócio compartilhado (Java)
 │   ├── pom.xml

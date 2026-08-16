@@ -1,16 +1,11 @@
-/* ===========================================================================
-   relatorios.js - faturamento, serviços mais vendidos e ranking (RF09)
-
-   Só entram agendamentos CONCLUIDO, igual ao RelatorioDAO do desktop:
-   cancelado não fatura e agendado ainda não aconteceu.
-   =========================================================================== */
+/* Relatórios: faturamento, serviços mais vendidos e ranking (RF09) */
 
 const Relatorios = {
 
     /** Quantas barras o gráfico mostra, no máximo. */
     MAX_BARRAS: 8,
 
-    /* --- Seleção do período ------------------------------------------------- */
+    /* Seleção do período */
 
     periodo() {
         const de = document.getElementById('periodoDe').value;
@@ -31,7 +26,7 @@ const Relatorios = {
         });
     },
 
-    /* --- Faturamento -------------------------------------------------------- */
+    /* Faturamento */
 
     desenharFaturamento(concluidos) {
         const total = concluidos.reduce((soma, a) => soma + a.valor, 0);
@@ -94,7 +89,7 @@ const Relatorios = {
             }).join('; '));
     },
 
-    /* --- Serviços mais vendidos --------------------------------------------- */
+    /* Serviços mais vendidos */
 
     desenharVendidos(concluidos) {
         const lista = document.getElementById('listaVendidos');
@@ -133,7 +128,7 @@ const Relatorios = {
             </li>`).join('');
     },
 
-    /* --- Ranking de barbeiros ----------------------------------------------- */
+    /* Ranking de barbeiros */
 
     desenharRanking(concluidos) {
         const podio = document.getElementById('podio');
@@ -170,7 +165,7 @@ const Relatorios = {
             </li>`).join('');
     },
 
-    /* --- Geração ------------------------------------------------------------ */
+    /* Geração */
 
     gerar(evento) {
         if (evento) evento.preventDefault();
@@ -192,7 +187,7 @@ const Relatorios = {
         self.desenharRanking(concluidos);
     },
 
-    /* --- Partida ------------------------------------------------------------ */
+    /* Partida */
 
     iniciar() {
         if (!document.getElementById('formPeriodo')) return;
