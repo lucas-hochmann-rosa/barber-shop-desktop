@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verificação da Regra de Classificação (RF11) &middot; Barbershop</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/paginas.css">
+    <style>
+        .verificacao-container {
+            max-width: 980px;
+            margin: var(--e-6) auto;
+            padding: 0 var(--e-4);
+        }
+
+        .verificacao-cabecalho {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--e-4);
+            margin-bottom: var(--e-5);
+            padding-bottom: var(--e-4);
+            border-bottom: var(--borda);
+        }
+
+        .verificacao-marca {
+            display: flex;
+            align-items: center;
+            gap: var(--e-3);
+        }
+
+        .verificacao-marca__logo {
+            width: 44px;
+            height: 44px;
+        }
+
+        .verificacao-marca__titulo {
+            font-size: 24px;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .verificacao-marca__subtitulo {
+            font-size: 13px;
+            color: var(--fumaca);
+        }
+
+        .grade-resumo-testes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--e-4);
+            margin-bottom: var(--e-5);
+        }
+
+        .tag-ref {
+            display: inline-block;
+            background: var(--porcelana);
+            border: 1px solid var(--neblina);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="verificacao-container">
+
+        <header class="verificacao-cabecalho">
+            <div class="verificacao-marca">
+                <img class="verificacao-marca__logo" src="img/logo.svg" width="44" height="44" alt="Barbershop">
+                <div>
+                    <h1 class="verificacao-marca__titulo">Paridade da Regra RF11</h1>
+                    <div class="verificacao-marca__subtitulo">Verificação da Regra de Classificação de Agenda (Java
+                        JUnit vs. JavaScript)</div>
+                </div>
+            </div>
+            <div>
+                <a class="botao botao--secundario" href="agenda.html">&larr; Voltar para a agenda</a>
+            </div>
+        </header>
+
+        <main id="conteudo">
+
+            <section class="cartao" style="margin-bottom: var(--e-5)">
+                <h2 class="rotulo-secao" style="margin-bottom: var(--e-2)">Propósito da Verificação</h2>
+                <p class="texto-secundario" style="margin-bottom: var(--e-3)">
+                    Esta página executa no navegador os <strong>12 casos de teste unitário</strong> da suíte JUnit
+                    <code>ClassificadorAgendaTest</code> (módulo <code>core</code>, Etapa 7) diretamente
+                    contra a
+                    implementação JavaScript da regra em <code>js/classificacao.js</code>.
+                </p>
+                <p class="texto-secundario" style="margin-bottom: 0">
+                    O objetivo é comprovar a paridade comportamental exata entre os módulos desktop e web: mesmas
+                    classificações,
+                    mesma ordem de precedência de status e mesmas fronteiras temporais (60 e 120 minutos).
+                    Data e hora de referência fixa: <span class="mono tag-ref">10/03/2026 14:00:00</span>.
+                </p>
+            </section>
+
+            <!-- CARTÕES-RESUMO DOS TESTES -->
+            <section class="grade-resumo-testes" aria-label="Resumo dos testes">
+                <div class="cartao cartao--compacto cartao-resumo">
+                    <span class="rotulo-secao">Casos Executados</span>
+                    <strong class="cartao-resumo__valor" id="totalCasos">12</strong>
+                </div>
+                <div class="cartao cartao--compacto cartao-resumo">
+                    <span class="rotulo-secao">Aprovados</span>
+                    <strong class="cartao-resumo__valor" style="color: var(--verde-claro)"
+                        id="totalAprovados">-</strong>
+                </div>
+                <div class="cartao cartao--compacto cartao-resumo">
+                    <span class="rotulo-secao">Falhas</span>
+                    <strong class="cartao-resumo__valor" id="totalFalhas">-</strong>
+                </div>
+                <div class="cartao cartao--compacto cartao-resumo">
+                    <span class="rotulo-secao">Taxa de Conformidade</span>
+                    <strong class="cartao-resumo__valor" id="taxaSucesso">-</strong>
+                </div>
+            </section>
+
+            <p id="avisoStatus" class="aviso aviso--sucesso" role="status" aria-live="polite"
+                style="margin-bottom: var(--e-5)"></p>
+
+            <!-- TABELA DE CASOS DE TESTE -->
+            <section class="cartao" aria-labelledby="tituloTabela">
+                <div class="secao__cabecalho">
+                    <h2 id="tituloTabela" class="rotulo-secao">Resultados por Caso de Teste</h2>
+                </div>
+
+                <div class="tabela-envolucro">
+                    <table class="tabela">
+                        <caption class="apenas-leitor-tela">
+                            Comparativo detalhado de cada caso de teste da regra RF11, comparando resultado esperado e
+                            obtido.
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 40px"><span class="apenas-leitor-tela">Cor</span></th>
+                                <th scope="col">Caso de Teste (JUnit)</th>
+                                <th scope="col">Cenário / Entrada</th>
+                                <th scope="col">Esperado</th>
+                                <th scope="col">Obtido</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTestes"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/classificacao.js"></script>
+    <script>
+        (function () {
+            // Mesma data de referência fixa do ClassificadorAgendaTest no Java
+            const REF = new Date(2026, 2, 10, 14, 0, 0, 0);
+
+            function agendamento(minutos, status) {
+                return {
+                    dataHora: new Date(REF.getTime() + minutos * 60000),
+                    status: status
+                };
+            }
+
+            const casos = [
+                ['agendamento cancelado retorna CANCELADO', agendamento(60, 'CANCELADO'), 'referência + 1h, CANCELADO', 'CANCELADO'],
+                ['agendamento concluído retorna CONCLUIDO', agendamento(-60, 'CONCLUIDO'), 'referência − 1h, CONCLUIDO', 'CONCLUIDO'],
+                ['agendamento em atendimento retorna EM_ANDAMENTO', agendamento(-10, 'EM_ATENDIMENTO'), 'referência − 10min, EM_ATENDIMENTO', 'EM_ANDAMENTO'],
+                ['agendado no passado retorna ATRASADO', agendamento(-1, 'AGENDADO'), 'referência − 1min, AGENDADO', 'ATRASADO'],
+                ['exatamente na hora de referência não é atrasado', agendamento(0, 'AGENDADO'), 'referência exata (0 min), AGENDADO', 'IMINENTE'],
+                ['faltando 30 minutos retorna IMINENTE', agendamento(30, 'AGENDADO'), 'referência + 30 min, AGENDADO', 'IMINENTE'],
+                ['faltando exatamente 60 minutos retorna IMINENTE', agendamento(60, 'AGENDADO'), 'referência + 60 min (fronteira)', 'IMINENTE'],
+                ['faltando 61 minutos retorna PROXIMO', agendamento(61, 'AGENDADO'), 'referência + 61 min, AGENDADO', 'PROXIMO'],
+                ['faltando exatamente 120 minutos retorna PROXIMO', agendamento(120, 'AGENDADO'), 'referência + 120 min (fronteira)', 'PROXIMO'],
+                ['faltando 121 minutos retorna DISTANTE', agendamento(121, 'AGENDADO'), 'referência + 121 min, AGENDADO', 'DISTANTE']
+            ];
+
+            const casosExcecao = [
+                ['agendamento nulo lança erro (IllegalArgumentException)', null, 'null (agendamento ausente)', 'Erro esperado'],
+                ['data/hora nula lança erro (IllegalArgumentException)', { dataHora: null, status: 'AGENDADO' }, 'dataHora null', 'Erro esperado']
+            ];
+
+            const corpo = document.getElementById('corpoTestes');
+            let falhas = 0;
+            let aprovados = 0;
+            let linhas = '';
+
+            casos.forEach(([nome, entrada, descricao, esperado]) => {
+                let obtido;
+                let classeCor = 'cls-DISTANTE';
+                try {
+                    obtido = classificar(entrada, REF);
+                    classeCor = 'cls-' + obtido;
+                } catch (erro) {
+                    obtido = 'Erro: ' + erro.message;
+                }
+
+                const passou = obtido === esperado;
+                if (passou) {
+                    aprovados++;
+                } else {
+                    falhas++;
+                }
+
+                linhas += `<tr>
+                    <td class="celula-faixa">
+                        <span class="faixa-classificacao ${classeCor}" title="${esperado}"></span>
+                    </td>
+                    <td><strong>${nome}</strong></td>
+                    <td class="texto-pequeno texto-secundario">${descricao}</td>
+                    <td class="mono">${esperado}</td>
+                    <td class="mono">${obtido}</td>
+                    <td><span class="selo selo--${passou ? 'em-atendimento' : 'cancelado'}">${passou ? 'Aprovado' : 'Falhou'}</span></td>
+                </tr>`;
+            });
+
+            casosExcecao.forEach(([nome, entrada, descricao, esperado]) => {
+                let lancou = false;
+                let mensagem = '';
+                try {
+                    classificar(entrada, REF);
+                    mensagem = '(nenhum erro lançado)';
+                } catch (erro) {
+                    lancou = true;
+                    mensagem = 'Lançou Error: "' + erro.message + '"';
+                }
+
+                if (lancou) {
+                    aprovados++;
+                } else {
+                    falhas++;
+                }
+
+                linhas += `<tr>
+                    <td class="celula-faixa">
+                        <span class="faixa-classificacao cls-CANCELADO" title="Exceção"></span>
+                    </td>
+                    <td><strong>${nome}</strong></td>
+                    <td class="texto-pequeno texto-secundario">${descricao}</td>
+                    <td class="mono">${esperado}</td>
+                    <td class="mono texto-pequeno">${mensagem}</td>
+                    <td><span class="selo selo--${lancou ? 'em-atendimento' : 'cancelado'}">${lancou ? 'Aprovado' : 'Falhou'}</span></td>
+                </tr>`;
+            });
+
+            corpo.innerHTML = linhas;
+
+            const total = casos.length + casosExcecao.length;
+            const taxa = Math.round((aprovados / total) * 100);
+
+            document.getElementById('totalCasos').textContent = total;
+            document.getElementById('totalAprovados').textContent = aprovados;
+            document.getElementById('totalFalhas').textContent = falhas;
+            document.getElementById('taxaSucesso').textContent = taxa + '%';
+
+            const aviso = document.getElementById('avisoStatus');
+            if (falhas === 0) {
+                aviso.className = 'aviso aviso--sucesso';
+                aviso.textContent = `Todos os ${total} casos executados com sucesso (100% de paridade). A regra em JavaScript se comporta de forma idêntica à suíte JUnit ClassificadorAgendaTest do Java.`;
+            } else {
+                aviso.className = 'aviso aviso--erro';
+                aviso.textContent = `${total} casos executados, com ${falhas} falha(s) detectada(s).`;
+            }
+        })();
+    </script>
+</body>
+
+</html>
