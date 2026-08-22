@@ -21,13 +21,13 @@ import javax.swing.table.DefaultTableCellRenderer;
  * origem de dados.
  */
 public class StatusRowRenderer extends DefaultTableCellRenderer {
-    private static final Color COR_EM_ANDAMENTO = new Color(183, 235, 191);
-    private static final Color COR_ATRASADO = new Color(255, 190, 190);
-    private static final Color COR_IMINENTE = new Color(255, 213, 153);
-    private static final Color COR_PROXIMO = new Color(255, 243, 205);
-    private static final Color COR_DISTANTE = new Color(238, 238, 238);
-    private static final Color COR_CONCLUIDO = new Color(212, 237, 218);
-    private static final Color COR_CANCELADO = new Color(248, 215, 218);
+    private static final Color COR_EM_ANDAMENTO = new Color(225, 245, 240); // Verde suave (ativo)
+    private static final Color COR_ATRASADO = new Color(254, 235, 233);      // Oxblood suave (alerta)
+    private static final Color COR_IMINENTE = new Color(254, 243, 226);      // Latão suave (atenção)
+    private static final Color COR_PROXIMO = new Color(255, 251, 235);       // Ouro suave (próximo)
+    private static final Color COR_DISTANTE = new Color(255, 255, 255);      // Branco limpo (distante)
+    private static final Color COR_CONCLUIDO = new Color(240, 243, 242);     // Porcelana (concluído)
+    private static final Color COR_CANCELADO = new Color(245, 245, 245);     // Cinza neutro (cancelado)
 
     private final Supplier<List<Agendamento>> origemSupplier;
 

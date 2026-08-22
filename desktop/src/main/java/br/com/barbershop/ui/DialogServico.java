@@ -41,24 +41,24 @@ public class DialogServico extends javax.swing.JDialog {
     public DialogServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
         this.servico = new Servico();
     }
 
-    /**
-     * Cria o diálogo para edição de um serviço já existente, pré-preenchendo
-     * os campos da tela com os dados recebidos.
-     *
-     * @param parent  janela pai do diálogo
-     * @param modal   se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
-     * @param servico serviço a ser editado
-     */
     public DialogServico(java.awt.Frame parent, boolean modal, Servico servico) {
         super(parent, modal);
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
         this.servico = servico;
         preencherCampos();
+    }
+
+    private void aplicarEstilos() {
+        UIUtil.estilizarBotaoPrimario(btnSalvar);
+        UIUtil.estilizarBotaoSecundario(btnCancelar);
+        UIUtil.estilizarBotaoSecundario(btnEscolherImagem);
     }
 
     /**

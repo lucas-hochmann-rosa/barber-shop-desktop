@@ -1,6 +1,11 @@
 package br.com.barbershop.ui.support;
 
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -17,7 +22,23 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
+/**
+ * Utilitários de interface gráfica para o aplicativo desktop Java Swing.
+ * Centraliza ícones, paleta de cores institucional unificada com a versão web,
+ * renderização de miniaturas e formatação de campos.
+ */
 public class UIUtil {
+
+    // Paleta de design institucional (paridade com a versão Web)
+    public static final Color COLOR_PORCELANA = new Color(0xF2, 0xF5, 0xF3); // #F2F5F3 - Fundo geral
+    public static final Color COLOR_BRANCO = new Color(0xFF, 0xFF, 0xFF);    // #FFFFFF - Cartões e tabelas
+    public static final Color COLOR_VERDE_CADEIRA = new Color(0x14, 0x48, 0x3F); // #14483F - Marca / Cabeçalho
+    public static final Color COLOR_VERDE_CLARO = new Color(0x2E, 0x7D, 0x6B); // #2E7D6B - Destaques e ativos
+    public static final Color COLOR_OXBLOOD = new Color(0x8A, 0x33, 0x24);     // #8A3324 - Ações destrutivas
+    public static final Color COLOR_LATAO = new Color(0xC8, 0x91, 0x2F);       // #C8912F - Destaque dourado
+    public static final Color COLOR_TINTA = new Color(0x14, 0x20, 0x1E);       // #14201E - Texto principal
+    public static final Color COLOR_FUMACA = new Color(0x6B, 0x7A, 0x76);      // #6B7A76 - Texto secundário
+    public static final Color COLOR_NEBLINA = new Color(0xDC, 0xE3, 0xE0);     // #DCE3E0 - Bordas e divisores
 
     private static final int[] TAMANHOS_ICONE = {16, 24, 32, 48, 64, 128, 256};
 
@@ -25,11 +46,83 @@ public class UIUtil {
     private static boolean iconeCarregado = false;
 
     /**
+     * Configura o Look & Feel FlatLaf com a paleta de cores e tipografia
+     * unificada entre a versão desktop e web.
+     */
+    public static void configurarTema() {
+        FlatLightLaf.setup();
+
+        UIManager.put("Panel.background", COLOR_PORCELANA);
+        UIManager.put("RootPane.background", COLOR_PORCELANA);
+        UIManager.put("Viewport.background", COLOR_BRANCO);
+        UIManager.put("ScrollPane.background", COLOR_BRANCO);
+
+        UIManager.put("Component.accentColor", COLOR_VERDE_CADEIRA);
+        UIManager.put("Component.focusColor", new Color(0x2E, 0x7D, 0x6B, 0x60));
+        UIManager.put("Component.arc", 6);
+        UIManager.put("Button.arc", 6);
+        UIManager.put("TextComponent.arc", 6);
+        UIManager.put("ProgressBar.arc", 6);
+
+        UIManager.put("TableHeader.background", COLOR_VERDE_CADEIRA);
+        UIManager.put("TableHeader.foreground", Color.WHITE);
+        UIManager.put("TableHeader.font", new Font("Segoe UI", Font.BOLD, 12));
+        UIManager.put("TableHeader.separatorColor", COLOR_VERDE_CLARO);
+
+        UIManager.put("Table.background", COLOR_BRANCO);
+        UIManager.put("Table.foreground", COLOR_TINTA);
+        UIManager.put("Table.gridColor", COLOR_NEBLINA);
+        UIManager.put("Table.selectionBackground", new Color(0x2E, 0x7D, 0x6B, 0x33));
+        UIManager.put("Table.selectionForeground", COLOR_TINTA);
+        UIManager.put("Table.rowHeight", 28);
+
+        UIManager.put("TabbedPane.selectedBackground", COLOR_VERDE_CADEIRA);
+        UIManager.put("TabbedPane.selectedForeground", Color.WHITE);
+        UIManager.put("TabbedPane.underlineColor", COLOR_LATAO);
+        UIManager.put("TabbedPane.showTabSeparators", true);
+        UIManager.put("TabbedPane.tabSeparatorsFullHeight", true);
+    }
+
+    /**
+     * Aplica o estilo visual primário da marca a um botão (verde-cadeira, texto branco).
+     */
+    public static void estilizarBotaoPrimario(JButton btn) {
+        if (btn == null) return;
+        btn.setBackground(COLOR_VERDE_CADEIRA);
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(6, 14, 6, 14));
+    }
+
+    /**
+     * Aplica o estilo visual secundário (outline) a um botão.
+     */
+    public static void estilizarBotaoSecundario(JButton btn) {
+        if (btn == null) return;
+        btn.setBackground(COLOR_BRANCO);
+        btn.setForeground(COLOR_VERDE_CADEIRA);
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(COLOR_NEBLINA, 1),
+                BorderFactory.createEmptyBorder(5, 12, 5, 12)));
+    }
+
+    /**
+     * Aplica o estilo de perigo / cancelamento a um botão (oxblood).
+     */
+    public static void estilizarBotaoPerigo(JButton btn) {
+        if (btn == null) return;
+        btn.setBackground(COLOR_OXBLOOD);
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(6, 14, 6, 14));
+    }
+
+    /**
      * Ícone do app (src/main/resources/icon.ico), aplicado em toda janela.
-     * Carregado uma única vez e reaproveitado. Gera várias resoluções
-     * pré-renderizadas (setIconImages) em vez de entregar uma imagem grande
-     * só - o Windows escala uma imagem única com baixa qualidade ao desenhar
-     * o ícone pequeno da barra de título, o que deixava tudo pixelado.
      */
     public static void aplicarIcone(Window janela) {
         if (!iconeCarregado) {
@@ -62,12 +155,6 @@ public class UIUtil {
         return resultado;
     }
 
-    /**
-     * setIconImages no JFrame já cobre a barra de título/Alt-Tab; a barra de
-     * tarefas do Windows usa java.awt.Taskbar à parte. Chamada direta, sem
-     * reflection - o projeto compila com --release 17, e java.awt.Taskbar
-     * existe desde o Java 9.
-     */
     private static void aplicarIconeNaTaskbar(Image icone) {
         if (icone == null || !Taskbar.isTaskbarSupported()) {
             return;
@@ -79,9 +166,7 @@ public class UIUtil {
     }
 
     /**
-     * Campo de texto com máscara fixa (ex.: "##/##/####" para data). Restringe o
-     * que o usuário consegue digitar, evitando erro de formato só detectado ao
-     * salvar. getText()/setText() continuam funcionando normalmente.
+     * Campo de texto com máscara fixa (ex.: "##/##/####" para data).
      */
     public static JFormattedTextField criarCampoMascarado(String mascara) {
         try {
@@ -89,36 +174,20 @@ public class UIUtil {
             formatter.setPlaceholderCharacter('_');
             return new JFormattedTextField(formatter);
         } catch (ParseException e) {
-            // Máscara inválida é erro de programação (string estática), não de usuário.
             throw new IllegalArgumentException("Máscara inválida: " + mascara, e);
         }
     }
 
-    /**
-     * Um campo mascarado mostra os caracteres de preenchimento (ex.:
-     * "__/__/____") mesmo sem o usuário ter digitado nada - getText() não
-     * fica "" nesse caso, só cheio de placeholder. Considera vazio quando não
-     * sobra nenhum dígito de verdade.
-     */
     public static boolean campoMascaradoVazio(JFormattedTextField campo) {
         String texto = campo.getText();
         return texto == null || texto.replaceAll("[^0-9]", "").isEmpty();
     }
 
-    /**
-     * "Contato" do agendamento nem sempre é telefone (pode ser @ do Instagram,
-     * por exemplo - ver OrigemContato). Considera número válido só quando sobram
-     * pelo menos 8 dígitos depois de remover tudo que não é dígito.
-     */
     public static boolean pareceNumeroDeTelefone(String contato) {
         return contato != null && contato.replaceAll("\\D", "").length() >= 8;
     }
 
-    /**
-     * Abre a conversa do WhatsApp Web/Desktop para o contato informado. Assume
-     * DDD+número brasileiro quando não vier com código do país (prefixa 55).
-     */
-    public static void abrirWhatsApp(java.awt.Component parent, String contato) {
+    public static void abrirWhatsApp(Component parent, String contato) {
         String digitos = contato != null ? contato.replaceAll("\\D", "") : "";
         if (digitos.length() < 8) {
             showWarning("WhatsApp", "Contato não parece ser um número de telefone válido.");
@@ -166,15 +235,12 @@ public class UIUtil {
     }
 
     /**
-     * Mostra a imagem de um barbeiro/serviço a partir do Base64 gravado no
-     * banco (ver ImageStorageUtil) - não depende de um arquivo existir no
-     * disco, então sobrevive a troca de máquina/pasta.
+     * Mostra a imagem de um barbeiro/serviço a partir do Base64 gravado no banco.
      */
     public static void exibirMiniatura(JLabel label, String base64, int width, int height) {
         int w = width;
         int h = height;
 
-        // Se não vier tamanho, tenta usar o tamanho do próprio label
         if (w <= 0 || h <= 0) {
             if (label.getWidth() > 0 && label.getHeight() > 0) {
                 w = label.getWidth();
@@ -188,14 +254,14 @@ public class UIUtil {
             }
         }
 
-        // Garante que o label tenha espaço para o ícone (evita "corte")
-        label.setPreferredSize(new java.awt.Dimension(w, h));
+        label.setPreferredSize(new Dimension(w, h));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.CENTER);
 
         if (base64 == null || base64.trim().isEmpty()) {
             label.setIcon(null);
             label.setText("Sem imagem");
+            label.setForeground(COLOR_FUMACA);
             return;
         }
 
@@ -204,7 +270,6 @@ public class UIUtil {
             ImageIcon icon = new ImageIcon(dados);
             Image img = icon.getImage();
 
-            // Redimensiona "fit" preservando proporção, sem cortar
             int imgW = icon.getIconWidth();
             int imgH = icon.getIconHeight();
             double scale = Math.min((double) w / Math.max(1, imgW), (double) h / Math.max(1, imgH));
@@ -217,15 +282,11 @@ public class UIUtil {
         } catch (Exception e) {
             label.setIcon(null);
             label.setText("Sem imagem");
+            label.setForeground(COLOR_FUMACA);
         }
     }
 
-    /**
-     * Overload de conveniência para manter compatibilidade com telas que
-     * chamam exibirMiniatura(label, base64) sem largura/altura.
-     */
     public static void exibirMiniatura(JLabel label, String base64) {
-        // Usa o tamanho do próprio label (ou preferred size) para evitar corte
         exibirMiniatura(label, base64, 0, 0);
     }
 }

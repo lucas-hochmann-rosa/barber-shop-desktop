@@ -5,7 +5,7 @@ import br.com.barbershop.model.*;
 import br.com.barbershop.service.*;
 import br.com.barbershop.ui.TelaLogin;
 import br.com.barbershop.ui.TelaCadastroInicial;
-import com.formdev.flatlaf.FlatLightLaf;
+import br.com.barbershop.ui.support.UIUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.swing.*;
@@ -36,7 +36,7 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                FlatLightLaf.setup();
+                UIUtil.configurarTema();
 
                 FabricaDeServicos fabrica = new FabricaDeServicos();
 

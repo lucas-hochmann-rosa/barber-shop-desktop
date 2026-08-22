@@ -37,6 +37,7 @@ public class TelaNovoAgendamento extends javax.swing.JFrame {
 
     public TelaNovoAgendamento() {
         initComponents();
+        UIUtil.estilizarBotaoPrimario(btnSalvar);
         UIUtil.aplicarIcone(this);
         setLocationRelativeTo(null);
         // Ajuste de tamanho: o botão de salvar estava ficando fora da área visível

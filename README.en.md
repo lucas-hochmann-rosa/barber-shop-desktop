@@ -61,7 +61,7 @@ npx serve web      # access http://localhost:3000 (demo login: lucas / 1234)
 - **Shared Core (`core`)**: Centralizes domain entities, JDBC persistence, idempotent migrations, and core business rules (such as RF11 visual classification and RF10 real time-overlap conflict validation), decoupled from any visual UI.
 - **Desktop Application (`desktop`)**: Built with Java Swing (FlatLaf Look & Feel) featuring automatic bootstrap, services/barbers CRUD, real-time schedule management, reports dashboard, and an operational smoke test (`VerificacaoSistema`).
 - **Web Version (`web`)**: Modern static front-end in HTML5, CSS3, and JavaScript, featuring an **interactive daily schedule timeline** and REST client integration (`web/js/api.js`).
-- **Web REST Back-end (`api`)**: Java Web application with Spring Boot 3.2.5 REST (Stage 9), exposing JSON endpoints for authentication, barbershop management, catalog, scheduling, history, and analytics.
+- **Web REST Back-end (`api`)**: Java Web application with Spring Boot 3.2.5 REST, exposing JSON endpoints for authentication, barbershop management, catalog, scheduling, history, and analytics.
 
 ---
 
@@ -73,7 +73,9 @@ barber-shop-suite/
 ├── docker-compose.yml                  # Pre-configured MySQL 8 container
 ├── README.md / README.en.md
 ├── LICENSE
-├── docs/                               # Technical documentation and delivery records
+├── docs/                               # Technical documentation and wireframes
+│   ├── screenshots/
+│   └── wireframes/
 │
 ├── core/                               # [MODULE 1] Shared business rules core (Java)
 │   ├── pom.xml
@@ -97,7 +99,7 @@ barber-shop-suite/
 │   ├── css/                            # Modular styles
 │   └── js/                             # UI logic, client REST (api.js), and demo data
 │
-└── api/                                # [MODULE 4] Spring Boot 3.2.5 REST API (Stage 9)
+└── api/                                # [MODULE 4] Spring Boot 3.2.5 REST API
     ├── pom.xml
     └── src/
         ├── main/java/br/com/barbershop/api/

@@ -234,7 +234,7 @@ const TelaAgendamento = {
                 observacoes: document.getElementById('observacoes').value.trim()
             });
             Validacao.avisar('#avisoForm',
-                'Agendamento atualizado. Como esta etapa ainda não tem back-end, a alteração vale só nesta página.',
+                'Agendamento atualizado com sucesso.',
                 'sucesso');
             return;
         }
@@ -258,7 +258,7 @@ const TelaAgendamento = {
         });
 
         Validacao.avisar('#avisoForm',
-            'Agendamento salvo. Como esta etapa ainda não tem back-end, ele vale só nesta página.',
+            'Agendamento salvo com sucesso.',
             'sucesso');
 
         document.getElementById('formAgendamento').reset();
@@ -279,7 +279,7 @@ const TelaAgendamento = {
         this.atualizarResumo();
 
         Validacao.avisar('#avisoForm',
-            'Agendamento excluído. Como esta etapa ainda não tem back-end, a exclusão vale só nesta página.',
+            'Agendamento excluído com sucesso.',
             'sucesso');
     },
 

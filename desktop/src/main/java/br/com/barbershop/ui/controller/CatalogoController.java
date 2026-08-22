@@ -83,31 +83,38 @@ public class CatalogoController {
             for (Servico s : servicos) {
                 JPanel card = new JPanel();
                 card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-                card.setPreferredSize(new Dimension(120, 160));
-                card.setBackground(Color.WHITE);
-                card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                card.setPreferredSize(new Dimension(130, 175));
+                card.setBackground(UIUtil.COLOR_BRANCO);
+                card.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(UIUtil.COLOR_NEBLINA, 1),
+                        BorderFactory.createEmptyBorder(6, 6, 8, 6)));
 
                 JLabel lblImg = new JLabel();
                 lblImg.setAlignmentX(Component.CENTER_ALIGNMENT);
-                UIUtil.exibirMiniatura(lblImg, s.getFotoCaminho(), 100, 80);
+                UIUtil.exibirMiniatura(lblImg, s.getFotoCaminho(), 110, 80);
 
                 JLabel lblNome = new JLabel(s.getNome());
                 lblNome.setAlignmentX(Component.CENTER_ALIGNMENT);
                 lblNome.setFont(new Font("Segoe UI", Font.BOLD, 12));
+                lblNome.setForeground(UIUtil.COLOR_TINTA);
 
                 JLabel lblPreco = new JLabel(moedaFormat.format(s.getPreco()));
                 lblPreco.setAlignmentX(Component.CENTER_ALIGNMENT);
+                lblPreco.setFont(new Font("Segoe UI", Font.BOLD, 12));
+                lblPreco.setForeground(UIUtil.COLOR_VERDE_CADEIRA);
 
                 JButton btn = new JButton("Agendar");
                 btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+                UIUtil.estilizarBotaoPrimario(btn);
                 btn.addActionListener(e -> onAgendarServico.accept(s));
 
-                card.add(Box.createVerticalStrut(5));
+                card.add(Box.createVerticalStrut(4));
                 card.add(lblImg);
-                card.add(Box.createVerticalStrut(5));
+                card.add(Box.createVerticalStrut(4));
                 card.add(lblNome);
+                card.add(Box.createVerticalStrut(2));
                 card.add(lblPreco);
-                card.add(Box.createVerticalStrut(5));
+                card.add(Box.createVerticalStrut(6));
                 card.add(btn);
 
                 pnlServicosGrid.add(card);

@@ -1,14 +1,7 @@
-/* RF11: classificação visual do agendamento
-
-   Esta é a MESMA regra da classe Java ClassificadorAgenda
-   (core/src/main/java/br/com/barbershop/service/ClassificadorAgenda.java),
-   coberta por 12 testes unitários na Etapa 7
-   (ClassificadorAgendaTest, incluindo as fronteiras de 60 e 120 minutos).
-
-   Os nomes das classificações e a ordem das faixas foram mantidos idênticos
-   para que desktop e web classifiquem exatamente do mesmo jeito. Assim como
-   no Java, a data de referência é recebida por parâmetro em vez de ser lida
-   do relógio aqui dentro - é o que permite testar com datas fixas. */
+/* RF11: classificação visual do agendamento.
+   Regra espelhada da classe Java ClassificadorAgenda (core),
+   coberta por testes unitários em ClassificadorAgendaTest.
+   A data de referência é recebida por parâmetro para garantir testabilidade determinística. */
 
 const ClassificacaoAgenda = {
     EM_ANDAMENTO: 'EM_ANDAMENTO',

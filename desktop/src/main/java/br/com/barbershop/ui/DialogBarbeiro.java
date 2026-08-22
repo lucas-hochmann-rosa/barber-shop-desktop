@@ -39,24 +39,24 @@ public class DialogBarbeiro extends javax.swing.JDialog {
     public DialogBarbeiro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
         this.barbeiro = new Barbeiro();
     }
 
-    /**
-     * Cria o diálogo para edição de um barbeiro já existente, pré-preenchendo
-     * os campos da tela com os dados recebidos.
-     *
-     * @param parent   janela pai do diálogo
-     * @param modal    se {@code true}, bloqueia a janela pai enquanto o diálogo estiver aberto
-     * @param barbeiro barbeiro a ser editado
-     */
     public DialogBarbeiro(java.awt.Frame parent, boolean modal, Barbeiro barbeiro) {
         super(parent, modal);
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
         this.barbeiro = barbeiro;
         preencherCampos();
+    }
+
+    private void aplicarEstilos() {
+        UIUtil.estilizarBotaoPrimario(btnSalvar);
+        UIUtil.estilizarBotaoSecundario(btnCancelar);
+        UIUtil.estilizarBotaoSecundario(btnEscolherImagem);
     }
 
     /**

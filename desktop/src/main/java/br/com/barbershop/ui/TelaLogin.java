@@ -21,6 +21,7 @@ public class TelaLogin extends javax.swing.JFrame {
     /** Monta a tela e aplica o ícone do app; a sessão em si só começa ao clicar em "Entrar". */
     public TelaLogin() {
         initComponents();
+        UIUtil.estilizarBotaoPrimario(btnEntrar);
         UIUtil.aplicarIcone(this);
         this.sessionService = new FabricaDeServicos().criarSessionService();
         setLocationRelativeTo(null);

@@ -10,6 +10,7 @@ import br.com.barbershop.ui.controller.HistoricoController;
 import br.com.barbershop.ui.controller.RelatorioController;
 import br.com.barbershop.ui.support.UIUtil;
 import java.awt.*;
+import javax.swing.JButton;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -62,6 +63,7 @@ public class TelaHome extends javax.swing.JFrame {
      */
     public TelaHome() {
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
 
         AgendaService agendaService = fabricaDeServicos.criarAgendaService();
@@ -82,6 +84,33 @@ public class TelaHome extends javax.swing.JFrame {
         clienteController.configurar();
 
         carregarDados();
+    }
+
+    private void aplicarEstilos() {
+        pnlSideMenu.setBackground(UIUtil.COLOR_VERDE_CADEIRA);
+
+        JButton[] botoesMenu = {btnHome, btnMinhaBarbearia, btnHistorico, btnRelatorios};
+        for (JButton btn : botoesMenu) {
+            btn.setBackground(UIUtil.COLOR_VERDE_CLARO);
+            btn.setForeground(Color.WHITE);
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+            btn.setFocusPainted(false);
+        }
+        btnSair.setBackground(UIUtil.COLOR_OXBLOOD);
+        btnSair.setForeground(Color.WHITE);
+        btnSair.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btnSair.setFocusPainted(false);
+
+        UIUtil.estilizarBotaoPrimario(btnAgendar);
+        UIUtil.estilizarBotaoPrimario(btnSalvarB);
+        UIUtil.estilizarBotaoPrimario(btnNovoServico);
+        UIUtil.estilizarBotaoPrimario(btnNovoBarbeiro);
+        UIUtil.estilizarBotaoPrimario(btnGerarRelatorio);
+
+        UIUtil.estilizarBotaoSecundario(btnEditarServicoB);
+        UIUtil.estilizarBotaoSecundario(btnEditarBarbeiroB);
+        UIUtil.estilizarBotaoPerigo(btnExcluirServico);
+        UIUtil.estilizarBotaoPerigo(btnExcluirBarbeiro);
     }
 
     /**

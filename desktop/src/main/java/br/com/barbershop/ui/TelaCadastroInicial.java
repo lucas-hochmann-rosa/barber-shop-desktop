@@ -32,8 +32,20 @@ public class TelaCadastroInicial extends javax.swing.JFrame {
 
     public TelaCadastroInicial() {
         initComponents();
+        aplicarEstilos();
         UIUtil.aplicarIcone(this);
         setLocationRelativeTo(null);
+    }
+
+    private void aplicarEstilos() {
+        UIUtil.estilizarBotaoPrimario(btnSalvar);
+        UIUtil.estilizarBotaoSecundario(btnCancelar);
+        UIUtil.estilizarBotaoPrimario(btnAdicionarServico);
+        UIUtil.estilizarBotaoSecundario(btnEditarServico);
+        UIUtil.estilizarBotaoPerigo(btnRemoverServico);
+        UIUtil.estilizarBotaoPrimario(btnAdicionarBarbeiro);
+        UIUtil.estilizarBotaoSecundario(btnEditarBarbeiro);
+        UIUtil.estilizarBotaoPerigo(btnRemoverBarbeiro);
     }
 
     /** Redesenha a tabela de serviços a partir da lista em memória. */

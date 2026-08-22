@@ -1,15 +1,6 @@
-/* Dados de exemplo do Barbershop Web
-
-   Etapa 8 não tem back-end: tudo aqui é fixo, em memória. Na próxima etapa
-   estes objetos serão substituídos por respostas da API, mantendo o mesmo
-   formato (os nomes dos campos seguem os das entidades Java do
-   core: servicoId, barbeiroId, clienteNome, dataHora, status...).
-
-   Os agendamentos de HOJE são montados a partir da data atual para que a
-   régua do dia e a classificação (RF11) tenham sempre o que mostrar,
-   independentemente do dia em que a página for aberta. O histórico dos
-   últimos 60 dias é gerado com um sorteio de semente fixa, então os
-   relatórios dão o mesmo resultado a cada carregamento. */
+/* Dados de exemplo e fallback em memória do Barbershop Web.
+   Os campos seguem as entidades do núcleo compartilhado (core).
+   Os agendamentos de hoje são calculados com base no horário atual para a régua do dia (RF11). */
 
 /** Sorteio determinístico (mulberry32): mesma semente, mesma sequência. */
 function _sorteio(semente) {

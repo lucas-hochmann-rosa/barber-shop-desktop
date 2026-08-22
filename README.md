@@ -61,7 +61,7 @@ O **Barbershop** é um sistema para controle operacional completo de uma barbear
 - **Núcleo Compartilhado (`core`)**: Centraliza as entidades de domínio, persistência JDBC, migrações idempotentes e regras de negócio essenciais (como a regra de classificação RF11 e a validação de sobreposição real de horários RF10), sem acoplamento com interfaces visuais.
 - **Versão Desktop (`desktop`)**: Aplicação desktop em Java Swing (Look & Feel FlatLaf) com bootstrap automático (cadastro inicial vs. login), CRUD de serviços/barbeiros, gestão de agenda em tempo real, painel de relatórios e smoke test operacional (`VerificacaoSistema`).
 - **Versão Web (`web`)**: Front-end moderno em HTML5, CSS3 modular e JavaScript puro, espelhando os fluxos operacionais da barbearia, com destaque para a **régua visual do dia** e o cliente REST integrado.
-- **Back-end Web REST (`api`)**: Aplicação Java Web com Spring Boot 3.2.5 REST (Etapa 9), expondo endpoints JSON para autenticação, barbearia, catálogo, agenda, histórico e relatórios.
+- **Back-end Web REST (`api`)**: Aplicação Java Web com Spring Boot 3.2.5 REST, expondo endpoints JSON para autenticação, barbearia, catálogo, agenda, histórico e relatórios.
 
 ---
 
@@ -134,8 +134,7 @@ barber-shop-suite/
 ├── LICENSE
 ├── docs/
 │   ├── screenshots/                    # Prints do sistema usados na documentação
-│   ├── wireframes/                     # Wireframes em SVG puro para desktop e web
-│   └── etapa9/                         # Documentos de entrega da Etapa 9 (testes, bugtracking, versionamento)
+│   └── wireframes/                     # Wireframes em SVG puro para desktop e web
 │
 ├── core/                               # [MÓDULO 1] Núcleo de regras de negócio compartilhado (Java)
 │   ├── pom.xml
@@ -179,8 +178,8 @@ barber-shop-suite/
 │   ├── js/                             # Lógica de interface, cliente REST (api.js) e dados de demonstração
 │   └── img/                            # Ícones e ilustrações em SVG próprio
 │
-└── api/                                # [MÓDULO 4] Back-end Java Web Spring Boot REST (Etapa 9)
-    ├── pom.xml                         # Dependências do Spring Boot Starter Web e barber-shop-core
+└── api/                                # [MÓDULO 4] Back-end Java Web Spring Boot REST
+    ├── pom.xml                         # Dependências do Spring Boot Starter Web e core
     └── src/
         ├── main/java/br/com/barbershop/api/
         │   ├── Application.java        # Main class do Spring Boot
@@ -435,6 +434,7 @@ Arquivo gerado: `desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar`.
 - **RF09**: Exibir histórico completo de agendamentos, incluindo concluídos. **Status**: Implementado.
 - **RF10**: Validar conflito de horário por barbeiro considerando a sobreposição real de horários pela duração do serviço. **Status**: Implementado.
 - **RF11**: Classificar visualmente os agendamentos conforme sua proximidade ou status. **Status**: Implementado.
+- **RF12**: Prover integração completa via API RESTful com endpoints JSON para autenticação, barbearia, catálogo, agenda, histórico e relatórios. **Status**: Implementado.
 
 ---
 

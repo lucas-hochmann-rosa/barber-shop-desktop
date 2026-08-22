@@ -133,6 +133,12 @@ public class TelaEditarAgendamento extends JFrame {
         actions.add(btnExcluir);
         actions.add(btnSalvar);
 
+        UIUtil.estilizarBotaoPrimario(btnSalvar);
+        UIUtil.estilizarBotaoPrimario(btnAcaoStatus);
+        UIUtil.estilizarBotaoSecundario(btnWhatsApp);
+        UIUtil.estilizarBotaoSecundario(btnCancelar);
+        UIUtil.estilizarBotaoPerigo(btnExcluir);
+
         root.add(actions, BorderLayout.SOUTH);
 
         setContentPane(root);
@@ -327,7 +333,7 @@ public class TelaEditarAgendamento extends JFrame {
         }
     }
 
-    /** Avança o status uma etapa: AGENDADO → EM_ATENDIMENTO → CONCLUIDO (fecha a tela ao concluir). */
+    /** Avança o status no fluxo: AGENDADO -> EM_ATENDIMENTO -> CONCLUIDO (fecha a tela ao concluir). */
     private void alternarStatus() {
         try {
             if (atual.getStatus() == StatusAgendamento.AGENDADO) {
