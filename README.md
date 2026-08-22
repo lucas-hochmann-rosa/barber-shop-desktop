@@ -34,19 +34,18 @@
 git clone https://github.com/lucas-hochmann-rosa/barber-shop-suite.git
 cd barber-shop-suite
 
-# 2. Subir o banco de dados MySQL via Docker
+# 2. Subir o banco de dados MySQL (via Docker ou MySQL nativo na porta 3306)
 docker compose up -d
 
-# 3. Compilar e rodar todos os testes automatizados
-mvn clean test
+# 3. Compilar e empacotar todos os módulos (core, desktop, api)
+mvn clean package
 
-# 4. Executar a API REST Spring Boot (Back-end Web)
-mvn spring-boot:run -pl api
-# ou: java -jar api/target/barber-shop-api-1.0-SNAPSHOT.jar (porta 8080)
-
-# 5. Executar a versão Desktop (Java Swing)
-mvn package -pl desktop
+# 4. Executar a versão Desktop (Java Swing)
 java -jar desktop/target/barber-shop-desktop-1.0-SNAPSHOT.jar
+
+# 5. Executar a API REST Spring Boot (Back-end Web)
+java -jar api/target/barber-shop-api-1.0-SNAPSHOT.jar
+# ou: mvn spring-boot:run -pl api -am (porta 8080)
 
 # 6. Executar o Front-end Web independente
 npx serve web      # acesse http://localhost:3000 (login: lucas / 1234)
